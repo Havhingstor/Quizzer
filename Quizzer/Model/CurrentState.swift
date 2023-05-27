@@ -33,6 +33,12 @@ class CurrentState: ObservableObject {
             Question(question: "Q19", answer: "A19", category: "Politik", weight: 3, answered: false),
             Question(question: "Q17", answer: "A20", category: "Politik", weight: 4, answered: false),
         ]
+        result.teams = [
+            Team(name: "Team A", currentState: result),
+            Team(name: "Team B", currentState: result),
+            Team(name: "Team C", currentState: result),
+            Team(name: "Team D", currentState: result)
+        ]
         return result
     }
     
@@ -45,6 +51,8 @@ class CurrentState: ObservableObject {
     @Published var questions = [Question]()
     
     @Published var currentQuestion: Binding<Question>? = nil
+    @Published var questionStage = 0
+    
     @Published var isInStartStage = false
     
     
@@ -53,4 +61,6 @@ class CurrentState: ObservableObject {
     
     @Published var pointsName = "Punkte"
     @Published var pointName = "Punkt"
+    
+    @Published var teams = [Team]()
 }

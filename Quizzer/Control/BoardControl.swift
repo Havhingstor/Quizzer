@@ -1,4 +1,5 @@
 import SwiftUI
+import QuickLook
 
 struct BoardControl: View {
     @EnvironmentObject var currentState: CurrentState
@@ -25,22 +26,21 @@ struct BoardControl: View {
     }
 
     var body: some View {
-        HStack {
+        HStack(spacing: 20) {
             List {
                 ForEach($currentState.categories) { $category in
                     CategoryListing(category: $category)
                 }
             }
-            .frame(maxWidth: 300)
-            .padding()
 
             Button("Show next category") {
                 showNextCategory()
             }
             .keyboardShortcut("#", modifiers: [])
-            .padding()
             .disabled(!canCategoryBeShown())
         }
+        .padding()
+        .frame(width: 475)
     }
 }
 
@@ -86,7 +86,7 @@ struct QuestionListing: View {
     @Environment(\.openWindow) var openWindow
 
     @Binding var question: Question
-
+    
     var category: Category {
         currentState.categories.first(where: { $0.id == question.category })!
     }
@@ -103,6 +103,7 @@ struct QuestionListing: View {
         Button(buttonTitle) {
             withAnimation {
                 currentState.currentQuestion = $question
+                currentState.questionStage = 0
             }
             openWindow(id: "qst")
         }
@@ -111,6 +112,10 @@ struct QuestionListing: View {
             if category.isShown {
                 Button("Mark as \(question.answered ? "Unanswered" : "Answered")") {
                     question.answered.toggle()
+                }
+                Button("Quick Look") {
+                    openingQL = true
+                    openWindow(value: question)
                 }
             }
         }

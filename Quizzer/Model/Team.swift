@@ -1,6 +1,14 @@
 import Foundation
 
-class Team: Identifiable {
+class Team: Identifiable, Hashable {
+    static func == (lhs: Team, rhs: Team) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+    
     var name: String
     var id: String {name}
     var currentState: CurrentState

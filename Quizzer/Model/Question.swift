@@ -1,6 +1,6 @@
 import Foundation
 
-struct Question: Identifiable {
+struct Question: Identifiable, Codable, Hashable {
     static func == (lhs: Question, rhs: Question) -> Bool {
         lhs.id == rhs.id
     }
