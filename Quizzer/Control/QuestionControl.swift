@@ -13,7 +13,19 @@ struct QuestionControl: View {
         let question = currentState.currentQuestion!
         return "\(question.wrappedValue.category) - \(Int(question.wrappedValue.weight) * currentState.baseScore)"
     }
+    
+    func isJoker(_ question: Binding<Question>) -> Bool {
+        question.wrappedValue.question.lowercased() == "joker"
+    }
 
+    func registerAnswer(correct: Bool, for question: Binding<Question>) {
+        withAnimation {
+            question.wrappedValue.answered.toggle()
+            currentState.currentQuestion = nil
+        }
+        dismiss()
+    }
+    
     var body: some View {
         if let question = currentState.currentQuestion {
             Form {
@@ -34,56 +46,68 @@ struct QuestionControl: View {
                     }
                 }
                 
-                Section("Question & True Answer") {
-                    LabeledContent {
-                        Text(question.wrappedValue.question)
-                            .italic()
-                    } label: {
-                        Text("Question")
+                if !isJoker(question) {
+                    Section("Question & True Answer") {
+                        LabeledContent {
+                            Text(question.wrappedValue.question)
+                                .italic()
+                        } label: {
+                            Text("Question")
+                        }
+                        LabeledContent {
+                            Text(question.wrappedValue.answer)
+                                .italic()
+                        } label: {
+                            Text("Answer")
+                        }
                     }
-                    LabeledContent {
-                        Text(question.wrappedValue.answer)
-                            .italic()
-                    } label: {
-                        Text("Answer")
+                    .padding()
+                } else {
+                    Section {
+                        Text("Joker")
+                            .font(.title)
+                            .foregroundColor(.red)
                     }
+                    .padding()
                 }
-                .padding()
                 
                 Section("Presentation") {
                     HStack {
-                        Button("Next") {
-                            withAnimation {
-                                currentState.questionStage += 1
-                                currentState.questionStage = max(currentState.questionStage, 3)
-                            }
-                        }
                         Button("Previous") {
                             withAnimation {
                                 currentState.questionStage -= 1
-                                currentState.questionStage = min(currentState.questionStage, 0)
+                                currentState.questionStage = max(currentState.questionStage, 0)
                             }
                         }
+                        Button("Next") {
+                            let max = isJoker(question) ? 1 : 2
+                            withAnimation {
+                                currentState.questionStage += 1
+                                currentState.questionStage = min(currentState.questionStage, max)
+                            }
+                        }
+                        
+                        Text("Stage \(currentState.questionStage)")
                     }
                 }
                 
-                Section("Received Answer") {
-                    TextField(text: $answer) {
-                        Text("Answer")
-                    }
-                    Button("Register correct answer") {
-                        withAnimation {
-                            question.wrappedValue.answered.toggle()
-                            currentState.currentQuestion = nil
+                if !isJoker(question) {
+                    Section("Received Answer") {
+                        TextField(text: $answer) {
+                            Text("Answer")
                         }
-                        dismiss()
-                    }
-                    Button("Register wrong answer") {
-                        withAnimation {
-                            question.wrappedValue.answered.toggle()
-                            currentState.currentQuestion = nil
+                        Button("Register correct answer") {
+                            registerAnswer(correct: true, for: question)
                         }
-                        dismiss()
+                        Button("Register wrong answer") {
+                            registerAnswer(correct: true, for: question)
+                        }
+                    }
+                } else {
+                    Section {
+                        Button("Claim") {
+                            registerAnswer(correct: true, for: question)
+                        }
                     }
                 }
             }
@@ -103,6 +127,9 @@ struct QuestionControl: View {
             Text("No Question")
                 .padding()
                 .fixedSize()
+                .onAppear {
+                    dismiss()
+                }
         }
     }
 }

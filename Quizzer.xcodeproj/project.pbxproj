@@ -21,6 +21,7 @@
 		DA191B932A2240B20099C07A /* QuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B922A2240B20099C07A /* QuestionControl.swift */; };
 		DA191B952A2247070099C07A /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B942A2247070099C07A /* Team.swift */; };
 		DA191B982A229CD30099C07A /* QuestionQuicklook.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B972A229CD30099C07A /* QuestionQuicklook.swift */; };
+		DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B9C2A22BA6D0099C07A /* Util.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		DA191B922A2240B20099C07A /* QuestionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionControl.swift; sourceTree = "<group>"; };
 		DA191B942A2247070099C07A /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		DA191B972A229CD30099C07A /* QuestionQuicklook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionQuicklook.swift; sourceTree = "<group>"; };
+		DA191B9C2A22BA6D0099C07A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				DA191B662A21EAAE0099C07A /* QuizzerApp.swift */,
+				DA191B9C2A22BA6D0099C07A /* Util.swift */,
 				DA191B832A2212A30099C07A /* Control */,
 				DA191B822A2212780099C07A /* Presentation */,
 				DA191B7F2A2206570099C07A /* Model */,
@@ -200,6 +203,7 @@
 				DA191B982A229CD30099C07A /* QuestionQuicklook.swift in Sources */,
 				DA191B812A220AA30099C07A /* FirstStageQuestion.swift in Sources */,
 				DA191B7E2A21F8560099C07A /* CurrentState.swift in Sources */,
+				DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */,
 				DA191B8F2A22388F0099C07A /* FirstStage.swift in Sources */,
 				DA191B762A21EB680099C07A /* QuizBoard.swift in Sources */,
 				DA191B852A2213020099C07A /* BoardControl.swift in Sources */,

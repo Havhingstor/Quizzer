@@ -23,7 +23,7 @@ class CurrentState: ObservableObject {
             Question(question: "Q9", answer: "A9", category: "Christentum", weight: 1, answered: false),
             Question(question: "Q10", answer: "A10", category: "Christentum", weight: 2, answered: false),
             Question(question: "Q11", answer: "A11", category: "Christentum", weight: 3, answered: false),
-            Question(question: "Q12", answer: "A12", category: "Christentum", weight: 4, answered: false),
+            Question(question: "Joker", answer: "A12", category: "Christentum", weight: 4, answered: false),
             Question(question: "Q13", answer: "A13", category: "Geographie", weight: 1, answered: false),
             Question(question: "Q14", answer: "A14", category: "Geographie", weight: 2, answered: false),
             Question(question: "Q15", answer: "A15", category: "Geographie", weight: 3, answered: false),
@@ -61,6 +61,9 @@ class CurrentState: ObservableObject {
     
     @Published var pointsName = "Punkte"
     @Published var pointName = "Punkt"
+    
+    @Published var questionName = "Frage"
+    @Published var answerName = "Antwort"
     
     @Published var teams = [Team]()
 }
