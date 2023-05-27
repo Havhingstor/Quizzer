@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct QuizzerApp: App {
+    @StateObject var currentState = CurrentState.examples
+    
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        Window("Control", id: "ctrl") {
+            BoardControl()
+                .environmentObject(currentState)
+        }
+        Window("Question", id: "qst") {
+            QuestionControl()
+                .environmentObject(currentState)
         }
     }
 }
