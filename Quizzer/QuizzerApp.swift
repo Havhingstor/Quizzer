@@ -11,25 +11,24 @@ struct QuizzerApp: App {
                 .foregroundColor(.black)
         }
         .keyboardShortcut("q", modifiers: [])
+        
         Window("Control", id: "ctrl") {
             BoardControl()
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
         .keyboardShortcut("c", modifiers: [])
-        Window("Question", id: "qst") {
+        
+        Window("Question Presentation", id: "qst") {
             QuestionControl()
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
-        WindowGroup(for: Question.self) { q in
-            if let _ = q.wrappedValue {
-                QuestionQuicklook(question: q)
-                    .environmentObject(currentState)
-            }
+        
+        WindowGroup("Question - QuickLook", for: Question.self) { $q in
+            QuestionControl(selectedQuestion: $q)
+                .environmentObject(currentState)
         }
-        .commandsRemoved()
-        .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
     }
 }

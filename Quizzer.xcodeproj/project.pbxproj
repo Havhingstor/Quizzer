@@ -20,7 +20,6 @@
 		DA191B8F2A22388F0099C07A /* FirstStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B8E2A22388F0099C07A /* FirstStage.swift */; };
 		DA191B932A2240B20099C07A /* QuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B922A2240B20099C07A /* QuestionControl.swift */; };
 		DA191B952A2247070099C07A /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B942A2247070099C07A /* Team.swift */; };
-		DA191B982A229CD30099C07A /* QuestionQuicklook.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B972A229CD30099C07A /* QuestionQuicklook.swift */; };
 		DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B9C2A22BA6D0099C07A /* Util.swift */; };
 		DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACB33AD2A2358850073F39D /* QuestionAnswer.swift */; };
 /* End PBXBuildFile section */
@@ -41,7 +40,6 @@
 		DA191B8E2A22388F0099C07A /* FirstStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstStage.swift; sourceTree = "<group>"; };
 		DA191B922A2240B20099C07A /* QuestionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionControl.swift; sourceTree = "<group>"; };
 		DA191B942A2247070099C07A /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		DA191B972A229CD30099C07A /* QuestionQuicklook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionQuicklook.swift; sourceTree = "<group>"; };
 		DA191B9C2A22BA6D0099C07A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		DACB33AD2A2358850073F39D /* QuestionAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAnswer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,7 +122,6 @@
 			children = (
 				DA191B842A2213020099C07A /* BoardControl.swift */,
 				DA191B922A2240B20099C07A /* QuestionControl.swift */,
-				DA191B972A229CD30099C07A /* QuestionQuicklook.swift */,
 			);
 			path = Control;
 			sourceTree = "<group>";
@@ -204,7 +201,6 @@
 				DA191B932A2240B20099C07A /* QuestionControl.swift in Sources */,
 				DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */,
 				DA191B672A21EAAE0099C07A /* QuizzerApp.swift in Sources */,
-				DA191B982A229CD30099C07A /* QuestionQuicklook.swift in Sources */,
 				DA191B812A220AA30099C07A /* FirstStageQuestion.swift in Sources */,
 				DA191B7E2A21F8560099C07A /* CurrentState.swift in Sources */,
 				DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */,

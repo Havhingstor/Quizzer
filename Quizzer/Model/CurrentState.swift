@@ -68,6 +68,9 @@ class CurrentState: ObservableObject {
     @Published var pointsName = "Punkte"
     @Published var pointName = "Punkt"
     
+    @Published var placeName = "Platz"
+    @Published var answersName = "Antworten"
+    
     @Published var questionName = "Frage"
     @Published var answerName = "Antwort"
     

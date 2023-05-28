@@ -1,5 +1,5 @@
-import SwiftUI
 import QuickLook
+import SwiftUI
 
 struct BoardControl: View {
     @EnvironmentObject var currentState: CurrentState
@@ -32,15 +32,59 @@ struct BoardControl: View {
                     CategoryListing(category: $category)
                 }
             }
+            .clipShape(RoundedRectangle(cornerRadius: 10))
 
-            Button("Show next category") {
-                showNextCategory()
+            VStack {
+                VStack {
+                    Text("Next Team")
+                    Picker("Next Team", selection: $currentState.nextTeam) {
+                        ForEach(currentState.getTeams()) { team in
+                            Text("\(team.name)")
+                                .tag(team)
+                        }
+                    }
+                    .labelsHidden()
+                }
+                .padding()
+                Button("Show next category") {
+                    showNextCategory()
+                }
+                .keyboardShortcut("#")
+                .disabled(!canCategoryBeShown())
+                .padding()
+                Spacer()
+                Text("Team List")
+                List(currentState.teams) { team in
+                    let points = team.overallPoints
+                    HStack {
+                        Spacer()
+                        Text("\(team.name) - \(points) Point(s)\n\(getTeamPosition(team: team)). Place - \(team.solvedQuestions.count) Answer(s)")
+                            .multilineTextAlignment(.center)
+                            .padding()
+                        Spacer()
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                Spacer()
             }
-            .keyboardShortcut("#", modifiers: [])
-            .disabled(!canCategoryBeShown())
+            .frame(width: 230)
         }
         .padding()
-        .frame(width: 475)
+        .frame(width: 350 + 230)
+    }
+
+    func getTeamPosition(team: Team) -> Int {
+        var position = 1
+        for teamIterator in currentState.teams {
+            if teamIterator.overallPoints > team.overallPoints {
+                position += 1
+            }
+        }
+        if currentState.teams.contains(team) {
+            return position
+        } else {
+            return Int.max
+        }
     }
 }
 
@@ -86,7 +130,7 @@ struct QuestionListing: View {
     @Environment(\.openWindow) var openWindow
 
     @Binding var question: Question
-    
+
     var category: Category {
         currentState.categories.first(where: { $0.id == question.category })!
     }
@@ -107,26 +151,23 @@ struct QuestionListing: View {
     }
 
     var body: some View {
-        Button(buttonTitle) {
-            withAnimation {
-                currentState.currentQuestion = $question
-                currentState.questionStage = 0
-            }
-            openWindow(id: "qst")
-        }
-        .disabled(!category.isShown || !question.shouldOpen)
-        .contextMenu {
-            if category.isShown {
-                if !question.shouldOpen {
-                    Button("Open Question") {
-                        withAnimation {
-                            currentState.currentQuestion = $question
-                            currentState.questionStage = 0
-                        }
-                        openWindow(id: "qst")
-                    }
+        HStack {
+            Spacer()
+            Button(buttonTitle) {
+                withAnimation {
+                    currentState.currentQuestion = $question
+                    currentState.questionStage = 0
                 }
-                Button("Mark as \(getAnswerToggleStr())") {
+                openWindow(id: "qst")
+            }
+            .animation(.none, value: question.answered)
+            .animation(.none, value: question.exempt)
+            .disabled(!category.isShown || !question.shouldOpen)
+            .contextMenu {
+                Button("Quick Look") {
+                    openWindow(value: question)
+                }
+                Button("\(getAnswerToggleStr())") {
                     withAnimation {
                         if question.exempt {
                             question.exempt = false
@@ -137,21 +178,18 @@ struct QuestionListing: View {
                         }
                     }
                 }
-                Button("Quick Look") {
-                    openingQL = true
-                    openWindow(value: question)
-                }
             }
+            Spacer()
         }
     }
-    
+
     func getAnswerToggleStr() -> String {
         if question.exempt {
-            return "Not Exempt"
+            return "Mark As Not Exempt"
         } else if question.answered {
-            return "Unanswered"
+            return "Remove Answer"
         } else {
-            return "Exempt"
+            return "Mark As Exempt"
         }
     }
 }
