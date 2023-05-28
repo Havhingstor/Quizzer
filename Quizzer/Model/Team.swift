@@ -11,20 +11,21 @@ class Team: Identifiable, Hashable {
     
     var name: String
     var id: String {name}
-    var currentState: CurrentState
+    var currentState = CurrentState.shared
     
-    var solvedQuestions = [Question]()
+    var solvedQuestions: [QuestionAnswer] {
+        currentState.questionsAnswered.filter({$0.team === self})
+    }
     var addedPoints = 0
     var overallPoints: Int {
         var result = addedPoints
         for question in solvedQuestions {
-            result += Int(question.weight) * currentState.baseScore
+            result += Int(question.question.weight) * currentState.baseScore
         }
         return result
     }
     
-    init(name: String, currentState: CurrentState) {
+    init(name: String) {
         self.name = name
-        self.currentState = currentState
     }
 }

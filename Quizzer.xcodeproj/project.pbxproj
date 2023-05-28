@@ -22,6 +22,7 @@
 		DA191B952A2247070099C07A /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B942A2247070099C07A /* Team.swift */; };
 		DA191B982A229CD30099C07A /* QuestionQuicklook.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B972A229CD30099C07A /* QuestionQuicklook.swift */; };
 		DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B9C2A22BA6D0099C07A /* Util.swift */; };
+		DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACB33AD2A2358850073F39D /* QuestionAnswer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		DA191B942A2247070099C07A /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		DA191B972A229CD30099C07A /* QuestionQuicklook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionQuicklook.swift; sourceTree = "<group>"; };
 		DA191B9C2A22BA6D0099C07A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		DACB33AD2A2358850073F39D /* QuestionAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAnswer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				DA191B772A21F50E0099C07A /* Question.swift */,
 				DA191B792A21F5700099C07A /* Category.swift */,
 				DA191B942A2247070099C07A /* Team.swift */,
+				DACB33AD2A2358850073F39D /* QuestionAnswer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 				DA191B952A2247070099C07A /* Team.swift in Sources */,
 				DA191B782A21F50E0099C07A /* Question.swift in Sources */,
 				DA191B932A2240B20099C07A /* QuestionControl.swift in Sources */,
+				DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */,
 				DA191B672A21EAAE0099C07A /* QuizzerApp.swift in Sources */,
 				DA191B982A229CD30099C07A /* QuestionQuicklook.swift in Sources */,
 				DA191B812A220AA30099C07A /* FirstStageQuestion.swift in Sources */,

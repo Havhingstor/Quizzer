@@ -6,9 +6,7 @@ struct QuestionControl: View {
     @Environment(\.dismiss) var dismiss
     
     @State var answer = ""
-    @State var team: Team = Team(name: "No Team", currentState: CurrentState())
-    @State var teamList: [Team] = [Team(name: "No Team", currentState: CurrentState())]
-
+    
     var categoryAndPoints: String {
         let question = currentState.currentQuestion!
         return "\(question.wrappedValue.category) - \(Int(question.wrappedValue.weight) * currentState.baseScore)"
@@ -19,11 +17,15 @@ struct QuestionControl: View {
     }
 
     func registerAnswer(correct: Bool, for question: Binding<Question>) {
+        let givenAnswer = QuestionAnswer(question: question.wrappedValue, team: currentState.nextTeam, answer: answer, correct: correct)
         withAnimation {
-            question.wrappedValue.answered.toggle()
+            question.wrappedValue.givenAnswer = givenAnswer
             currentState.currentQuestion = nil
         }
         dismiss()
+        withAnimation {
+            currentState.progressTeam()
+        }
     }
     
     var body: some View {
@@ -34,15 +36,9 @@ struct QuestionControl: View {
                     .padding()
 
                 
-                Picker("Team", selection: $team) {
-                    ForEach(teamList) { team in
+                Picker("Team", selection: $currentState.nextTeam) {
+                    ForEach(currentState.getTeams()) { team in
                         Text("\(team.name)").tag(team)
-                    }
-                }
-                .onAppear {
-                    if currentState.teams.count > 0 {
-                        teamList = currentState.teams
-                        team = teamList.first!
                     }
                 }
                 

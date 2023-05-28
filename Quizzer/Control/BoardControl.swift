@@ -94,7 +94,14 @@ struct QuestionListing: View {
     var buttonTitle: String {
         let category = question.category
         let totalScore = Int(question.weight) * currentState.baseScore
-        let answered = question.answered ? "Answered" : "Unanswered"
+        let answered: String
+        if question.exempt {
+            answered = "Exempt"
+        } else if question.answered {
+            answered = "Answered"
+        } else {
+            answered = "Unanswered"
+        }
 
         return "\(category) - \(totalScore) - \(answered)"
     }
@@ -107,17 +114,44 @@ struct QuestionListing: View {
             }
             openWindow(id: "qst")
         }
-        .disabled(!category.isShown)
+        .disabled(!category.isShown || !question.shouldOpen)
         .contextMenu {
             if category.isShown {
-                Button("Mark as \(question.answered ? "Unanswered" : "Answered")") {
-                    question.answered.toggle()
+                if !question.shouldOpen {
+                    Button("Open Question") {
+                        withAnimation {
+                            currentState.currentQuestion = $question
+                            currentState.questionStage = 0
+                        }
+                        openWindow(id: "qst")
+                    }
+                }
+                Button("Mark as \(getAnswerToggleStr())") {
+                    withAnimation {
+                        if question.exempt {
+                            question.exempt = false
+                        } else if question.answered {
+                            question.givenAnswer = nil
+                        } else {
+                            question.exempt = true
+                        }
+                    }
                 }
                 Button("Quick Look") {
                     openingQL = true
                     openWindow(value: question)
                 }
             }
+        }
+    }
+    
+    func getAnswerToggleStr() -> String {
+        if question.exempt {
+            return "Not Exempt"
+        } else if question.answered {
+            return "Unanswered"
+        } else {
+            return "Exempt"
         }
     }
 }
