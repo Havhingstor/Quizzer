@@ -20,7 +20,7 @@ struct QuizzerApp: App {
         .keyboardShortcut("c", modifiers: [])
         
         Window("Question Presentation", id: "qst") {
-            QuestionControl()
+            QuestionControl(selectedQuestion: nil)
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)

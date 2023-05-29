@@ -35,9 +35,8 @@ struct QuestionView: View {
                 .padding()
 
             Spacer()
-            
+
             if question.question.lowercased() != "joker" {
-                
                 HStack {
                     VStack {
                         Text("\(currentState.questionName):")
@@ -66,6 +65,24 @@ struct QuestionView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding([.top, .trailing, .bottom])
                     .padding(.leading, 60)
+                    .padding([.top, .trailing], 20)
+                    .overlay(alignment: .topTrailing) {
+                        Group {
+                            if currentState.questionStage == 3 {
+                                Image(systemName: "checkmark.seal.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 75)
+                                    .foregroundColor(.green)
+                            } else if currentState.questionStage > 3 {
+                                Image(systemName: "xmark.seal.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 75)
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    }
                     Spacer()
                 }
                 .hide(if: currentState.questionStage < 2)

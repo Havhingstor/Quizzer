@@ -53,8 +53,26 @@ class CurrentState: ObservableObject {
     
     @Published var questions = [Question]()
     
-    @Published var currentQuestion: Binding<Question>? = nil
-    @Published var questionStage = 0
+    @Published var currentQuestion: Binding<Question>? = nil {
+        didSet {
+            if let currentQuestion {
+                if let stage = questionStages[currentQuestion.id] {
+                    questionStage = stage
+                } else {
+                    questionStage = 0
+                }
+            }
+        }
+    }
+    @Published var questionStage = 0 {
+        didSet {
+            if let currentQuestion {
+                questionStages[currentQuestion.id] = questionStage
+            }
+        }
+    }
+    
+    @Published var questionStages = [String: Int]()
     
     @Published var questionsAnswered = [QuestionAnswer]()
     @Published var questionsExempt = [QuestionExemption]()

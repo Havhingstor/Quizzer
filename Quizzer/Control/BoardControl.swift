@@ -156,7 +156,6 @@ struct QuestionListing: View {
             Button(buttonTitle) {
                 withAnimation {
                     currentState.currentQuestion = $question
-                    currentState.questionStage = 0
                 }
                 openWindow(id: "qst")
             }
@@ -164,6 +163,14 @@ struct QuestionListing: View {
             .animation(.none, value: question.exempt)
             .disabled(!category.isShown || !question.shouldOpen)
             .contextMenu {
+                if question.answered {
+                    Button("Open Question") {
+                        withAnimation {
+                            currentState.currentQuestion = $question
+                        }
+                        openWindow(id: "qst")
+                    }
+                }
                 Button("Quick Look") {
                     openWindow(value: question)
                 }
@@ -175,6 +182,9 @@ struct QuestionListing: View {
                             question.givenAnswer = nil
                         } else {
                             question.exempt = true
+                            if currentState.currentQuestion?.wrappedValue == question {
+                                currentState.currentQuestion = nil
+                            }
                         }
                     }
                 }
