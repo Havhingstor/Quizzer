@@ -3,7 +3,7 @@ import SwiftUI
 
 struct QuestionControl: View {
     @EnvironmentObject var currentState: CurrentState
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.openWindow) var openWindow
 
     @State var answer = ""
     @State var teamInternal = CurrentState.shared.teams.first!
@@ -29,6 +29,12 @@ struct QuestionControl: View {
         usedQuestion?.question.lowercased() == "joker"
     }
 
+    func goToControl() {
+        if !questionSelected {
+            openWindow(id: "ctrl")
+        }
+    }
+    
     func registerOnly(givenAnswer: QuestionAnswer) {
         if !questionSelected {
             currentState.currentQuestion?.wrappedValue.givenAnswer = givenAnswer
@@ -37,18 +43,18 @@ struct QuestionControl: View {
             selectedQuestion?.wrappedValue?.givenAnswer = givenAnswer
         }
     }
-    
+
     func registerAnswer(correct: Bool) {
         if let question = usedQuestion {
             let givenAnswer = QuestionAnswer(question: question, team: team.wrappedValue, answer: answer, correct: correct)
-            if question.answered {
+            if !question.answered {
                 withAnimation {
                     registerOnly(givenAnswer: givenAnswer)
                 }
             } else {
                 registerOnly(givenAnswer: givenAnswer)
             }
-            dismiss()
+            goToControl()
             if !questionSelected {
                 withAnimation {
                     currentState.progressTeam()
@@ -64,7 +70,8 @@ struct QuestionControl: View {
             withAnimation {
                 question.givenAnswer = nil
             }
-            dismiss()
+//            dismiss()
+        goToControl()
         }
     }
 
@@ -93,7 +100,7 @@ struct QuestionControl: View {
                     .labelsHidden()
                 }
                 .padding()
-                
+
                 if !isJoker {
                     GroupBox {
                         VStack {
@@ -103,7 +110,7 @@ struct QuestionControl: View {
                                 .italic()
                         }
                         .padding([.bottom, .leading, .trailing])
-                        
+
                         VStack {
                             Text("True Answer")
                             Text(question.answer)
@@ -134,6 +141,7 @@ struct QuestionControl: View {
                                             currentState.questionStage = max(currentState.questionStage, 0)
                                         }
                                     }
+                                    .fixedSize()
                                     .keyboardShortcut("-")
                                     .disabled(currentState.questionStage <= 0)
                                     let maxVal = isJoker ? 1 : 2
@@ -165,6 +173,14 @@ struct QuestionControl: View {
                                 }
                                 Button("Register wrong answer") {
                                     registerAnswer(correct: false)
+                                }
+                                if !questionSelected {
+                                    Button("Cancel") {
+                                        withAnimation {
+                                            currentState.currentQuestion = nil
+                                        }
+                                        goToControl()
+                                    }
                                 }
                             } label: {
                                 Text("Given Answer")
@@ -235,23 +251,13 @@ struct QuestionControl: View {
                     .padding()
                 }
             }
-            .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { output in
-                let window = NSApplication.shared.windows.first(where: { $0.title == "Question Presentation" })
-                if output.object as? NSWindow == window && !questionSelected {
-                    withAnimation {
-                        currentState.currentQuestion = nil
-                    }
-                }
-            }
             .padding()
             .fixedSize()
         } else {
             Text("No Question")
                 .padding()
+                .frame(width: 250)
                 .fixedSize()
-                .onAppear {
-                    dismiss()
-                }
         }
     }
 }

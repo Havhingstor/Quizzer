@@ -24,6 +24,7 @@ struct QuizzerApp: App {
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
+        .keyboardShortcut("q", modifiers: .shift)
         
         WindowGroup("Question - QuickLook", for: Question.self) { $q in
             QuestionControl(selectedQuestion: $q)

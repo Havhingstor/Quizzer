@@ -29,13 +29,6 @@ struct QuestionAnswer {
         self._team = team.id
         self.answer = answer
         self.correct = correct
-        
-        let currentState = CurrentState.shared
-        for (index, answer) in currentState.questionsAnswered.enumerated() {
-            if answer.question.id == question.id {
-                currentState.questionsAnswered.remove(at: index)
-            }
-        }
     }
 }
 
