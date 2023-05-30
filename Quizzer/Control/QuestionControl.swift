@@ -101,6 +101,25 @@ struct QuestionControl: View {
         question?.question.lowercased() == "joker"
     }
 
+    func registerAnswer(_ correct: Bool) {
+        if let question {
+            let givenAnswer = QuestionAnswer(question: question, team: team.wrappedValue, answer: answer, correct: correct)
+            if !question.answered {
+                withAnimation {
+                    holder.registerQuestionAnswer(givenAnswer: givenAnswer)
+                }
+            } else {
+                holder.registerQuestionAnswer(givenAnswer: givenAnswer)
+            }
+            if !holder.isQL {
+                withAnimation {
+                    currentState.progressTeam()
+                }
+            }
+            goToControl()
+        }
+    }
+
     var body: some View {
         if let question {
             VStack(alignment: .center) {
@@ -111,7 +130,7 @@ struct QuestionControl: View {
                 PresentationControls(holder: holder, question: $question)
 
                 Group {
-                    AnswerControl(holder: holder, question: $question, answer: $answer, team: team, goToControl: goToControl)
+                    AnswerControl(holder: holder, question: $question, answer: $answer, team: team, goToControl: goToControl, registerAnswer: registerAnswer)
 
                     PreviousAnswer(holder: holder, question: $question, answer: $answer, teamInternal: $teamInternal, goToControl: goToControl)
                 }
@@ -120,6 +139,43 @@ struct QuestionControl: View {
                 ExemptView(holder: holder, question: $question)
             }
             .padding()
+            .frame(minWidth: 350)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        if currentState.questionStage >= 2 {
+                            Button("Hide Answer and Question ") {
+                                withAnimation {
+                                    currentState.questionStage = 0
+                                }
+                            }
+                            .keyboardShortcut("-", modifiers: [.shift, .command])
+                        }
+                        if currentState.questionStage > 2 {
+                            let correct = currentState.questionStage == 3
+                            Button("Show Answer as \(correct ? "wrong" : "correct")") {
+                                withAnimation {
+                                    currentState.questionStage = correct ? 4 : 3
+                                }
+                            }
+                            Button("Register \(!correct ? "correct" : "wrong") answer") {
+                                registerAnswer(!correct)
+                            }
+                        } else {
+                            Button("Register correct Answer") {
+                                registerAnswer(true)
+                            }
+                            Button("Register wrong Answer") {
+                                registerAnswer(false)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                    .menuStyle(.borderlessButton)
+                    .menuIndicator(.hidden)
+                }
+            }
             .fixedSize()
         } else {
             Text("No Question")
@@ -242,29 +298,11 @@ struct PresentationControls: View {
                                 }
                             }
                             .keyboardShortcut("-")
-                            .contextMenu {
-                                Button("Hide Answer and Question ") {
-                                    withAnimation {
-                                        currentState.questionStage = 0
-                                    }
-                                }
-                                .keyboardShortcut("-", modifiers: [.shift, .command])
-                            }
                         }
                     }
                     Button("Show pure Answer") {
                         withAnimation {
                             currentState.questionStage = 2
-                        }
-                    }
-                    .contextMenu {
-                        if currentState.questionStage > 2 {
-                         let correct = currentState.questionStage == 3
-                            Button("Show Answer as \(correct ? "wrong" : "correct")") {
-                                withAnimation {
-                                    currentState.questionStage = correct ? 4 : 3
-                                }
-                            }
                         }
                     }
                     .hide(if: stage < 1 || stage == 2)
@@ -285,6 +323,7 @@ struct AnswerControl: View {
     @Binding var team: Team
 
     var goToControl: () -> Void
+    var registerAnswer: (Bool) -> Void
 
     var isJoker: Bool {
         question?.question.lowercased() == "joker"
@@ -292,25 +331,6 @@ struct AnswerControl: View {
 
     func executeTransitionForRegister(givenAnswer _: QuestionAnswer) {
         if !holder.isQL {}
-    }
-
-    func registerAnswer(correct: Bool) {
-        if let question {
-            let givenAnswer = QuestionAnswer(question: question, team: team, answer: answer, correct: correct)
-            if !question.answered {
-                withAnimation {
-                    holder.registerQuestionAnswer(givenAnswer: givenAnswer)
-                }
-            } else {
-                holder.registerQuestionAnswer(givenAnswer: givenAnswer)
-            }
-            if !holder.isQL {
-                withAnimation {
-                    currentState.progressTeam()
-                }
-            }
-            goToControl()
-        }
     }
 
     var body: some View {
@@ -328,43 +348,28 @@ struct AnswerControl: View {
                                 }
                             }
                             .disabled(currentState.questionStage < 1)
-                            .contextMenu {
-                                Button("Register correct Answer") {
-                                    registerAnswer(correct: true)
-                                }
-                            }
-                            
+
                             Button("Show Answer as wrong") {
                                 withAnimation {
                                     currentState.questionStage = 4
                                 }
                             }
                             .disabled(currentState.questionStage < 1)
-                            .contextMenu {
-                                Button("Register wrong Answer") {
-                                    registerAnswer(correct: false)
-                                }
-                            }
                         } else {
                             let correct = currentState.questionStage == 3
                             Button("Register \(correct ? "correct" : "wrong") answer") {
-                                registerAnswer(correct: correct)
+                                registerAnswer(correct)
                             }
-                            .contextMenu {
-                                Button("Register \(!correct ? "correct" : "wrong") answer") {
-                                    registerAnswer(correct: !correct)
-                                }
-                            }
-                            Button(""){}
+                            Button("") {}
                                 .hidden()
                         }
                     } else {
                         Button("Register correct answer") {
-                            registerAnswer(correct: true)
+                            registerAnswer(true)
                         }
-                        
+
                         Button("Register wrong answer") {
-                            registerAnswer(correct: false)
+                            registerAnswer(false)
                         }
                     }
                     if !holder.isQL {
@@ -378,7 +383,7 @@ struct AnswerControl: View {
                 }
             } else {
                 Button("Claim") {
-                    registerAnswer(correct: true)
+                    registerAnswer(true)
                 }
                 .padding()
             }
