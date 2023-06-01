@@ -5,6 +5,8 @@ struct BoardControl: View {
     @Environment(\.openWindow) var openWindow
 
     @State var shownTeam: TeamListing?
+    @State var teamAddedPoints = 0
+    @State var teamPointsEditing = false
 
     func canCategoryBeShown() -> Bool {
         for category in currentState.categories {
@@ -78,6 +80,7 @@ struct BoardControl: View {
                         ForEach(answers) { answer in
                             let question = answer.question
                             Text("\(answer.category) - \(answer.score)\n\(answer.correct ? "Correct" : "Wrong")")
+                                .fixedSize()
                                 .onTapGesture {
                                     openWindow(value: question)
                                 }
@@ -89,6 +92,33 @@ struct BoardControl: View {
                                 }
                                 .padding()
                         }
+                        
+                        VStack {
+                            Text("Added Points:")
+                            if !teamPointsEditing {
+                                Text("\(team.addedPoints)")
+                                    .onTapGesture {
+                                        withAnimation {
+                                            teamPointsEditing = true
+                                        }
+                                    }
+                            } else {
+                                TextField("Added Points", value: $teamAddedPoints, format: .number)
+                                    .onSubmit {
+                                        withAnimation {
+                                            teamPointsEditing = false
+                                            team.addedPoints = teamAddedPoints
+                                        }
+                                    }
+                                    .labelsHidden()
+                                    .onAppear {
+                                        teamAddedPoints = team.addedPoints
+                                    }
+                                
+                            }
+                            
+                        }
+                        .padding()
                     }
                     .padding()
                 }
