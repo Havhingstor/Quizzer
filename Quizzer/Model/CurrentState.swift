@@ -92,7 +92,7 @@ class CurrentState: ObservableObject {
     @Published var questionName = "Frage"
     @Published var answerName = "Antwort"
     
-    @Published var teams = [Team]() {
+    @Published private var teams = [Team]() {
         didSet {
             fixNextTeam()
         }

@@ -7,7 +7,25 @@ struct BoardControl: View {
     @State var shownTeam: TeamListing?
     @State var teamAddedPoints = 0
     @State var teamPointsEditing = false
+    
+    var teamListSorted: [Team] {
+        switch sorting {
+            case .sequence:
+                return currentState.getTeams()
+            case .ranking:
+                return currentState.getTeams().sorted(by: {
+                    $0.overallPoints > $1.overallPoints
+                })
+        }
+    }
 
+    @State var sorting = SortingMethod.sequence
+    
+    enum SortingMethod {
+        case sequence
+        case ranking
+    }
+    
     func canCategoryBeShown() -> Bool {
         for category in currentState.categories {
             if !category.isShown {
@@ -57,70 +75,96 @@ struct BoardControl: View {
                 .disabled(!canCategoryBeShown())
                 .padding()
                 Spacer()
-                Text("Team List")
-                List(currentState.teams) { team in
-                    let points = team.overallPoints
-                    HStack {
-                        Spacer()
-                        Text("\(team.name) - \(points) Point(s)\n\(getTeamPosition(team: team)). Place - \(team.solvedQuestions.count) Answer(s)")
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .onTapGesture {
-                                shownTeam = TeamListing(team: team, answers: team.solvedQuestions)
-                            }
-                        Spacer()
-                    }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .popover(item: $shownTeam) { teamListing in
-                    let team = teamListing.team
-                    let answers = teamListing.answers
-                    VStack {
-                        Text("Solved Questions - \(team.name)")
-                        ForEach(answers) { answer in
-                            let question = answer.question
-                            Text("\(answer.category) - \(answer.score)\n\(answer.correct ? "Correct" : "Wrong")")
-                                .fixedSize()
-                                .onTapGesture {
-                                    openWindow(value: question)
-                                }
+                VStack {
+                    Text("Team List")
+                    List(teamListSorted) { team in
+                        let points = team.overallPoints
+                        HStack {
+                            Spacer()
+                            Text("\(team.name) - \(points) Point(s)\n\(getTeamPosition(team: team)). Place - \(team.solvedQuestions.count) Answer(s)")
                                 .multilineTextAlignment(.center)
                                 .padding()
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke()
+                                .onTapGesture {
+                                    shownTeam = TeamListing(team: team, answers: team.solvedQuestions)
                                 }
-                                .padding()
+                            Spacer()
                         }
-                        
+                    }
+                    .animation(.default, value: sorting)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .popover(item: $shownTeam) { teamListing in
+                        let team = teamListing.team
+                        let answers = teamListing.answers
                         VStack {
-                            Text("Added Points:")
-                            if !teamPointsEditing {
-                                Text("\(team.addedPoints)")
+                            Text("Solved Questions - \(team.name)")
+                            ForEach(answers) { answer in
+                                let question = answer.question
+                                Text("\(answer.category) - \(answer.score)\n\(answer.correct ? "Correct" : "Wrong")")
+                                    .fixedSize()
                                     .onTapGesture {
-                                        withAnimation {
-                                            teamPointsEditing = true
-                                        }
+                                        openWindow(value: question)
                                     }
-                            } else {
-                                TextField("Added Points", value: $teamAddedPoints, format: .number)
-                                    .onSubmit {
-                                        withAnimation {
-                                            teamPointsEditing = false
-                                            team.addedPoints = teamAddedPoints
-                                        }
+                                    .multilineTextAlignment(.center)
+                                    .padding()
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke()
                                     }
-                                    .labelsHidden()
-                                    .onAppear {
-                                        teamAddedPoints = team.addedPoints
-                                    }
-                                
+                                    .padding()
                             }
                             
+                            VStack {
+                                Text("Added Points:")
+                                if !teamPointsEditing {
+                                    Text("\(team.addedPoints)")
+                                        .onTapGesture {
+                                            withAnimation {
+                                                teamPointsEditing = true
+                                            }
+                                        }
+                                } else {
+                                    TextField("Added Points", value: $teamAddedPoints, format: .number)
+                                        .onSubmit {
+                                            withAnimation {
+                                                teamPointsEditing = false
+                                                team.addedPoints = teamAddedPoints
+                                            }
+                                        }
+                                        .labelsHidden()
+                                        .onAppear {
+                                            teamAddedPoints = team.addedPoints
+                                        }
+                                    
+                                }
+                                
+                            }
+                            .padding()
                         }
                         .padding()
                     }
-                    .padding()
+                }
+                .overlay(alignment: .topLeading) {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .buttonStyle(.borderless)
+                    .padding(2)
+                }
+                .overlay(alignment: .topTrailing) {
+                    Menu("Sort") {
+                        Picker("Sort", selection: $sorting) {
+                            Text("In Order")
+                                .tag(SortingMethod.sequence)
+                            Text("Ranking")
+                                .tag(SortingMethod.ranking)
+                        }
+                        .pickerStyle(.inline)
+                        .labelsHidden()
+                    }
+                    .menuStyle(.borderlessButton)
+                    .fixedSize()
                 }
                 Spacer()
             }
@@ -132,12 +176,12 @@ struct BoardControl: View {
 
     func getTeamPosition(team: Team) -> Int {
         var position = 1
-        for teamIterator in currentState.teams {
+        for teamIterator in currentState.getTeams() {
             if teamIterator.overallPoints > team.overallPoints {
                 position += 1
             }
         }
-        if currentState.teams.contains(team) {
+        if currentState.getTeams().contains(team) {
             return position
         } else {
             return Int.max

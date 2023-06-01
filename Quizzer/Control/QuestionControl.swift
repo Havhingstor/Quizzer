@@ -68,7 +68,7 @@ struct QuestionControl: View {
     @Environment(\.openWindow) var openWindow
 
     @State var answer = ""
-    @State var teamInternal = CurrentState.shared.teams.first!
+    @State var teamInternal = CurrentState.shared.getTeams().first!
     var team: Binding<Team> {
         if holder.isQL {
             return $teamInternal

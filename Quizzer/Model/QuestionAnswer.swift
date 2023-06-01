@@ -8,7 +8,7 @@ struct QuestionAnswer {
     
     var team: Team {
         let currentState = CurrentState.shared
-        if let team = currentState.teams.first(where: {$0.id == _team}) {
+        if let team = currentState.getTeams().first(where: {$0.id == _team}) {
             return team
         } else {
             return Team(name: _team)
