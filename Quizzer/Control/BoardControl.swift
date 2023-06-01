@@ -1,8 +1,10 @@
-import QuickLook
 import SwiftUI
 
 struct BoardControl: View {
     @EnvironmentObject var currentState: CurrentState
+    @Environment(\.openWindow) var openWindow
+
+    @State var shownTeam: TeamListing?
 
     func canCategoryBeShown() -> Bool {
         for category in currentState.categories {
@@ -61,10 +63,35 @@ struct BoardControl: View {
                         Text("\(team.name) - \(points) Point(s)\n\(getTeamPosition(team: team)). Place - \(team.solvedQuestions.count) Answer(s)")
                             .multilineTextAlignment(.center)
                             .padding()
+                            .onTapGesture {
+                                shownTeam = TeamListing(team: team, answers: team.solvedQuestions)
+                            }
                         Spacer()
                     }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .popover(item: $shownTeam) { teamListing in
+                    let team = teamListing.team
+                    let answers = teamListing.answers
+                    VStack {
+                        Text("Solved Questions - \(team.name)")
+                        ForEach(answers) { answer in
+                            let question = answer.question
+                            Text("\(answer.category) - \(answer.score)\n\(answer.correct ? "Correct" : "Wrong")")
+                                .onTapGesture {
+                                    openWindow(value: question)
+                                }
+                                .multilineTextAlignment(.center)
+                                .padding()
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke()
+                                }
+                                .padding()
+                        }
+                    }
+                    .padding()
+                }
                 Spacer()
             }
             .frame(width: 230)
