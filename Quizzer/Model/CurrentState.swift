@@ -122,6 +122,17 @@ class CurrentState: ObservableObject {
         }
     }
     
+    func addTeam(name: String) throws {
+        if teams.contains(where: {$0.name == name}) {
+            throw QuizError.teamNameAlreadyExists
+        }
+        teams.append(Team(name: name))
+    }
+    
+    enum QuizError: Error {
+        case teamNameAlreadyExists
+    }
+    
     @Published private var nextTeamOp: Team? = nil
     
     var nextTeam: Team {

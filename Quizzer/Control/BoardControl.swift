@@ -9,6 +9,9 @@ struct BoardControl: View {
     @State private var teamPointsEditing = false
     @State private var teamDeletionAlertShown = false
     @State private var teamToDelete: Team?
+    @State private var addTeamSheet = false
+    @State private var newTeamName = ""
+    @State private var teamAdditionAlert = false
     
     var teamListSorted: [Team] {
         switch sorting {
@@ -174,12 +177,42 @@ struct BoardControl: View {
                 }
                 .overlay(alignment: .topLeading) {
                     Button {
-                        
+                        addTeamSheet = true
                     } label: {
                         Image(systemName: "plus")
                     }
                     .buttonStyle(.borderless)
                     .padding(2)
+                    .sheet(isPresented: $addTeamSheet) {
+                        VStack(spacing: 20) {
+                            TextField("Team Name", text: $newTeamName)
+                                .onSubmit {
+                                    do {
+                                        try currentState.addTeam(name: newTeamName)
+                                    } catch {
+                                        teamAdditionAlert = true
+                                    }
+                                    newTeamName = ""
+                                    addTeamSheet = false
+                                }
+                            Button("Add") {
+                                do {
+                                    try currentState.addTeam(name: newTeamName)
+                                } catch {
+                                    teamAdditionAlert = true
+                                }
+                                newTeamName = ""
+                                addTeamSheet = false
+                            }
+                        }
+                        .padding()
+                    }
+                    .alert("This Name already exists!", isPresented: $teamAdditionAlert) {
+                        Button("OK", role: .cancel) {
+                            newTeamName = ""
+                            addTeamSheet = false
+                        }
+                    }
                 }
                 .overlay(alignment: .topTrailing) {
                     Menu("Sort") {
