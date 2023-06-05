@@ -4,9 +4,11 @@ struct BoardControl: View {
     @EnvironmentObject var currentState: CurrentState
     @Environment(\.openWindow) var openWindow
 
-    @State var shownTeam: TeamListing?
-    @State var teamAddedPoints = 0
-    @State var teamPointsEditing = false
+    @State private var shownTeam: TeamListing?
+    @State private var teamAddedPoints = 0
+    @State private var teamPointsEditing = false
+    @State private var teamDeletionAlertShown = false
+    @State var teamToDelete: Team?
     
     var teamListSorted: [Team] {
         switch sorting {
@@ -77,20 +79,47 @@ struct BoardControl: View {
                 Spacer()
                 VStack {
                     Text("Team List")
-                    List(teamListSorted) { team in
-                        let points = team.overallPoints
-                        HStack {
-                            Spacer()
-                            Text("\(team.name) - \(points) Point(s)\n\(getTeamPosition(team: team)). Place - \(team.solvedQuestions.count) Answer(s)")
-                                .multilineTextAlignment(.center)
-                                .padding()
-                                .onTapGesture {
+                    List {
+                        ForEach(teamListSorted) { team in
+                            let points = team.overallPoints
+                            HStack {
+                                Spacer()
+                                Text("\(team.name) - \(points) Point(s)\n\(getTeamPosition(team: team)). Place - \(team.solvedQuestions.count) Answer(s)")
+                                    .multilineTextAlignment(.center)
+                                    .padding()
+                                Spacer()
+                            }
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke())
+                            .padding(2)
+                            .gesture(TapGesture().modifiers(.command).onEnded {
+                                shownTeam = TeamListing(team: team, answers: team.solvedQuestions)
+                            })
+                            .contextMenu {
+                                Button("Show Team") {
                                     shownTeam = TeamListing(team: team, answers: team.solvedQuestions)
                                 }
-                            Spacer()
+                                Button("Delete", role: .destructive) {
+                                    if team.solvedQuestions.count > 0 {
+                                        teamToDelete = team
+                                        teamDeletionAlertShown = true
+                                    } else {
+                                        currentState.deleteTeam(team: team)
+                                    }
+                                }
+                            }
+                        }
+                        .onMove( perform: sorting == .sequence ? { from, to in
+                            currentState.moveTeams(from: from, to: to)
+                        } : nil)
+                        .confirmationDialog("The Team has solved Questions", isPresented: $teamDeletionAlertShown) {
+                            Button("Delete anyway", role: .destructive) {
+                                guard let teamToDelete else {return}
+                                
+                                currentState.deleteTeam(team: teamToDelete)
+                            }
                         }
                     }
-                    .animation(.default, value: sorting)
+                    .animation(.default, value: teamListSorted)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .popover(item: $shownTeam) { teamListing in
                         let team = teamListing.team

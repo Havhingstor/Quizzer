@@ -98,8 +98,24 @@ class CurrentState: ObservableObject {
         }
     }
     
+    func moveTeams(from: IndexSet, to: Int) {
+        if teams.count > 0 {
+            teams.move(fromOffsets: from, toOffset: to)
+        }
+    }
+    
+    func deleteTeam(team: Team) {
+        if teams.count > 0,
+           let index = teams.firstIndex(of: team) {
+            questionsAnswered.removeAll {
+                $0.team == team
+            }
+            teams.remove(at: index)
+        }
+    }
+    
     func getTeams() -> [Team] {
-        if let _ = teams.first {
+        if teams.count > 0 {
             return teams
         } else {
             return [Team(name: "Default Team")]
