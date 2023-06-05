@@ -8,7 +8,7 @@ struct BoardControl: View {
     @State private var teamAddedPoints = 0
     @State private var teamPointsEditing = false
     @State private var teamDeletionAlertShown = false
-    @State var teamToDelete: Team?
+    @State private var teamToDelete: Team?
     
     var teamListSorted: [Team] {
         switch sorting {
@@ -21,7 +21,7 @@ struct BoardControl: View {
         }
     }
 
-    @State var sorting = SortingMethod.sequence
+    @State private var sorting = SortingMethod.sequence
     
     enum SortingMethod {
         case sequence

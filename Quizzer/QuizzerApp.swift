@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct QuizzerApp: App {
-    @StateObject var currentState = CurrentState.examples
+    @StateObject private var currentState = CurrentState.examples
     
     var body: some Scene {
         Window("Quiz", id: "quiz") {

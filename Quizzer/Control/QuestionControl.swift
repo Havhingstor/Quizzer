@@ -67,8 +67,8 @@ struct QuestionControl: View {
     @EnvironmentObject var currentState: CurrentState
     @Environment(\.openWindow) var openWindow
 
-    @State var answer = ""
-    @State var teamInternal = CurrentState.shared.getTeams().first!
+    @State private var answer = ""
+    @State private var teamInternal = CurrentState.shared.getTeams().first!
     var team: Binding<Team> {
         if holder.isQL {
             return $teamInternal
@@ -77,7 +77,7 @@ struct QuestionControl: View {
         }
     }
 
-    @StateObject var holder: QuestionHolder
+    @StateObject private var holder: QuestionHolder
     @Binding var question: Question?
 
     init(selectedQuestion: Binding<Question?>?) {
