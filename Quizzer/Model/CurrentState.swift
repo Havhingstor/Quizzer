@@ -38,10 +38,12 @@ class CurrentState: ObservableObject {
             Team(name: "Team C"),
             Team(name: "Team D")
         ]
+        shared.masterQuestion = MasterQuestion(question: "Wie weit?", answerInternal: 100)
         return shared
     }
     
     private init() {}
+    
     
     static let shared = CurrentState()
     
@@ -52,6 +54,19 @@ class CurrentState: ObservableObject {
     }
     
     @Published var questions = [Question]()
+    @Published var masterQuestion: MasterQuestion?
+    
+    var masterQuestionActivated: Bool {
+        for question in questions {
+            if !question.answered {
+                return false
+            }
+        }
+        
+        return masterQuestion != nil
+    }
+    
+    @Published var showMasterQuestion = false
     
     @Published var currentQuestion: Binding<Question>? = nil {
         didSet {
@@ -90,6 +105,7 @@ class CurrentState: ObservableObject {
     @Published var answersName = "Antworten"
     
     @Published var questionName = "Frage"
+    @Published var masterQuestionName = "Masterfrage"
     @Published var answerName = "Antwort"
     
     @Published private var teams = [Team]() {

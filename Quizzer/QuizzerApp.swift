@@ -31,5 +31,11 @@ struct QuizzerApp: App {
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
+        
+        WindowGroup("Master Question", id: "mqst") {
+            MasterQuestionControl(question: $currentState.masterQuestion)
+                .environmentObject(currentState)
+        }
+        .windowResizability(.contentSize)
     }
 }

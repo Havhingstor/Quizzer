@@ -1,6 +1,11 @@
 import Foundation
 
-struct Question: Identifiable, Codable, Hashable {
+protocol QuestionViewProperties {
+    var question: String {get}
+    var answer: String {get}
+}
+
+struct Question: Identifiable, Codable, Hashable, QuestionViewProperties {
     static func == (lhs: Question, rhs: Question) -> Bool {
         lhs.id == rhs.id
     }

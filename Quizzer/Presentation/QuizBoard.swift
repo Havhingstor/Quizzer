@@ -18,8 +18,25 @@ struct QuizBoard: View {
                     .padding()
                     .background(.gray.opacity(0.75))
                     .clipShape(RoundedRectangle(cornerRadius: 20))
+            } else if let question = currentState.masterQuestion,
+                      currentState.showMasterQuestion {
+                let questionBinding = Binding<QuestionViewProperties>(get: {
+                    question
+                }, set: { newValue in
+                    if let newQuestion = newValue as? MasterQuestion {
+                        currentState.masterQuestion = newQuestion
+                    }
+                })
+                QuestionView(question: questionBinding)
             } else if let question = currentState.currentQuestion {
-                QuestionView(question: question)
+                let questionBinding = Binding<QuestionViewProperties>(get: {
+                    question.wrappedValue
+                }, set: { newValue in
+                    if let newQuestion = newValue as? Question {
+                        question.wrappedValue = newQuestion
+                    }
+                })
+                QuestionView(question: questionBinding)
             } else {
                 FirstStage()
             }

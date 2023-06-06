@@ -73,11 +73,24 @@ struct BoardControl: View {
                     .labelsHidden()
                 }
                 .padding()
-                Button("Show next category") {
-                    showNextCategory()
+                VStack {
+                    Button("Show next category") {
+                        showNextCategory()
+                    }
+                    .keyboardShortcut("#")
+                    .disabled(!canCategoryBeShown())
+                    Button("Show Master Question") {
+                        openWindow(id: "mqst")
+                    }
+                    .disabled(!currentState.masterQuestionActivated)
+                    .contextMenu {
+                        if !currentState.masterQuestionActivated {
+                            Button("Show anyways") {
+                                openWindow(id: "mqst")
+                            }
+                        }
+                    }
                 }
-                .keyboardShortcut("#")
-                .disabled(!canCategoryBeShown())
                 .padding()
                 Spacer()
                 VStack {

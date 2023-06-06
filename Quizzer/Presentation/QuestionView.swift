@@ -1,33 +1,38 @@
-//
-//  QuestionView.swift
-//  Quizzer
-//
-//  Created by Paul on 27.05.23.
-//
-
 import SwiftUI
 
 struct QuestionView: View {
     @EnvironmentObject var currentState: CurrentState
 
-    @Binding var question: Question
+    @Binding var question: QuestionViewProperties
+
+    var titleText: String {
+        if let question = question as? Question {
+            return "\(question.category) - \(pointsText)"
+        } else {
+            return currentState.masterQuestionName
+        }
+    }
 
     var pointsText: String {
-        let number = Int(question.weight) * currentState.baseScore
+        if let question = question as? Question {
+            let number = Int(question.weight) * currentState.baseScore
 
-        let suffix: String
-        if number == 1 || number == -1 {
-            suffix = currentState.pointName
+            let suffix: String
+            if number == 1 || number == -1 {
+                suffix = currentState.pointName
+            } else {
+                suffix = currentState.pointsName
+            }
+
+            return "\(number) \(suffix)"
         } else {
-            suffix = currentState.pointsName
+            return ""
         }
-
-        return "\(number) \(suffix)"
     }
 
     var body: some View {
         VStack {
-            Text("\(question.category) - \(pointsText)")
+            Text(titleText)
                 .font(.custom("SF Pro", size: 60.0))
                 .padding()
                 .background(.gray.opacity(0.75))
