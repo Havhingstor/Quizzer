@@ -1,68 +1,6 @@
 import AppKit
 import SwiftUI
 
-class QuestionHolder: ObservableObject {
-    enum QuestionModes {
-        case presentation
-        case quicklook(question: Binding<Question?>)
-    }
-
-    @Published private var questionMode: QuestionModes
-
-    init() {
-        questionMode = .presentation
-    }
-
-    init(qlQuestion: Binding<Question?>) {
-        questionMode = .quicklook(question: qlQuestion)
-    }
-
-    static func create(qlQuestion: Binding<Question?>?) -> QuestionHolder {
-        if let qlQuestion {
-            return QuestionHolder(qlQuestion: qlQuestion)
-        } else {
-            return QuestionHolder()
-        }
-    }
-
-    var question: Binding<Question?> {
-        let currentState = CurrentState.shared
-        switch questionMode {
-        case .presentation:
-            return Binding(get: {
-                if let question = currentState.currentQuestion {
-                    return question.wrappedValue
-                } else {
-                    return nil
-                }
-            }, set: { value in
-                if let value {
-                    currentState.currentQuestion?.wrappedValue = value
-                } else {
-                    currentState.currentQuestion = nil
-                }
-            })
-        case let .quicklook(question: question):
-            return question
-        }
-    }
-
-    var isQL: Bool {
-        switch questionMode {
-        case .quicklook:
-            return true
-        default:
-            return false
-        }
-    }
-
-    func registerQuestionAnswer(givenAnswer: QuestionAnswer?) {
-        if var question = question.wrappedValue {
-            question.givenAnswer = givenAnswer
-        }
-    }
-}
-
 struct QuestionControl: View {
     @EnvironmentObject var currentState: CurrentState
     @Environment(\.openWindow) var openWindow
@@ -70,27 +8,22 @@ struct QuestionControl: View {
     @State private var answer = ""
     @State private var teamInternal = CurrentState.shared.getTeams().first!
     var team: Binding<Team> {
-        if holder.isQL {
+        if isQL {
             return $teamInternal
         } else {
             return $currentState.nextTeam
         }
     }
-
-    @StateObject private var holder: QuestionHolder
+    
     @Binding var question: Question?
-
-    init(selectedQuestion: Binding<Question?>?) {
-        let holderInit = QuestionHolder.create(qlQuestion: selectedQuestion)
-        _holder = StateObject(wrappedValue: holderInit)
-        _question = holderInit.question
-    }
+    
+    var isQL: Bool
 
     func goToControl() {
-        if !holder.isQL {
+        if !isQL {
             openWindow(id: "ctrl")
         }
-        if currentState.currentQuestion?.wrappedValue == question {
+        if currentState.currentQuestionResolved == question {
             withAnimation {
                 currentState.currentQuestion = nil
             }
@@ -101,17 +34,21 @@ struct QuestionControl: View {
         question?.question.lowercased() == "joker"
     }
 
+    func setAnswer(_ givenAnswer: QuestionAnswer) {
+        question?.givenAnswer = givenAnswer
+    }
+    
     func registerAnswer(_ correct: Bool) {
         if let question {
             let givenAnswer = QuestionAnswer(question: question, team: team.wrappedValue, answer: answer, correct: correct)
             if !question.answered {
                 withAnimation {
-                    holder.registerQuestionAnswer(givenAnswer: givenAnswer)
+                    setAnswer(givenAnswer)
                 }
             } else {
-                holder.registerQuestionAnswer(givenAnswer: givenAnswer)
+                setAnswer(givenAnswer)
             }
-            if !holder.isQL {
+            if !isQL {
                 withAnimation {
                     currentState.progressTeam()
                 }
@@ -127,16 +64,16 @@ struct QuestionControl: View {
 
                 QuestionAndAnswer(question: $question)
 
-                PresentationControls(holder: holder, question: $question)
+                PresentationControls(question: $question, isQL: isQL)
 
                 Group {
-                    AnswerControl(holder: holder, question: $question, answer: $answer, team: team, goToControl: goToControl, registerAnswer: registerAnswer)
+                    AnswerControl(question: $question, isQL: isQL, answer: $answer, team: team, goToControl: goToControl, registerAnswer: registerAnswer)
 
-                    PreviousAnswer(holder: holder, question: $question, answer: $answer, teamInternal: $teamInternal, goToControl: goToControl)
+                    PreviousAnswer(question: $question, isQL: isQL, answer: $answer, teamInternal: $teamInternal, goToControl: goToControl)
                 }
                 .hide(if: question.exempt)
 
-                ExemptView(holder: holder, question: $question)
+                ExemptView(question: $question, isQL: isQL)
             }
             .padding()
             .frame(minWidth: 350)
@@ -264,15 +201,15 @@ struct QuestionAndAnswer: View {
 struct PresentationControls: View {
     @EnvironmentObject var currentState: CurrentState
 
-    @ObservedObject var holder: QuestionHolder
     @Binding var question: Question?
+    var isQL: Bool
 
     var isJoker: Bool {
         question?.question.lowercased() == "joker"
     }
 
     var body: some View {
-        if !holder.isQL && question != nil {
+        if !isQL && question != nil {
             Group {
                 let stage = currentState.questionStage
                 VStack {
@@ -316,8 +253,8 @@ struct PresentationControls: View {
 struct AnswerControl: View {
     @EnvironmentObject var currentState: CurrentState
 
-    @ObservedObject var holder: QuestionHolder
     @Binding var question: Question?
+    var isQL: Bool
 
     @Binding var answer: String
     @Binding var team: Team
@@ -330,7 +267,7 @@ struct AnswerControl: View {
     }
 
     func executeTransitionForRegister(givenAnswer _: QuestionAnswer) {
-        if !holder.isQL {}
+        if !isQL {}
     }
 
     var body: some View {
@@ -340,7 +277,7 @@ struct AnswerControl: View {
                     TextField(text: $answer) {
                         Text("Given Answer")
                     }
-                    if !holder.isQL {
+                    if !isQL {
                         if currentState.questionStage < 3 {
                             Button("Show Answer as correct") {
                                 withAnimation {
@@ -372,7 +309,7 @@ struct AnswerControl: View {
                             registerAnswer(false)
                         }
                     }
-                    if !holder.isQL {
+                    if !isQL {
                         Button("Cancel") {
                             goToControl()
                         }
@@ -394,8 +331,8 @@ struct AnswerControl: View {
 struct PreviousAnswer: View {
     @EnvironmentObject var currentState: CurrentState
 
-    @ObservedObject var holder: QuestionHolder
     @Binding var question: Question?
+    var isQL: Bool
 
     @Binding var answer: String
     @Binding var teamInternal: Team
@@ -453,7 +390,7 @@ struct PreviousAnswer: View {
                     .font(.title2)
             }
             .padding()
-        } else if holder.isQL {
+        } else if isQL {
             Text("Not Answered")
                 .padding()
         }
@@ -463,16 +400,16 @@ struct PreviousAnswer: View {
 struct ExemptView: View {
     @EnvironmentObject var currentState: CurrentState
 
-    @ObservedObject var holder: QuestionHolder
     @Binding var question: Question?
+    var isQL: Bool
 
     var body: some View {
         if var question {
-            if holder.isQL {
+            if isQL {
                 Button("Mark as \(question.exempt ? "Not " : "")Exempt") {
                     withAnimation {
                         question.exempt.toggle()
-                        if question.exempt && currentState.currentQuestion?.id == question.id {
+                        if question.exempt && currentState.currentQuestionResolved?.id == question.id {
                             currentState.currentQuestion = nil
                         }
                     }

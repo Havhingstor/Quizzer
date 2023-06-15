@@ -68,10 +68,10 @@ class CurrentState: ObservableObject {
     
     @Published var showMasterQuestion = false
     
-    @Published var currentQuestion: Binding<Question>? = nil {
+    @Published var currentQuestion: Int? = nil {
         didSet {
-            if let currentQuestion {
-                if let stage = questionStages[currentQuestion.id] {
+            if let question = currentQuestionResolved {
+                if let stage = questionStages[question.id] {
                     questionStage = stage
                 } else {
                     questionStage = 0

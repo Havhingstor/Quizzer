@@ -28,12 +28,12 @@ struct QuizBoard: View {
                     }
                 })
                 QuestionView(question: questionBinding)
-            } else if let question = currentState.currentQuestion {
+            } else if let question = currentState.currentQuestionResolved {
                 let questionBinding = Binding<QuestionViewProperties>(get: {
-                    question.wrappedValue
+                    question
                 }, set: { newValue in
                     if let newQuestion = newValue as? Question {
-                        question.wrappedValue = newQuestion
+                        currentState.currentQuestion = currentState.getIndexOfQuestion(newQuestion)
                     }
                 })
                 QuestionView(question: questionBinding)

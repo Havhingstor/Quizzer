@@ -54,10 +54,14 @@ struct BoardControl: View {
 
     var body: some View {
         HStack(spacing: 20) {
-            List {
-                ForEach($currentState.categories) { $category in
-                    CategoryListing(category: $category)
+            ScrollView {
+                VStack {
+                    ForEach($currentState.categories) { $category in
+                        CategoryListing(category: $category)
+                        Spacer(minLength: 20)
+                    }
                 }
+                .padding()
             }
             .clipShape(RoundedRectangle(cornerRadius: 10))
 
@@ -228,7 +232,7 @@ struct BoardControl: View {
                     }
                 }
                 .overlay(alignment: .topTrailing) {
-                    Menu("Sort") {
+                    Menu("\(sorting == .sequence ? "In Order" : "Ranking")") {
                         Picker("Sort", selection: $sorting) {
                             Text("In Order")
                                 .tag(SortingMethod.sequence)
@@ -331,7 +335,7 @@ struct QuestionListing: View {
             Spacer()
             Button(buttonTitle) {
                 withAnimation {
-                    currentState.currentQuestion = $question
+                    currentState.currentQuestion = currentState.getIndexOfQuestion(question)
                 }
                 openWindow(id: "qst")
             }
@@ -342,7 +346,7 @@ struct QuestionListing: View {
                 if question.answered {
                     Button("Open Question") {
                         withAnimation {
-                            currentState.currentQuestion = $question
+                            currentState.currentQuestion = currentState.getIndexOfQuestion(question)
                         }
                         openWindow(id: "qst")
                     }
@@ -358,7 +362,7 @@ struct QuestionListing: View {
                             question.givenAnswer = nil
                         } else {
                             question.exempt = true
-                            if currentState.currentQuestion?.wrappedValue == question {
+                            if currentState.currentQuestionResolved == question {
                                 currentState.currentQuestion = nil
                             }
                         }

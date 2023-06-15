@@ -20,14 +20,23 @@ struct QuizzerApp: App {
         .keyboardShortcut("c", modifiers: [])
         
         Window("Question Presentation", id: "qst") {
-            QuestionControl(selectedQuestion: nil)
+            let questionBinding = Binding<Question?>(get: {
+                currentState.currentQuestionResolved
+            }, set: { newValue in
+                if let newQuestion = newValue {
+                    currentState.currentQuestion = currentState.getIndexOfQuestion(newQuestion)
+                } else {
+                    currentState.currentQuestion = nil
+                }
+            })
+            QuestionControl(question: questionBinding, isQL: false)
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
         .keyboardShortcut("q", modifiers: .shift)
         
-        WindowGroup("Question - QuickLook", for: Question.self) { $q in
-            QuestionControl(selectedQuestion: $q)
+        WindowGroup("Question - QuickLook", for: Question.self) { q in
+            QuestionControl(question: q, isQL: false)
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
