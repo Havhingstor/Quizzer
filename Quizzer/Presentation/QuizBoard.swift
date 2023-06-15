@@ -18,6 +18,12 @@ struct QuizBoard: View {
                     .padding()
                     .background(.gray.opacity(0.75))
                     .clipShape(RoundedRectangle(cornerRadius: 20))
+            } else if let currentImageStr = currentState.currentImage,
+                      let currentImage = currentState.images[currentImageStr] {
+                Image(currentImage, scale: 1.0, label: Text("Solution Image"))
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
             } else if let question = currentState.masterQuestion,
                       currentState.showMasterQuestion {
                 let questionBinding = Binding<QuestionViewProperties>(get: {

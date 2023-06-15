@@ -3,6 +3,8 @@ import Foundation
 protocol QuestionViewProperties {
     var question: String {get}
     var answer: String {get}
+    var image: String? {get}
+    var solutionImage: String? {get}
 }
 
 struct Question: Identifiable, Codable, Hashable, QuestionViewProperties {
@@ -18,6 +20,8 @@ struct Question: Identifiable, Codable, Hashable, QuestionViewProperties {
     
     let category: String
     let weight: UInt8
+    let image: String?
+    let solutionImage: String?
     
     var answered: Bool {
         givenAnswer != nil
@@ -58,10 +62,12 @@ struct Question: Identifiable, Codable, Hashable, QuestionViewProperties {
         }
     }
     
-    init(question: String, answer: String, category: String, weight: UInt8) {
+    init(question: String, answer: String, category: String, weight: UInt8, image: String? = nil, solutionImage: String? = nil) {
         self.question = question
         self.answer = answer
         self.category = category
         self.weight = weight
+        self.image = image
+        self.solutionImage = solutionImage
     }
 }

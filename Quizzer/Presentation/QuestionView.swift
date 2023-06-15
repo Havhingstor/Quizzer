@@ -55,6 +55,15 @@ struct QuestionView: View {
                     .padding([.top, .trailing, .bottom])
                     .padding(.leading, 60)
                     Spacer()
+                    
+                    if let imageName = question.image,
+                       let cgImage = currentState.images[imageName] {
+                        Image(cgImage, scale: 1.0, label: Text("Question Image"))
+                            .resizable()
+                            .scaledToFit()
+                            .padding()
+                            .padding(.trailing)
+                    }
                 }
                 .hide(if: currentState.questionStage < 1)
                 Spacer()

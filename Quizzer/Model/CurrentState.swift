@@ -11,7 +11,7 @@ class CurrentState: ObservableObject {
             Category(name: "Politik", isShown: false)
         ]
         shared.questions = [
-            Question(question: "Q1", answer: "A1", category: "Allgemeinwissen", weight: 1),
+            Question(question: "Q1", answer: "A1", category: "Allgemeinwissen", weight: 1, image: "HRR", solutionImage: "Kaiser"),
             Question(question: "Q2", answer: "A2", category: "Allgemeinwissen", weight: 2),
             Question(question: "Q3", answer: "A3", category: "Allgemeinwissen", weight: 3),
             Question(question: "Q4", answer: "A4", category: "Allgemeinwissen", weight: 4),
@@ -38,7 +38,10 @@ class CurrentState: ObservableObject {
             Team(name: "Team C"),
             Team(name: "Team D")
         ]
-        shared.masterQuestion = MasterQuestion(question: "Wie weit?", answerInternal: 100)
+        shared.masterQuestion = MasterQuestion(question: "Wie weit?", answerInternal: 100, image: "Kaiser", solutionImage: "HRR")
+        
+        shared.images["HRR"] = NSImage(named: "HRR")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        shared.images["Kaiser"] = NSImage(named: "Kaiser")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
         return shared
     }
     
@@ -55,6 +58,7 @@ class CurrentState: ObservableObject {
     
     @Published var questions = [Question]()
     @Published var masterQuestion: MasterQuestion?
+    @Published var images = [String: CGImage]()
     
     var masterQuestionActivated: Bool {
         for question in questions {
@@ -79,10 +83,26 @@ class CurrentState: ObservableObject {
             }
         }
     }
+    
+    @Published var currentImage: String? = nil
+    
+    func getIndexOfQuestion(_ question: Question) -> Int? {
+        questions.firstIndex(of: question)
+    }
+    
+    var currentQuestionResolved: Question? {
+        if let currentQuestion,
+           questions.count > currentQuestion {
+            return questions[currentQuestion]
+        } else {
+            return nil
+        }
+    }
+    
     @Published var questionStage = 0 {
         didSet {
-            if let currentQuestion {
-                questionStages[currentQuestion.id] = questionStage
+            if let currentQuestionResolved {
+                questionStages[currentQuestionResolved.id] = questionStage
             }
         }
     }
@@ -93,7 +113,6 @@ class CurrentState: ObservableObject {
     @Published var questionsExempt = [QuestionExemption]()
     
     @Published var isInStartStage = false
-    
     
     @Published var baseScore = 25
     @Published var introTitle = "Konfifreizeit Quiz\n2023"

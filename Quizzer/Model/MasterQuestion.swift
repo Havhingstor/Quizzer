@@ -6,4 +6,6 @@ struct MasterQuestion: QuestionViewProperties {
     var answer: String {
         "\(answerInternal)"
     }
+    let image: String?
+    let solutionImage: String?
 }
