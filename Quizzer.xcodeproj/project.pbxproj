@@ -25,6 +25,12 @@
 		DA631C8B2A2DEAC80061BE7D /* MasterQuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */; };
 		DA9D5FA62A2736620010928A /* TeamListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D5FA52A2736620010928A /* TeamListing.swift */; };
 		DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACB33AD2A2358850073F39D /* QuestionAnswer.swift */; };
+		DACD19362A3C4EC70025A6B6 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19352A3C4EC70025A6B6 /* HeaderView.swift */; };
+		DACD19382A3C4EEA0025A6B6 /* QuestionAndAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19372A3C4EEA0025A6B6 /* QuestionAndAnswer.swift */; };
+		DACD193A2A3C4F130025A6B6 /* PresentationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19392A3C4F130025A6B6 /* PresentationControl.swift */; };
+		DACD193C2A3C4F4F0025A6B6 /* PreviousAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD193B2A3C4F4F0025A6B6 /* PreviousAnswerView.swift */; };
+		DACD193F2A3C4F8A0025A6B6 /* AnswerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */; };
+		DACD19412A3C4FAD0025A6B6 /* ExemptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +54,12 @@
 		DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionControl.swift; sourceTree = "<group>"; };
 		DA9D5FA52A2736620010928A /* TeamListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListing.swift; sourceTree = "<group>"; };
 		DACB33AD2A2358850073F39D /* QuestionAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAnswer.swift; sourceTree = "<group>"; };
+		DACD19352A3C4EC70025A6B6 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		DACD19372A3C4EEA0025A6B6 /* QuestionAndAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAndAnswer.swift; sourceTree = "<group>"; };
+		DACD19392A3C4F130025A6B6 /* PresentationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationControl.swift; sourceTree = "<group>"; };
+		DACD193B2A3C4F4F0025A6B6 /* PreviousAnswerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviousAnswerView.swift; sourceTree = "<group>"; };
+		DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerControl.swift; sourceTree = "<group>"; };
+		DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExemptView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,12 +139,26 @@
 		DA191B832A2212A30099C07A /* Control */ = {
 			isa = PBXGroup;
 			children = (
+				DACD19342A3C4EA70025A6B6 /* QuestionControl */,
 				DA191B842A2213020099C07A /* BoardControl.swift */,
-				DA191B922A2240B20099C07A /* QuestionControl.swift */,
 				DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */,
 				DA9D5FA52A2736620010928A /* TeamListing.swift */,
 			);
 			path = Control;
+			sourceTree = "<group>";
+		};
+		DACD19342A3C4EA70025A6B6 /* QuestionControl */ = {
+			isa = PBXGroup;
+			children = (
+				DA191B922A2240B20099C07A /* QuestionControl.swift */,
+				DACD19352A3C4EC70025A6B6 /* HeaderView.swift */,
+				DACD19372A3C4EEA0025A6B6 /* QuestionAndAnswer.swift */,
+				DACD19392A3C4F130025A6B6 /* PresentationControl.swift */,
+				DACD193B2A3C4F4F0025A6B6 /* PreviousAnswerView.swift */,
+				DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */,
+				DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */,
+			);
+			path = QuestionControl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,13 +237,19 @@
 				DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */,
 				DA191B672A21EAAE0099C07A /* QuizzerApp.swift in Sources */,
 				DA191B812A220AA30099C07A /* FirstStageQuestion.swift in Sources */,
+				DACD19362A3C4EC70025A6B6 /* HeaderView.swift in Sources */,
+				DACD193F2A3C4F8A0025A6B6 /* AnswerControl.swift in Sources */,
 				DA9D5FA62A2736620010928A /* TeamListing.swift in Sources */,
+				DACD19412A3C4FAD0025A6B6 /* ExemptView.swift in Sources */,
 				DA191B7E2A21F8560099C07A /* CurrentState.swift in Sources */,
 				DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */,
 				DA191B8F2A22388F0099C07A /* FirstStage.swift in Sources */,
+				DACD19382A3C4EEA0025A6B6 /* QuestionAndAnswer.swift in Sources */,
 				DA191B762A21EB680099C07A /* QuizBoard.swift in Sources */,
 				DA631C8B2A2DEAC80061BE7D /* MasterQuestionControl.swift in Sources */,
 				DA631C892A2DDAFB0061BE7D /* MasterQuestion.swift in Sources */,
+				DACD193C2A3C4F4F0025A6B6 /* PreviousAnswerView.swift in Sources */,
+				DACD193A2A3C4F130025A6B6 /* PresentationControl.swift in Sources */,
 				DA191B852A2213020099C07A /* BoardControl.swift in Sources */,
 				DA191B8B2A2235DC0099C07A /* QuestionView.swift in Sources */,
 				DA191B7A2A21F5700099C07A /* Category.swift in Sources */,
