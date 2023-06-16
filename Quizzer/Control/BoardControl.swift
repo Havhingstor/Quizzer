@@ -83,14 +83,29 @@ struct BoardControl: View {
                     }
                     .keyboardShortcut("#")
                     .disabled(!canCategoryBeShown())
-                    Button("Show Master Question") {
-                        openWindow(id: "mqst")
-                    }
-                    .disabled(!currentState.masterQuestionActivated)
-                    .contextMenu {
-                        if !currentState.masterQuestionActivated {
-                            Button("Show anyways") {
+                    Group {
+                        if !currentState.showMasterQuestion {
+                            Button("Show Master Question") {
                                 openWindow(id: "mqst")
+                            }
+                            .disabled(!currentState.masterQuestionActivated)
+                            .contextMenu {
+                                if !currentState.masterQuestionActivated {
+                                    Button("Show anyways") {
+                                        openWindow(id: "mqst")
+                                    }
+                                }
+                            }
+                        } else {
+                            Button("Hide Master Question") {
+                                currentState.showMasterQuestion = false
+                            }
+                            .contextMenu {
+                                if !currentState.masterQuestionActivated {
+                                    Button("Hide anyways") {
+                                        currentState.showMasterQuestion = false
+                                    }
+                                }
                             }
                         }
                     }
@@ -110,10 +125,16 @@ struct BoardControl: View {
                                 Spacer()
                             }
                             .overlay(RoundedRectangle(cornerRadius: 10).stroke())
+                            .overlay(alignment: .topTrailing) {
+                                Button {
+                                    shownTeam = TeamListing(team: team, answers: team.solvedQuestions)
+                                } label: {
+                                    Image(systemName: "info.circle")
+                                }
+                                .buttonStyle(.borderless)
+                                .padding([.top, .trailing], 7)
+                            }
                             .padding(2)
-                            .gesture(TapGesture().modifiers(.command).onEnded {
-                                shownTeam = TeamListing(team: team, answers: team.solvedQuestions)
-                            })
                             .contextMenu {
                                 Button("Show Team") {
                                     shownTeam = TeamListing(team: team, answers: team.solvedQuestions)

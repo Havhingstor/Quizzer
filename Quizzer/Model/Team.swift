@@ -1,6 +1,6 @@
 import Foundation
 
-class Team: Identifiable, Hashable {
+class Team: Identifiable, Hashable, ObservableObject {
     static func == (lhs: Team, rhs: Team) -> Bool {
         lhs.id == rhs.id
     }
@@ -28,4 +28,6 @@ class Team: Identifiable, Hashable {
     init(name: String) {
         self.name = name
     }
+    
+    var betPts = 0
 }

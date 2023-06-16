@@ -70,7 +70,17 @@ class CurrentState: ObservableObject {
         return masterQuestion != nil
     }
     
-    @Published var showMasterQuestion = false
+    @Published var showMasterQuestion = false {
+        didSet {
+            if showMasterQuestion {
+                if let stage = questionStages["master"] {
+                    questionStage = stage
+                } else {
+                    questionStage = 0
+                }
+            }
+        }
+    }
     
     @Published var currentQuestion: Int? = nil {
         didSet {
@@ -101,7 +111,9 @@ class CurrentState: ObservableObject {
     
     @Published var questionStage = 0 {
         didSet {
-            if let currentQuestionResolved {
+            if showMasterQuestion {
+                questionStages["master"] = questionStage
+            } else if let currentQuestionResolved {
                 questionStages[currentQuestionResolved.id] = questionStage
             }
         }
@@ -125,6 +137,7 @@ class CurrentState: ObservableObject {
     
     @Published var questionName = "Frage"
     @Published var masterQuestionName = "Masterfrage"
+    @Published var masterQuestionPrompt = "Setzt einen Teil eurer Punkte"
     @Published var answerName = "Antwort"
     
     @Published private var teams = [Team]() {

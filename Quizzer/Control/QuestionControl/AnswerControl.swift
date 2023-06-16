@@ -83,8 +83,15 @@ struct AnswerControl: View {
                         .font(.title2)
                 }
             } else {
-                Button("Claim") {
-                    registerAnswer(true)
+                VStack {
+                    Button("Claim") {
+                        registerAnswer(true)
+                    }
+                    .disabled(currentState.questionStage < 1)
+                    Button("Cancel") {
+                        goToControl()
+                    }
+                    .hide(if: isQL)
                 }
                 .padding()
             }

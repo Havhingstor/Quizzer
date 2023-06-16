@@ -29,7 +29,7 @@ struct PresentationControls: View {
                             }
                         }
                         .keyboardShortcut("-")
-                    } else if stage >= 2 {
+                    } else if stage >= 2 && !isJoker {
                         VStack {
                             Button("Hide Answer") {
                                 withAnimation {
@@ -39,12 +39,14 @@ struct PresentationControls: View {
                             .keyboardShortcut("-")
                         }
                     }
-                    Button("Show pure Answer") {
-                        withAnimation {
-                            currentState.questionStage = 2
+                    if !isJoker {
+                        Button("Show pure Answer") {
+                            withAnimation {
+                                currentState.questionStage = 2
+                            }
                         }
+                        .hide(if: stage < 1 || stage == 2 )
                     }
-                    .hide(if: stage < 1 || stage == 2)
                 }
             }
             .padding()

@@ -10,15 +10,7 @@ struct QuizBoard: View {
                 .scaledToFit()
                 .opacity(currentState.isInStartStage ? 1.0 : 0.5)
             
-            if currentState.isInStartStage {
-                Text(currentState.introTitle)
-                    .font(.custom("SF Pro Rounded", size: 80.0))
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .padding()
-                    .background(.gray.opacity(0.75))
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-            } else if let currentImageStr = currentState.currentImage,
+            if let currentImageStr = currentState.currentImage,
                       let currentImage = currentState.images[currentImageStr] {
                 Image(currentImage, scale: 1.0, label: Text("Solution Image"))
                     .resizable()
@@ -26,21 +18,25 @@ struct QuizBoard: View {
                     .padding()
             } else if let question = currentState.masterQuestion,
                       currentState.showMasterQuestion {
-                let questionBinding = Binding<QuestionViewProperties>(get: {
+                let questionBinding = Binding<MasterQuestion>(get: {
                     question
                 }, set: { newValue in
-                    if let newQuestion = newValue as? MasterQuestion {
-                        currentState.masterQuestion = newQuestion
-                    }
+                    currentState.masterQuestion = newValue
                 })
-                QuestionView(question: questionBinding)
+                MasterQuestionView(question: questionBinding)
+            } else if currentState.isInStartStage {
+                Text(currentState.introTitle)
+                    .font(.custom("SF Pro Rounded", size: 80.0))
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .padding()
+                    .background(.gray.opacity(0.75))
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
             } else if let question = currentState.currentQuestionResolved {
-                let questionBinding = Binding<QuestionViewProperties>(get: {
+                let questionBinding = Binding<Question>(get: {
                     question
                 }, set: { newValue in
-                    if let newQuestion = newValue as? Question {
-                        currentState.currentQuestion = currentState.getIndexOfQuestion(newQuestion)
-                    }
+                    currentState.currentQuestion = currentState.getIndexOfQuestion(newValue)
                 })
                 QuestionView(question: questionBinding)
             } else {

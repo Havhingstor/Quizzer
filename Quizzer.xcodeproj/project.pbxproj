@@ -31,6 +31,7 @@
 		DACD193C2A3C4F4F0025A6B6 /* PreviousAnswerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD193B2A3C4F4F0025A6B6 /* PreviousAnswerView.swift */; };
 		DACD193F2A3C4F8A0025A6B6 /* AnswerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */; };
 		DACD19412A3C4FAD0025A6B6 /* ExemptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */; };
+		DACD19432A3CC2C70025A6B6 /* MasterQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19422A3CC2C70025A6B6 /* MasterQuestionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		DACD193B2A3C4F4F0025A6B6 /* PreviousAnswerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviousAnswerView.swift; sourceTree = "<group>"; };
 		DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerControl.swift; sourceTree = "<group>"; };
 		DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExemptView.swift; sourceTree = "<group>"; };
+		DACD19422A3CC2C70025A6B6 /* MasterQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 				DA191B8E2A22388F0099C07A /* FirstStage.swift */,
 				DA191B802A220AA30099C07A /* FirstStageQuestion.swift */,
 				DA191B8A2A2235DC0099C07A /* QuestionView.swift */,
+				DACD19422A3CC2C70025A6B6 /* MasterQuestionView.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				DA191B952A2247070099C07A /* Team.swift in Sources */,
 				DA191B782A21F50E0099C07A /* Question.swift in Sources */,
 				DA191B932A2240B20099C07A /* QuestionControl.swift in Sources */,
+				DACD19432A3CC2C70025A6B6 /* MasterQuestionView.swift in Sources */,
 				DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */,
 				DA191B672A21EAAE0099C07A /* QuizzerApp.swift in Sources */,
 				DA191B812A220AA30099C07A /* FirstStageQuestion.swift in Sources */,
@@ -310,7 +314,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -365,7 +369,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;

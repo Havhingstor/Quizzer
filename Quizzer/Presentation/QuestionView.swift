@@ -3,31 +3,23 @@ import SwiftUI
 struct QuestionView: View {
     @EnvironmentObject var currentState: CurrentState
 
-    @Binding var question: QuestionViewProperties
+    @Binding var question: Question
 
     var titleText: String {
-        if let question = question as? Question {
-            return "\(question.category) - \(pointsText)"
-        } else {
-            return currentState.masterQuestionName
-        }
+        return "\(question.category) - \(pointsText)"
     }
 
     var pointsText: String {
-        if let question = question as? Question {
-            let number = Int(question.weight) * currentState.baseScore
-
-            let suffix: String
-            if number == 1 || number == -1 {
-                suffix = currentState.pointName
-            } else {
-                suffix = currentState.pointsName
-            }
-
-            return "\(number) \(suffix)"
+        let number = Int(question.weight) * currentState.baseScore
+        
+        let suffix: String
+        if number == 1 || number == -1 {
+            suffix = currentState.pointName
         } else {
-            return ""
+            suffix = currentState.pointsName
         }
+        
+        return "\(number) \(suffix)"
     }
 
     var body: some View {
@@ -123,11 +115,5 @@ struct QuestionView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-struct QuestionView_Previews: PreviewProvider {
-    static var previews: some View {
-        QuestionView(question: .constant(Question(question: "What", answer: "That", category: "Test", weight: 1)))
     }
 }
