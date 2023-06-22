@@ -5,6 +5,22 @@ struct MasterQuestionView: View {
     
     @Binding var question: MasterQuestion
     
+    var optionsPaddingSize: CGFloat {
+        if question.options.count > 0 {
+            return CGFloat(48 / question.options.count)
+        } else {
+            return 0
+        }
+    }
+    
+    var optionsTextSize: CGFloat {
+        if question.options.count > 0 {
+            return CGFloat(140 / question.options.count)
+        } else {
+            return 0
+        }
+    }
+    
     var body: some View {
         VStack {
             Text(currentState.masterQuestionName)
@@ -26,9 +42,7 @@ struct MasterQuestionView: View {
                 
                 VStack {
                     ForEach(currentState.getTeams()) { team in
-                        let pointStr = abs(team.overallPoints) != 1 ? currentState.pointsName : currentState.pointName
-                        Text("\(team.name):\t\(team.overallPoints) \(pointStr)")
-                            .padding()
+                        TeamPointView(team: team)
                     }
                 }
                 .font(.custom("SF Pro", size: 44))
@@ -41,14 +55,38 @@ struct MasterQuestionView: View {
             } else {
                 HStack {
                     VStack {
-                        Text("\(currentState.questionName):")
-                            .padding()
-                        Text("\(question.question)")
-                            .padding()
+                        VStack {
+                            Text("\(currentState.questionName):")
+                                .padding()
+                            Text("\(question.question)")
+                                .padding()
+                        }
+                        .font(.custom("SF Pro", size: 44.0))
+                        .background(.gray.opacity(0.75))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding()
+                        
+                        
+                        VStack {
+                            Text("\(currentState.answersName):")
+                                .padding()
+                                .font(.custom("SF Pro", size: 44.0))
+                                .background(.gray.opacity(0.75))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .padding()
+                            
+                            
+                            ForEach(Array(question.options.enumerated()), id: \.offset) { offset, element in
+                                Text("\(element)")
+                                    .padding(optionsPaddingSize)
+                                    .background(.gray.opacity(0.75))
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding(optionsPaddingSize)
+                                    .hide(if: currentState.questionStage - 3 < offset)
+                            }
+                            .font(.custom("SF Pro", size: optionsTextSize))
+                        }
                     }
-                    .font(.custom("SF Pro", size: 44.0))
-                    .background(.gray.opacity(0.75))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding([.top, .trailing, .bottom])
                     .padding(.leading, 60)
                     Spacer()
@@ -62,27 +100,29 @@ struct MasterQuestionView: View {
                             .padding(.trailing)
                     }
                 }
-                Spacer()
-                HStack {
-                    VStack {
-                        Text("\(currentState.answerName):")
-                            .padding()
-                        Text("\(question.answer)")
-                            .padding()
-                    }
-                    .font(.custom("SF Pro", size: 44.0))
-                    .background(.gray.opacity(0.75))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding([.top, .trailing, .bottom])
-                    .padding(.leading, 60)
-                    .padding([.top, .trailing], 20)
-                    Spacer()
-                }
-                .hide(if: currentState.questionStage < 3)
             }
             Spacer()
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+struct TeamPointView: View {
+    @EnvironmentObject var currentState: CurrentState
+    
+    @ObservedObject var team: Team
+    
+    var pointStr: String {
+        if team.overallPoints != 1 {
+            return currentState.pointsName
+        } else {
+            return currentState.pointName
+        }
+    }
+    
+    var body: some View {
+        Text("\(team.name):\t\(team.overallPoints) \(pointStr)")
+            .padding()
     }
 }

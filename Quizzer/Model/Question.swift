@@ -1,13 +1,6 @@
 import Foundation
 
-protocol QuestionViewProperties {
-    var question: String {get}
-    var answer: String {get}
-    var image: String? {get}
-    var solutionImage: String? {get}
-}
-
-struct Question: Identifiable, Codable, Hashable, QuestionViewProperties {
+struct Question: Identifiable, Codable, Hashable {
     static func == (lhs: Question, rhs: Question) -> Bool {
         lhs.id == rhs.id
     }
@@ -19,7 +12,7 @@ struct Question: Identifiable, Codable, Hashable, QuestionViewProperties {
     }
     
     let category: String
-    let weight: UInt8
+    let weight: UInt
     let image: String?
     let solutionImage: String?
     
@@ -62,7 +55,7 @@ struct Question: Identifiable, Codable, Hashable, QuestionViewProperties {
         }
     }
     
-    init(question: String, answer: String, category: String, weight: UInt8, image: String? = nil, solutionImage: String? = nil) {
+    init(question: String, answer: String, category: String, weight: UInt, image: String? = nil, solutionImage: String? = nil) {
         self.question = question
         self.answer = answer
         self.category = category

@@ -3,8 +3,8 @@ import SwiftUI
 struct FirstStage: View {
     @EnvironmentObject var currentState: CurrentState
     
-    func getQuestions(category: Category) -> [UInt8 : Binding<Question>] {
-        var result = [UInt8 : Binding<Question>]()
+    func getQuestions(category: Category) -> [UInt : Binding<Question>] {
+        var result = [UInt : Binding<Question>]()
         $currentState.questions.forEach { $question in
             if question.category == category.id {
                 result[question.weight] = $question
@@ -14,8 +14,8 @@ struct FirstStage: View {
         return result
     }
     
-    private var usedWeights: [UInt8] {
-        var result = Set([UInt8]())
+    private var usedWeights: [UInt] {
+        var result = Set([UInt]())
         
         for category in currentState.categories {
             for (weight, _) in getQuestions(category: category) {

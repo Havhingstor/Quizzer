@@ -38,7 +38,7 @@ class CurrentState: ObservableObject {
             Team(name: "Team C"),
             Team(name: "Team D")
         ]
-        shared.masterQuestion = MasterQuestion(question: "Wie weit?", answerInternal: 100, image: "Kaiser", solutionImage: "HRR")
+        shared.masterQuestion = MasterQuestion(question: "Welche?", answerInternal: 2, optionsInternal: ["1","2","3","4"], image: "Kaiser", solutionImage: "HRR")
         
         shared.images["HRR"] = NSImage(named: "HRR")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
         shared.images["Kaiser"] = NSImage(named: "Kaiser")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
@@ -126,7 +126,7 @@ class CurrentState: ObservableObject {
     
     @Published var isInStartStage = false
     
-    @Published var baseScore = 25
+    @Published var baseScore = UInt(25)
     @Published var introTitle = "Konfifreizeit Quiz\n2023"
     
     @Published var pointsName = "Punkte"

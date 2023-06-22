@@ -115,6 +115,12 @@ struct QuestionControl: View {
                 }
             }
             .fixedSize()
+            .onAppear {
+                if isQL,
+                   let answer = question.givenAnswer {
+                    teamInternal = answer.team
+                }
+            }
         } else {
             Text("No Question")
                 .padding()

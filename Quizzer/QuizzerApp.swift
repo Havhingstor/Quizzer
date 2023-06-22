@@ -20,29 +20,28 @@ struct QuizzerApp: App {
         .keyboardShortcut("c", modifiers: [])
         
         Window("Question Presentation", id: "qst") {
-            let questionBinding = Binding<Question?>(get: {
-                currentState.currentQuestionResolved
-            }, set: { newValue in
-                if let newQuestion = newValue {
-                    currentState.currentQuestion = currentState.getIndexOfQuestion(newQuestion)
-                } else {
-                    currentState.currentQuestion = nil
-                }
-            })
-            QuestionControl(question: questionBinding, isQL: false)
-                .environmentObject(currentState)
+            if currentState.showMasterQuestion {
+                MasterQuestionControl(question: $currentState.masterQuestion)
+                    .environmentObject(currentState)
+            } else {
+                let questionBinding = Binding<Question?>(get: {
+                    currentState.currentQuestionResolved
+                }, set: { newValue in
+                    if let newQuestion = newValue {
+                        currentState.currentQuestion = currentState.getIndexOfQuestion(newQuestion)
+                    } else {
+                        currentState.currentQuestion = nil
+                    }
+                })
+                QuestionControl(question: questionBinding, isQL: false)
+                    .environmentObject(currentState)
+            }
         }
         .windowResizability(.contentSize)
         .keyboardShortcut("q", modifiers: .shift)
         
         WindowGroup("Question - QuickLook", for: Question.self) { q in
-            QuestionControl(question: q, isQL: false)
-                .environmentObject(currentState)
-        }
-        .windowResizability(.contentSize)
-        
-        WindowGroup("Master Question", id: "mqst") {
-            MasterQuestionControl(question: $currentState.masterQuestion)
+            QuestionControl(question: q, isQL: true)
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)

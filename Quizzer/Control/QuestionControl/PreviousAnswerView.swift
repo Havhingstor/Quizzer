@@ -51,11 +51,11 @@ struct PreviousAnswerView: View {
                     .onAppear {
                         answer = questionAnswer.answer
                     }
-                    
-                    Button("Remove Answer") {
-                        deleteAnswer()
-                        goToControl()
-                    }
+                }
+                
+                Button("Remove Answer") {
+                    deleteAnswer()
+                    goToControl()
                 }
             } label: {
                 Text("Previous Answer")

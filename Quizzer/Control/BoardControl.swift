@@ -86,24 +86,32 @@ struct BoardControl: View {
                     Group {
                         if !currentState.showMasterQuestion {
                             Button("Show Master Question") {
-                                openWindow(id: "mqst")
+                                withAnimation {
+                                    currentState.showMasterQuestion = true
+                                }
                             }
                             .disabled(!currentState.masterQuestionActivated)
                             .contextMenu {
                                 if !currentState.masterQuestionActivated {
                                     Button("Show anyways") {
-                                        openWindow(id: "mqst")
+                                        withAnimation {
+                                            currentState.showMasterQuestion = true
+                                        }
                                     }
                                 }
                             }
                         } else {
                             Button("Hide Master Question") {
-                                currentState.showMasterQuestion = false
+                                withAnimation {
+                                    currentState.showMasterQuestion = false
+                                }
                             }
                             .contextMenu {
                                 if !currentState.masterQuestionActivated {
                                     Button("Hide anyways") {
-                                        currentState.showMasterQuestion = false
+                                        withAnimation {
+                                            currentState.showMasterQuestion = false
+                                        }
                                     }
                                 }
                             }
@@ -155,6 +163,12 @@ struct BoardControl: View {
                         .confirmationDialog("The Team has solved Questions", isPresented: $teamDeletionAlertShown) {
                             Button("Delete anyway", role: .destructive) {
                                 guard let teamToDelete else {return}
+                                
+                                for (index, question) in currentState.questions.enumerated() {
+                                    if question.givenAnswer?.team == teamToDelete {
+                                        currentState.questions[index].exempt = true
+                                    }
+                                }
                                 
                                 currentState.deleteTeam(team: teamToDelete)
                             }
@@ -338,7 +352,7 @@ struct QuestionListing: View {
 
     var buttonTitle: String {
         let category = question.category
-        let totalScore = Int(question.weight) * currentState.baseScore
+        let totalScore = question.weight * currentState.baseScore
         let answered: String
         if question.exempt {
             answered = "Exempt"
