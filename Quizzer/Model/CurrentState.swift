@@ -42,6 +42,10 @@ class CurrentState: ObservableObject {
         
         shared.images["HRR"] = NSImage(named: "HRR")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
         shared.images["Kaiser"] = NSImage(named: "Kaiser")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        
+        for (index, team) in shared.teams.enumerated() {
+            team.addedPoints = index
+        }
         return shared
     }
     
@@ -81,6 +85,9 @@ class CurrentState: ObservableObject {
             }
         }
     }
+    @Published var showResults = false
+    
+    @Published var resultsStage = 0
     
     @Published var currentQuestion: Int? = nil {
         didSet {
@@ -167,6 +174,14 @@ class CurrentState: ObservableObject {
             return teams
         } else {
             return [Team(name: "Default Team")]
+        }
+    }
+    
+    @Published var allTeamsHaveBet = false
+    
+    func betUpdate() {
+        allTeamsHaveBet = !getTeams().contains { team in
+            team.betPts == nil
         }
     }
     

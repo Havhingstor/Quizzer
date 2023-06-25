@@ -107,6 +107,13 @@ struct QuestionControl: View {
                                 registerAnswer(false)
                             }
                         }
+                        if currentState.currentImage != nil {
+                            Button("Hide Solution Image") {
+                                withAnimation {
+                                    currentState.currentImage = nil
+                                }
+                            }
+                        }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                     }

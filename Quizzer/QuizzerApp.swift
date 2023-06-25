@@ -10,14 +10,14 @@ struct QuizzerApp: App {
                 .environmentObject(currentState)
                 .foregroundColor(.black)
         }
-        .keyboardShortcut("q", modifiers: [])
+        .keyboardShortcut("q")
         
         Window("Control", id: "ctrl") {
             BoardControl()
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
-        .keyboardShortcut("c", modifiers: [])
+        .keyboardShortcut("c")
         
         Window("Question Presentation", id: "qst") {
             if currentState.showMasterQuestion {
@@ -38,12 +38,19 @@ struct QuizzerApp: App {
             }
         }
         .windowResizability(.contentSize)
-        .keyboardShortcut("q", modifiers: .shift)
+        .keyboardShortcut("q", modifiers: [.shift, .command])
         
         WindowGroup("Question - QuickLook", for: Question.self) { q in
             QuestionControl(question: q, isQL: true)
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
+        
+        Window("Result Control", id: "rslt") {
+            EndControl()
+                .environmentObject(currentState)
+        }
+        .windowResizability(.contentSize)
+        .keyboardShortcut("r")
     }
 }

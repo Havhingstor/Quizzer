@@ -47,6 +47,22 @@ struct PresentationControls: View {
                         }
                         .hide(if: stage < 1 || stage == 2 )
                     }
+                    if question?.solutionImage != currentState.currentImage {
+                        Button("Show Solution Image") {
+                            withAnimation {
+                                currentState.currentImage = question?.solutionImage
+                            }
+                        }
+                        .hide(if: stage < 2 || question?.solutionImage == nil)
+                    } else {
+                        Button("Hide Solution Image") {
+                            withAnimation {
+                                currentState.currentImage = nil
+                            }
+                        }
+                        .hide(if: stage < 2)
+                    }
+                    
                 }
             }
             .padding()

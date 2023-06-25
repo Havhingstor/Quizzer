@@ -11,11 +11,13 @@ struct QuizBoard: View {
                 .opacity(currentState.isInStartStage ? 1.0 : 0.5)
             
             if let currentImageStr = currentState.currentImage,
-                      let currentImage = currentState.images[currentImageStr] {
+               let currentImage = currentState.images[currentImageStr] {
                 Image(currentImage, scale: 1.0, label: Text("Solution Image"))
                     .resizable()
                     .scaledToFit()
                     .padding()
+            } else if currentState.showResults {
+                ResultsView()
             } else if let question = currentState.masterQuestion,
                       currentState.showMasterQuestion {
                 let questionBinding = Binding<MasterQuestion>(get: {
