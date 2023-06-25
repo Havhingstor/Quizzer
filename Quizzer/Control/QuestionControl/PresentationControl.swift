@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PresentationControls: View {
-    @EnvironmentObject var currentState: CurrentState
+    @EnvironmentObject private var currentState: CurrentState
     
     @Binding var question: Question?
     var isQL: Bool

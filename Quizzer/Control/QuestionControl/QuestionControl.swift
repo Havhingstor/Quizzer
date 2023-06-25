@@ -2,8 +2,8 @@ import AppKit
 import SwiftUI
 
 struct QuestionControl: View {
-    @EnvironmentObject var currentState: CurrentState
-    @Environment(\.openWindow) var openWindow
+    @EnvironmentObject private var currentState: CurrentState
+    @Environment(\.openWindow) private var openWindow
 
     @State private var answer = ""
     @State private var teamInternal = CurrentState.shared.getTeams().first!

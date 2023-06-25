@@ -7,7 +7,7 @@ struct TeamView: View {
     }
     
     @EnvironmentObject private var currentState: CurrentState
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow) private var openWindow
     
     @State private var sorting = SortingMethod.sequence
     

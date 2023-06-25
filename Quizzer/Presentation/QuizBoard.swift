@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct QuizBoard: View {
-    @EnvironmentObject var currentState: CurrentState
+    @EnvironmentObject private var currentState: CurrentState
     
     var body: some View {
         ZStack {

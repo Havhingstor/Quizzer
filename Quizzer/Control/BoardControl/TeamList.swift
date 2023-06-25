@@ -4,7 +4,7 @@ struct TeamList: View {
     @EnvironmentObject private var currentState: CurrentState
     
     @State private var teamDeletionAlert = (team: nil as Team?, isShown: false)
-    @State var teamInfoPanel: TeamListing? = nil
+    @State private var teamInfoPanel: TeamListing? = nil
     
     @Binding var sorting: TeamView.SortingMethod
     

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TeamInfoPanel: View {
     @EnvironmentObject private var currentState: CurrentState
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow) private var openWindow
     
     @State private var teamAddedPoints = 0
     @State private var teamPointsEditing = false

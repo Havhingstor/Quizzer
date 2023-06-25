@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct MasterQuestionView: View {
-    @EnvironmentObject var currentState: CurrentState
+    @EnvironmentObject private var currentState: CurrentState
     
     @Binding var question: MasterQuestion
     
@@ -109,7 +109,7 @@ struct MasterQuestionView: View {
 }
 
 struct TeamPointView: View {
-    @EnvironmentObject var currentState: CurrentState
+    @EnvironmentObject private var currentState: CurrentState
     
     @ObservedObject var team: Team
     

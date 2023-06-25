@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FirstStage: View {
-    @EnvironmentObject var currentState: CurrentState
+    @EnvironmentObject private var currentState: CurrentState
     
     func getQuestions(category: Category) -> [UInt : Binding<Question>] {
         var result = [UInt : Binding<Question>]()

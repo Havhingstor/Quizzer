@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MasterQuestionControl: View {
     @EnvironmentObject private var currentState: CurrentState
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     
     @Binding var question: MasterQuestion?
     

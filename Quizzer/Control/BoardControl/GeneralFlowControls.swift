@@ -2,7 +2,7 @@ import SwiftUI
 
 struct GeneralFlowControls: View {
     @EnvironmentObject private var currentState: CurrentState
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow) private var openWindow
     
     func canCategoryBeShown() -> Bool {
         for category in currentState.categories {

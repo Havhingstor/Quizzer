@@ -39,7 +39,7 @@ struct CategoryListing: View {
 
 struct QuestionListing: View {
     @EnvironmentObject private var currentState: CurrentState
-    @Environment(\.openWindow) var openWindow
+    @Environment(\.openWindow) private var openWindow
     
     @Binding var question: Question
     

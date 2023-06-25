@@ -2,7 +2,7 @@ import SwiftUI
 
 struct EndControl: View {
     @EnvironmentObject private var currentState: CurrentState
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     
     func getSortedTeamList() -> [(rank: Int, team: Team)] {
         var startRank = 1
