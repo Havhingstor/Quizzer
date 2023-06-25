@@ -8,7 +8,7 @@ struct GeneralControl: View {
         VStack {
             GeneralFlowControls()
             Spacer()
-            TeamView()
+            TeamsView()
             Spacer()
         }
         .frame(width: width)

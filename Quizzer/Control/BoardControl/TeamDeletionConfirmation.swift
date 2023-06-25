@@ -22,4 +22,6 @@ struct TeamDeletionConfirmation: View {
 
 #Preview {
     TeamDeletionConfirmation(teamToDelete: .constant(Team(name: "Test Team")))
+        .padding()
+        .fixedSize()
 }

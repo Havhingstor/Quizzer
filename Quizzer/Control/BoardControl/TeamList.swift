@@ -6,7 +6,7 @@ struct TeamList: View {
     @State private var teamDeletionAlert = (team: nil as Team?, isShown: false)
     @State private var teamInfoPanel: TeamListing? = nil
     
-    @Binding var sorting: TeamView.SortingMethod
+    @Binding var sorting: TeamsView.SortingMethod
     
     var teamListSorted: [Team] {
         switch sorting {
@@ -33,6 +33,10 @@ struct TeamList: View {
         }
     }
     
+    func showTeamInfo(team: Team) {
+        teamInfoPanel = TeamListing(team: team, answers: team.solvedQuestions)
+    }
+    
     var body: some View {
         VStack {
             Text("Team List")
@@ -49,7 +53,7 @@ struct TeamList: View {
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                     .overlay(alignment: .topTrailing) {
                         Button {
-                            teamInfoPanel = TeamListing(team: team, answers: team.solvedQuestions)
+                            showTeamInfo(team: team)
                         } label: {
                             Image(systemName: "info.circle")
                         }
@@ -59,7 +63,7 @@ struct TeamList: View {
                     .padding(2)
                     .contextMenu {
                         Button("Show Team") {
-                            teamInfoPanel = TeamListing(team: team, answers: team.solvedQuestions)
+                            showTeamInfo(team: team)
                         }
                         Button("Delete", role: .destructive) {
                             if team.solvedQuestions.count > 0 {
