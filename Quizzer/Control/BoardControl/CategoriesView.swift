@@ -3,17 +3,35 @@ import SwiftUI
 struct CategoriesView: View {
     @EnvironmentObject private var currentState: CurrentState
     
+    @State private var addCategorySheet = false
+    
     let width = 300.0
     
+    @ViewBuilder
+    private var addButton: some View {
+        Button {
+            addCategorySheet = true
+        } label: {
+            Image(systemName: "plus")
+        }
+        .buttonStyle(.borderless)
+        .padding(2)
+        .sheet(isPresented: $addCategorySheet) {
+            NameSelectionSheet(groundType: "Category", additionFunc: currentState.addCategory)
+        }
+    }
+    
     var body: some View {
-        ScrollView {
-            VStack {
-                ForEach($currentState.categories) { $category in
-                    CategoryListing(category: $category)
-                    Spacer(minLength: 20)
-                }
+        List {
+            ForEach($currentState.categories) { $category in
+                CategoryListing(category: $category)
             }
-            .padding()
+            .onMove(perform: currentState.moveCategory)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .padding()
+        .overlay(alignment: .topLeading) {
+            addButton
         }
         .frame(width: width)
     }

@@ -4,11 +4,11 @@ import SwiftUI
 class CurrentState: ObservableObject {
     static var examples: CurrentState {
         shared.categories = [
-            Category(name: "Allgemeinwissen", isShown: false),
-            Category(name: "Religionen", isShown: false),
-            Category(name: "Christentum", isShown: false),
-            Category(name: "Geographie", isShown: false),
-            Category(name: "Politik", isShown: false)
+            Category(name: "Allgemeinwissen"),
+            Category(name: "Religionen"),
+            Category(name: "Christentum"),
+            Category(name: "Geographie"),
+            Category(name: "Politik")
         ]
         shared.questions = [
             Question(question: "Q1", answer: "A1", category: "Allgemeinwissen", weight: 1, image: "HRR", solutionImage: "Kaiser"),
@@ -57,6 +57,32 @@ class CurrentState: ObservableObject {
     @Published var categories = [Category]() {
         didSet {
             isInStartStage = categories.filter { $0.isShown }.count == 0
+        }
+    }
+    
+    func addCategory(name: String) throws {
+        for category in categories {
+            if category.name == name {
+                throw QuizError.categoryNameAlreadyExists
+            }
+        }
+        
+        categories.append(Category(name: name))
+    }
+    
+    func moveCategory(from: IndexSet, to: Int) {
+        if categories.count > 0 {
+            categories.move(fromOffsets: from, toOffset: to)
+        }
+    }
+    
+    func deleteCategory(_ category: Category) {
+        categories.removeAll { item in
+            item.id == category.id
+        }
+        
+        questions.removeAll { item in
+            item.category == category.name
         }
     }
     
@@ -192,10 +218,6 @@ class CurrentState: ObservableObject {
         teams.append(Team(name: name))
     }
     
-    enum QuizError: Error {
-        case teamNameAlreadyExists
-    }
-    
     @Published private var nextTeamOp: Team? = nil
     
     var nextTeam: Team {
@@ -225,4 +247,9 @@ class CurrentState: ObservableObject {
             fixNextTeam()
         }
     }
+}
+
+enum QuizError: Error {
+    case teamNameAlreadyExists
+    case categoryNameAlreadyExists
 }

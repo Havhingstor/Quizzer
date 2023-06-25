@@ -32,6 +32,11 @@ struct CategoryListing: View {
                             category.isShown.toggle()
                         }
                     }
+                    Button("Delete Category", role: .destructive) {
+                        withAnimation {
+                            currentState.deleteCategory(category)
+                        }
+                    }
                 }
         }
     }
@@ -43,8 +48,8 @@ struct QuestionListing: View {
     
     @Binding var question: Question
     
-    var category: Category {
-        currentState.categories.first(where: { $0.id == question.category })!
+    var category: Category? {
+        currentState.categories.first(where: { $0.id == question.category })
     }
     
     var buttonTitle: String {
@@ -63,45 +68,47 @@ struct QuestionListing: View {
     }
     
     var body: some View {
-        HStack {
-            Spacer()
-            Button(buttonTitle) {
-                withAnimation {
-                    currentState.currentQuestion = currentState.getIndexOfQuestion(question)
-                }
-                openWindow(id: "qst")
-            }
-            .animation(.none, value: question.answered)
-            .animation(.none, value: question.exempt)
-            .disabled(!category.isShown || !question.shouldOpen)
-            .contextMenu {
-                if question.answered {
-                    Button("Open Question") {
-                        withAnimation {
-                            currentState.currentQuestion = currentState.getIndexOfQuestion(question)
-                        }
-                        openWindow(id: "qst")
-                    }
-                }
-                Button("Quick Look") {
-                    openWindow(value: question)
-                }
-                Button("\(getAnswerToggleStr())") {
+        if let category {
+            HStack {
+                Spacer()
+                Button(buttonTitle) {
                     withAnimation {
-                        if question.exempt {
-                            question.exempt = false
-                        } else if question.answered {
-                            question.givenAnswer = nil
-                        } else {
-                            question.exempt = true
-                            if currentState.currentQuestionResolved == question {
-                                currentState.currentQuestion = nil
+                        currentState.currentQuestion = currentState.getIndexOfQuestion(question)
+                    }
+                    openWindow(id: "qst")
+                }
+                .animation(.none, value: question.answered)
+                .animation(.none, value: question.exempt)
+                .disabled(!category.isShown || !question.shouldOpen)
+                .contextMenu {
+                    if question.answered {
+                        Button("Open Question") {
+                            withAnimation {
+                                currentState.currentQuestion = currentState.getIndexOfQuestion(question)
+                            }
+                            openWindow(id: "qst")
+                        }
+                    }
+                    Button("Quick Look") {
+                        openWindow(value: question)
+                    }
+                    Button("\(getAnswerToggleStr())") {
+                        withAnimation {
+                            if question.exempt {
+                                question.exempt = false
+                            } else if question.answered {
+                                question.givenAnswer = nil
+                            } else {
+                                question.exempt = true
+                                if currentState.currentQuestionResolved == question {
+                                    currentState.currentQuestion = nil
+                                }
                             }
                         }
                     }
                 }
+                Spacer()
             }
-            Spacer()
         }
     }
     

@@ -19,61 +19,12 @@ struct TeamList: View {
         }
     }
     
-    func getTeamPosition(team: Team) -> Int {
-        var position = 1
-        for teamIterator in currentState.getTeams() {
-            if teamIterator.overallPoints > team.overallPoints {
-                position += 1
-            }
-        }
-        if currentState.getTeams().contains(team) {
-            return position
-        } else {
-            return Int.max
-        }
-    }
-    
-    func showTeamInfo(team: Team) {
-        teamInfoPanel = TeamListing(team: team, answers: team.solvedQuestions)
-    }
-    
     var body: some View {
         VStack {
             Text("Team List")
             List {
                 ForEach(teamListSorted) { team in
-                    let points = team.overallPoints
-                    HStack {
-                        Spacer()
-                        Text("\(team.name) - \(points) Point(s)\n\(getTeamPosition(team: team)). Place - \(team.solvedQuestions.count) Answer(s)")
-                            .multilineTextAlignment(.center)
-                            .padding()
-                        Spacer()
-                    }
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke())
-                    .overlay(alignment: .topTrailing) {
-                        Button {
-                            showTeamInfo(team: team)
-                        } label: {
-                            Image(systemName: "info.circle")
-                        }
-                        .buttonStyle(.borderless)
-                        .padding([.top, .trailing], 7)
-                    }
-                    .padding(2)
-                    .contextMenu {
-                        Button("Show Team") {
-                            showTeamInfo(team: team)
-                        }
-                        Button("Delete", role: .destructive) {
-                            if team.solvedQuestions.count > 0 {
-                                teamDeletionAlert.team = team
-                                teamDeletionAlert.isShown = true
-                            } else {
-                                currentState.deleteTeam(team: team)
-                            }
-                        }
-                    }
+                    TeamListItem(team: team, teamInfoPanel: $teamInfoPanel, teamDeletionAlert: $teamDeletionAlert)
                 }
                 .onMove( perform: sorting == .sequence ? { from, to in
                     currentState.moveTeams(from: from, to: to)

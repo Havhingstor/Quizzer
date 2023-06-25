@@ -5,8 +5,8 @@ struct Category: Identifiable {
     var id: String {name}
     var isShown: Bool
     
-    init(name: String, isShown: Bool) {
+    init(name: String) {
         self.name = name
-        self.isShown = isShown
+        self.isShown = false
     }
 }

@@ -32,6 +32,7 @@
 		DACD193F2A3C4F8A0025A6B6 /* AnswerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */; };
 		DACD19412A3C4FAD0025A6B6 /* ExemptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */; };
 		DACD19432A3CC2C70025A6B6 /* MasterQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19422A3CC2C70025A6B6 /* MasterQuestionView.swift */; };
+		DADB10312A48DDEA004B6024 /* TeamListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADB10302A48DDEA004B6024 /* TeamListItem.swift */; };
 		DAF93C392A446ED300319364 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C382A446ED300319364 /* ResultsView.swift */; };
 		DAF93C3B2A44E6C800319364 /* EndControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C3A2A44E6C800319364 /* EndControl.swift */; };
 		DAF93C3E2A48561F00319364 /* MasterQuestionAndAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C3D2A48561F00319364 /* MasterQuestionAndAnswer.swift */; };
@@ -46,7 +47,7 @@
 		DAF93C512A48C3E200319364 /* TeamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C502A48C3E200319364 /* TeamList.swift */; };
 		DAF93C532A48C71B00319364 /* TeamInfoPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C522A48C71B00319364 /* TeamInfoPanel.swift */; };
 		DAF93C552A48CAA700319364 /* TeamDeletionConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C542A48CAA700319364 /* TeamDeletionConfirmation.swift */; };
-		DAF93C572A48CE5100319364 /* AddTeamSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C562A48CE5100319364 /* AddTeamSheet.swift */; };
+		DAF93C572A48CE5100319364 /* NameSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF93C562A48CE5100319364 /* NameSelectionSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +78,7 @@
 		DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerControl.swift; sourceTree = "<group>"; };
 		DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExemptView.swift; sourceTree = "<group>"; };
 		DACD19422A3CC2C70025A6B6 /* MasterQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionView.swift; sourceTree = "<group>"; };
+		DADB10302A48DDEA004B6024 /* TeamListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListItem.swift; sourceTree = "<group>"; };
 		DAF93C382A446ED300319364 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		DAF93C3A2A44E6C800319364 /* EndControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndControl.swift; sourceTree = "<group>"; };
 		DAF93C3D2A48561F00319364 /* MasterQuestionAndAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionAndAnswer.swift; sourceTree = "<group>"; };
@@ -91,7 +93,7 @@
 		DAF93C502A48C3E200319364 /* TeamList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamList.swift; sourceTree = "<group>"; };
 		DAF93C522A48C71B00319364 /* TeamInfoPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamInfoPanel.swift; sourceTree = "<group>"; };
 		DAF93C542A48CAA700319364 /* TeamDeletionConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDeletionConfirmation.swift; sourceTree = "<group>"; };
-		DAF93C562A48CE5100319364 /* AddTeamSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeamSheet.swift; sourceTree = "<group>"; };
+		DAF93C562A48CE5100319364 /* NameSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameSelectionSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,9 +220,10 @@
 				DAF93C4C2A488F5000319364 /* GeneralFlowControls.swift */,
 				DAF93C4E2A48923300319364 /* TeamsView.swift */,
 				DAF93C502A48C3E200319364 /* TeamList.swift */,
+				DADB10302A48DDEA004B6024 /* TeamListItem.swift */,
 				DAF93C522A48C71B00319364 /* TeamInfoPanel.swift */,
 				DAF93C542A48CAA700319364 /* TeamDeletionConfirmation.swift */,
-				DAF93C562A48CE5100319364 /* AddTeamSheet.swift */,
+				DAF93C562A48CE5100319364 /* NameSelectionSheet.swift */,
 			);
 			path = BoardControl;
 			sourceTree = "<group>";
@@ -307,8 +310,9 @@
 				DA191B672A21EAAE0099C07A /* QuizzerApp.swift in Sources */,
 				DA191B812A220AA30099C07A /* FirstStageQuestion.swift in Sources */,
 				DAF93C402A48565B00319364 /* MasterQuestionPresentationControls.swift in Sources */,
-				DAF93C572A48CE5100319364 /* AddTeamSheet.swift in Sources */,
+				DAF93C572A48CE5100319364 /* NameSelectionSheet.swift in Sources */,
 				DACD19362A3C4EC70025A6B6 /* HeaderView.swift in Sources */,
+				DADB10312A48DDEA004B6024 /* TeamListItem.swift in Sources */,
 				DACD193F2A3C4F8A0025A6B6 /* AnswerControl.swift in Sources */,
 				DAF93C552A48CAA700319364 /* TeamDeletionConfirmation.swift in Sources */,
 				DA9D5FA62A2736620010928A /* TeamListing.swift in Sources */,

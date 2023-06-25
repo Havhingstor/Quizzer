@@ -28,19 +28,24 @@ struct TeamsView: View {
         .fixedSize()
     }
     
+    @ViewBuilder
+    private var addButton: some View {
+        Button {
+            addTeamSheet = true
+        } label: {
+            Image(systemName: "plus")
+        }
+        .buttonStyle(.borderless)
+        .padding(2)
+        .sheet(isPresented: $addTeamSheet) {
+            NameSelectionSheet(groundType: "Team", additionFunc: currentState.addTeam)
+        }
+    }
+    
     var body: some View {
         TeamList(sorting: $sorting)
         .overlay(alignment: .topLeading) {
-            Button {
-                addTeamSheet = true
-            } label: {
-                Image(systemName: "plus")
-            }
-            .buttonStyle(.borderless)
-            .padding(2)
-            .sheet(isPresented: $addTeamSheet) {
-                AddTeamSheet()
-            }
+            addButton
         }
         .overlay(alignment: .topTrailing) {
             sortingView
