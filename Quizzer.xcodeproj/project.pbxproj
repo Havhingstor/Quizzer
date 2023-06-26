@@ -23,6 +23,7 @@
 		DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B9C2A22BA6D0099C07A /* Util.swift */; };
 		DA631C892A2DDAFB0061BE7D /* MasterQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C882A2DDAFB0061BE7D /* MasterQuestion.swift */; };
 		DA631C8B2A2DEAC80061BE7D /* MasterQuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */; };
+		DA9C26032A495AE2007D274B /* AddQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C26022A495AE2007D274B /* AddQuestionView.swift */; };
 		DA9D5FA62A2736620010928A /* TeamListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D5FA52A2736620010928A /* TeamListing.swift */; };
 		DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACB33AD2A2358850073F39D /* QuestionAnswer.swift */; };
 		DACD19362A3C4EC70025A6B6 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19352A3C4EC70025A6B6 /* HeaderView.swift */; };
@@ -69,6 +70,7 @@
 		DA191B9C2A22BA6D0099C07A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		DA631C882A2DDAFB0061BE7D /* MasterQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestion.swift; sourceTree = "<group>"; };
 		DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionControl.swift; sourceTree = "<group>"; };
+		DA9C26022A495AE2007D274B /* AddQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuestionView.swift; sourceTree = "<group>"; };
 		DA9D5FA52A2736620010928A /* TeamListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListing.swift; sourceTree = "<group>"; };
 		DACB33AD2A2358850073F39D /* QuestionAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAnswer.swift; sourceTree = "<group>"; };
 		DACD19352A3C4EC70025A6B6 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				DA191B842A2213020099C07A /* BoardControl.swift */,
 				DAF93C482A485FD900319364 /* CategoriesView.swift */,
 				DAF93C462A485F4B00319364 /* Listings.swift */,
+				DA9C26022A495AE2007D274B /* AddQuestionView.swift */,
 				DAF93C4A2A488BDE00319364 /* GeneralControl.swift */,
 				DAF93C4C2A488F5000319364 /* GeneralFlowControls.swift */,
 				DAF93C4E2A48923300319364 /* TeamsView.swift */,
@@ -326,6 +329,7 @@
 				DAF93C3B2A44E6C800319364 /* EndControl.swift in Sources */,
 				DAF93C492A485FD900319364 /* CategoriesView.swift in Sources */,
 				DACD19382A3C4EEA0025A6B6 /* QuestionAndAnswer.swift in Sources */,
+				DA9C26032A495AE2007D274B /* AddQuestionView.swift in Sources */,
 				DA191B762A21EB680099C07A /* QuizBoard.swift in Sources */,
 				DAF93C512A48C3E200319364 /* TeamList.swift in Sources */,
 				DA631C8B2A2DEAC80061BE7D /* MasterQuestionControl.swift in Sources */,

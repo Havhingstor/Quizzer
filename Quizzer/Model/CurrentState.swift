@@ -77,16 +77,10 @@ class CurrentState: ObservableObject {
     }
     
     func deleteCategory(_ category: Category) {
-        questionsAnswered.removeAll { answer in
-            answer.question.category == category.name
-        }
-        
-        questionsExempt.removeAll { exemption in
-            exemption.question.category == category.name
-        }
-        
-        questions.removeAll { item in
-            item.category == category.name
+        questions.filter { question in
+            question.category == category.name
+        }.forEach { question in
+            deleteQuestion(question)
         }
         
         categories.removeAll { item in
@@ -97,6 +91,31 @@ class CurrentState: ObservableObject {
     @Published var questions = [Question]()
     @Published var masterQuestion: MasterQuestion?
     @Published var images = [String: CGImage]()
+    
+    public func addQuestion(question: Question) throws {
+        for questionItem in questions {
+            if questionItem.category == question.category,
+               questionItem.weight == question.weight {
+                throw QuizError.questionWeightAlreadyExistsInCategory
+            }
+        }
+        
+        questions.append(question)
+    }
+    
+    public func deleteQuestion(_ question: Question) {
+        questionsAnswered.removeAll { answer in
+            answer.question.id == question.id
+        }
+        
+        questionsExempt.removeAll { exemption in
+            exemption.question.id == question.id
+        }
+        
+        questions.removeAll { item in
+            item.id == question.id
+        }
+    }
     
     var masterQuestionActivated: Bool {
         for question in questions {
@@ -260,4 +279,5 @@ class CurrentState: ObservableObject {
 enum QuizError: Error {
     case teamNameAlreadyExists
     case categoryNameAlreadyExists
+    case questionWeightAlreadyExistsInCategory
 }

@@ -3,6 +3,8 @@ import SwiftUI
 struct CategoryListing: View {
     @EnvironmentObject private var currentState: CurrentState
     
+    @State private var addQuestionShown = false
+    
     @Binding var category: Category
     
     func isNextCategory() -> Bool {
@@ -37,6 +39,12 @@ struct CategoryListing: View {
                             currentState.deleteCategory(category)
                         }
                     }
+                    Button("Add Question") {
+                        addQuestionShown = true
+                    }
+                }
+                .sheet(isPresented: $addQuestionShown) {
+                    AddQuestionView(questionType: .question(category: category.name))
                 }
         }
     }
@@ -45,6 +53,8 @@ struct CategoryListing: View {
 struct QuestionListing: View {
     @EnvironmentObject private var currentState: CurrentState
     @Environment(\.openWindow) private var openWindow
+    
+    @State var questionDeletionAlertShown = false
     
     @Binding var question: Question
     
@@ -65,6 +75,12 @@ struct QuestionListing: View {
         }
         
         return "\(category) - \(totalScore) - \(answered)"
+    }
+    
+    func deleteQuestion() {
+        withAnimation {
+            currentState.deleteQuestion(question)
+        }
     }
     
     var body: some View {
@@ -105,6 +121,19 @@ struct QuestionListing: View {
                                 }
                             }
                         }
+                    }
+                    Button("Delete Question") {
+                        if question.answered {
+                            questionDeletionAlertShown = true
+                        } else {
+                            deleteQuestion()
+                        }
+                    }
+                }
+                .alert("Question has answer", isPresented: $questionDeletionAlertShown) {
+                    Button("Cancel", role: .cancel) {}
+                    Button("Delete anyway", role: .destructive) {
+                        deleteQuestion()
                     }
                 }
                 Spacer()
