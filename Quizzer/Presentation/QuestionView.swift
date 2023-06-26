@@ -6,7 +6,7 @@ struct QuestionView: View {
     @Binding var question: Question
 
     var titleText: String {
-        return "\(question.category) - \(pointsText)"
+        return "\(question.categoryObject?.name ?? "N/A") - \(pointsText)"
     }
 
     var pointsText: String {
@@ -48,9 +48,9 @@ struct QuestionView: View {
                     .padding(.leading, 60)
                     Spacer()
                     
-                    if let imageName = question.image,
-                       let cgImage = currentState.images[imageName] {
-                        Image(cgImage, scale: 1.0, label: Text("Question Image"))
+                    if let imageData = question.image?.data,
+                       let image = NSImage(data: imageData) {
+                        Image(nsImage: image)
                             .resizable()
                             .scaledToFit()
                             .padding()

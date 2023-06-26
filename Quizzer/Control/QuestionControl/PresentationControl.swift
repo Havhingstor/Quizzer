@@ -47,7 +47,7 @@ struct PresentationControls: View {
                         }
                         .hide(if: stage < 1 || stage == 2 )
                     }
-                    if question?.solutionImage != currentState.currentImage {
+                    if question?.solutionImage?.name != currentState.currentImage?.name {
                         Button("Show Solution Image") {
                             withAnimation {
                                 currentState.currentImage = question?.solutionImage

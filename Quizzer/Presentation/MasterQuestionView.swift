@@ -91,9 +91,9 @@ struct MasterQuestionView: View {
                     .padding(.leading, 60)
                     Spacer()
                     
-                    if let imageName = question.image,
-                       let cgImage = currentState.images[imageName] {
-                        Image(cgImage, scale: 1.0, label: Text("Question Image"))
+                    if let imageData = question.image?.data,
+                       let image = NSImage(data: imageData) {
+                        Image(nsImage: image)
                             .resizable()
                             .scaledToFit()
                             .padding()

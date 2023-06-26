@@ -4,6 +4,22 @@ import SwiftUI
 struct QuizzerApp: App {
     @StateObject private var currentState = CurrentState.examples
     
+    func calculateSize(image: NSImage) -> NSSize {
+        let maxWidth = 1300 as Double
+        let maxHeight = 800 as Double
+        let originalSize = image.size
+        let toLargeWidth = originalSize.width / maxWidth
+        let toLargeHeight = originalSize.height / maxHeight
+        if originalSize.width <= maxWidth && originalSize.height <= maxHeight {
+            return originalSize
+        } else {
+            let scale = max(toLargeWidth, toLargeHeight)
+            return NSSize(width: originalSize.width / scale, height: originalSize.height / scale)
+        }
+        
+        
+    }
+    
     var body: some Scene {
         Window("Quiz", id: "quiz") {
             QuizBoard()
@@ -52,5 +68,18 @@ struct QuizzerApp: App {
         }
         .windowResizability(.contentSize)
         .keyboardShortcut("r")
+        
+        WindowGroup(for: Data.self) { dataBind in
+            if let data = dataBind.wrappedValue,
+               let image = NSImage(data: data) {
+                let size = calculateSize(image: image)
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: size.width, height: size.height)
+                    .fixedSize()
+            }
+        }
+        .windowResizability(.contentSize)
     }
 }

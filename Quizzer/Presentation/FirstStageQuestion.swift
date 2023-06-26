@@ -14,8 +14,8 @@ struct FirstStageQuestion: View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(question.shouldOpen ? .red : .black
                 )
-                .frame(width: 200, height: 150)
-            Text("\(question.category)\n\(question.weight * baseScore)")
+                .frame(width: 225, height: 150)
+            Text("\(question.categoryObject?.name ?? "N/A")\n\(question.weight * baseScore)")
                 .font(.largeTitle)
                 .multilineTextAlignment(.center)
         }

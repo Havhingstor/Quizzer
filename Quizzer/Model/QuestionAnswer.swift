@@ -1,7 +1,7 @@
 import Foundation
 
 struct QuestionAnswer {
-    let _question: String
+    let _question: UUID
     let _team: String
     let answer: String
     let correct: Bool
@@ -16,11 +16,13 @@ struct QuestionAnswer {
     }
     
     var question: Question {
-        let currentState = CurrentState.shared
-        if let question = currentState.questions.first(where: {$0.id == _question}) {
-            return question
-        } else {
-            return Question(question: "", answer: "", category: "", weight: 0)
+        get {
+            let currentState = CurrentState.shared
+            if let question = currentState.questions.first(where: {$0.id == _question}) {
+                return question
+            } else {
+                return Question(question: "N/A", answer: "N/A", category: Category(name: "N/A"), weight: 0)
+            }
         }
     }
     
@@ -33,14 +35,16 @@ struct QuestionAnswer {
 }
 
 struct QuestionExemption {
-    let _question: String
+    let _question: UUID
     
     var question: Question {
-        let currentState = CurrentState.shared
-        if let question = currentState.questions.first(where: {$0.id == _question}) {
-            return question
-        } else {
-            return Question(question: "", answer: "", category: "", weight: 0)
+        get {
+            let currentState = CurrentState.shared
+            if let question = currentState.questions.first(where: {$0.id == _question}) {
+                return question
+            } else {
+                return Question(question: "N/A", answer: "N/A", category: Category(name: "N/A"), weight: 0)
+            }
         }
     }
     

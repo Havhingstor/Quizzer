@@ -19,6 +19,6 @@ struct AnswerListing: Identifiable {
     let question: Question
     let correct: Bool
     let score: UInt
-    let category: String
+    let category: Category.ID
     let id = UUID()
 }

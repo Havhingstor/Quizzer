@@ -3,6 +3,23 @@ import SwiftUI
 
 class CurrentState: ObservableObject {
     static var examples: CurrentState {
+        let hrrURL = Bundle.main.url(forResource: "HRR", withExtension: "jpg")!
+        let kaiserURL = Bundle.main.url(forResource: "Kaiser", withExtension: "jpg")!
+        
+        let hrrData, kaiserData: Data
+        
+        if let data = try? Data(contentsOf: hrrURL) {
+            hrrData = data
+        } else {
+            hrrData = Data()
+        }
+        
+        if let data = try? Data(contentsOf: kaiserURL) {
+            kaiserData = data
+        } else {
+            kaiserData = Data()
+        }
+        
         shared.categories = [
             Category(name: "Allgemeinwissen"),
             Category(name: "Religionen"),
@@ -10,27 +27,29 @@ class CurrentState: ObservableObject {
             Category(name: "Geographie"),
             Category(name: "Politik")
         ]
+        
+        
         shared.questions = [
-            Question(question: "Q1", answer: "A1", category: "Allgemeinwissen", weight: 1, image: "HRR", solutionImage: "Kaiser"),
-            Question(question: "Q2", answer: "A2", category: "Allgemeinwissen", weight: 2),
-            Question(question: "Q3", answer: "A3", category: "Allgemeinwissen", weight: 3),
-            Question(question: "Q4", answer: "A4", category: "Allgemeinwissen", weight: 4),
-            Question(question: "Q5", answer: "A5", category: "Religionen", weight: 1),
-            Question(question: "Q6", answer: "A6", category: "Religionen", weight: 2),
-            Question(question: "Q7", answer: "A7", category: "Religionen", weight: 3),
-            Question(question: "Q8", answer: "A8", category: "Religionen", weight: 4),
-            Question(question: "Q9", answer: "A9", category: "Christentum", weight: 1),
-            Question(question: "Q10", answer: "A10", category: "Christentum", weight: 2),
-            Question(question: "Q11", answer: "A11", category: "Christentum", weight: 3),
-            Question(question: "Joker", answer: "A12", category: "Christentum", weight: 4),
-            Question(question: "Q13", answer: "A13", category: "Geographie", weight: 1),
-            Question(question: "Q14", answer: "A14", category: "Geographie", weight: 2),
-            Question(question: "Q15", answer: "A15", category: "Geographie", weight: 3),
-            Question(question: "Q16", answer: "A16", category: "Geographie", weight: 4),
-            Question(question: "Q17", answer: "A17", category: "Politik", weight: 1),
-            Question(question: "Q18", answer: "A18", category: "Politik", weight: 2),
-            Question(question: "Q19", answer: "A19", category: "Politik", weight: 3),
-            Question(question: "Q17", answer: "A20", category: "Politik", weight: 4),
+            Question(question: "Q1", answer: "A1", category: shared.categories[0], weight: 1, image: NamedData(name: "HRR", data: hrrData), solutionImage: NamedData(name: "Kaiser", data: kaiserData)),
+            Question(question: "Q2", answer: "A2", category: shared.categories[0], weight: 2),
+            Question(question: "Q3", answer: "A3", category: shared.categories[0], weight: 3),
+            Question(question: "Q4", answer: "A4", category: shared.categories[0], weight: 4),
+            Question(question: "Q5", answer: "A5", category: shared.categories[1], weight: 1),
+            Question(question: "Q6", answer: "A6", category: shared.categories[1], weight: 2),
+            Question(question: "Q7", answer: "A7", category: shared.categories[1], weight: 3),
+            Question(question: "Q8", answer: "A8", category: shared.categories[1], weight: 4),
+            Question(question: "Q9", answer: "A9", category: shared.categories[2], weight: 1),
+            Question(question: "Q10", answer: "A10", category: shared.categories[2], weight: 2),
+            Question(question: "Q11", answer: "A11", category: shared.categories[2], weight: 3),
+            Question(question: "Joker", answer: "A12", category: shared.categories[2], weight: 4),
+            Question(question: "Q13", answer: "A13", category: shared.categories[3], weight: 1),
+            Question(question: "Q14", answer: "A14", category: shared.categories[3], weight: 2),
+            Question(question: "Q15", answer: "A15", category: shared.categories[3], weight: 3),
+            Question(question: "Q16", answer: "A16", category: shared.categories[3], weight: 4),
+            Question(question: "Q17", answer: "A17", category: shared.categories[4], weight: 1),
+            Question(question: "Q18", answer: "A18", category: shared.categories[4], weight: 2),
+            Question(question: "Q19", answer: "A19", category: shared.categories[4], weight: 3),
+            Question(question: "Q17", answer: "A20", category: shared.categories[4], weight: 4),
         ]
         shared.teams = [
             Team(name: "Team A"),
@@ -38,10 +57,7 @@ class CurrentState: ObservableObject {
             Team(name: "Team C"),
             Team(name: "Team D")
         ]
-        shared.masterQuestion = MasterQuestion(question: "Welche?", answerInternal: 2, optionsInternal: ["1","2","3","4"], image: "Kaiser", solutionImage: "HRR")
-        
-        shared.images["HRR"] = NSImage(named: "HRR")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
-        shared.images["Kaiser"] = NSImage(named: "Kaiser")!.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        shared.masterQuestion = MasterQuestion(question: "Welche?", answerInternal: 2, optionsInternal: ["1","2","3","4"], image: NamedData(name: "Kaiser", data: kaiserData), solutionImage: NamedData(name: "HRR", data: hrrData))
         
         for (index, team) in shared.teams.enumerated() {
             team.addedPoints = index
@@ -76,9 +92,17 @@ class CurrentState: ObservableObject {
         }
     }
     
+    func editCategory(_ category: Category, newName: String) {
+        for i in 0..<categories.count {
+            if categories[i].id == category.id {
+                categories[i].name = newName
+            }
+        }
+    }
+    
     func deleteCategory(_ category: Category) {
         questions.filter { question in
-            question.category == category.name
+            question.category == category.id
         }.forEach { question in
             deleteQuestion(question)
         }
@@ -90,14 +114,57 @@ class CurrentState: ObservableObject {
     
     @Published var questions = [Question]()
     @Published var masterQuestion: MasterQuestion?
-    @Published var images = [String: CGImage]()
+    
+    func testExistenceOfQuestionParams(weight: UInt, category: Category.ID) -> Bool {
+        for questionItem in questions {
+            if questionItem.category == category,
+               questionItem.weight == weight {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+//    private func areNewParamsIllegal(referencedQuestion: Question, newWeight: UInt, newCategory: String) -> Bool {
+//        if newWeight == referencedQuestion.weight,
+//           newCategory == referencedQuestion.category {
+//            return false
+//        } else {
+//            return testExistenceOfQuestionParams(weight: newWeight, category: newCategory)
+//        }
+//    }
+//    
+//    public func editQuestionParams(referencedQuestion: Question, newWeight: UInt, newCategory: String) throws {
+//        if areNewParamsIllegal(referencedQuestion: referencedQuestion, newWeight: newWeight, newCategory: newCategory) {
+//            throw QuizError.questionWeightAlreadyExistsInCategory
+//        }
+//        
+//        for i in 0..<questionsAnswered.count {
+//            if questionsAnswered[i].question.id == referencedQuestion.id {
+//                questionsAnswered[i].question.weight = newWeight
+//                questionsAnswered[i].question.category = newCategory
+//            }
+//        }
+//        
+//        for i in 0..<questionsExempt.count {
+//            if questionsExempt[i].question.id == referencedQuestion.id {
+//                questionsExempt[i].question.weight = newWeight
+//                questionsExempt[i].question.category = newCategory
+//            }
+//        }
+//        
+//        for i in 0..<questions.count {
+//            if questions[i].id == referencedQuestion.id {
+//                questions[i].weight = newWeight
+//                questions[i].category = newCategory
+//            }
+//        }
+//    }
     
     public func addQuestion(question: Question) throws {
-        for questionItem in questions {
-            if questionItem.category == question.category,
-               questionItem.weight == question.weight {
-                throw QuizError.questionWeightAlreadyExistsInCategory
-            }
+        if testExistenceOfQuestionParams(weight: question.weight, category: question.category) {
+            throw QuizError.questionWeightAlreadyExistsInCategory
         }
         
         questions.append(question)
@@ -129,15 +196,16 @@ class CurrentState: ObservableObject {
     
     @Published var showMasterQuestion = false {
         didSet {
-            if showMasterQuestion {
-                if let stage = questionStages["master"] {
-                    questionStage = stage
-                } else {
-                    questionStage = 0
-                }
+            if let masterQuestion,
+               showMasterQuestion,
+               let stage = questionStages[masterQuestion.id] {
+                questionStage = stage
+            } else {
+                questionStage = 0
             }
         }
     }
+    
     @Published var showResults = false
     
     @Published var resultsStage = 0
@@ -154,7 +222,7 @@ class CurrentState: ObservableObject {
         }
     }
     
-    @Published var currentImage: String? = nil
+    @Published var currentImage: NamedData? = nil
     
     func getIndexOfQuestion(_ question: Question) -> Int? {
         questions.firstIndex(of: question)
@@ -171,15 +239,16 @@ class CurrentState: ObservableObject {
     
     @Published var questionStage = 0 {
         didSet {
-            if showMasterQuestion {
-                questionStages["master"] = questionStage
+            if showMasterQuestion,
+               let masterQuestion {
+                questionStages[masterQuestion.id] = questionStage
             } else if let currentQuestionResolved {
                 questionStages[currentQuestionResolved.id] = questionStage
             }
         }
     }
     
-    @Published var questionStages = [String: Int]()
+    @Published var questionStages = [UUID: Int]()
     
     @Published var questionsAnswered = [QuestionAnswer]()
     @Published var questionsExempt = [QuestionExemption]()

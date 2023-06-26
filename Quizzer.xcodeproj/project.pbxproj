@@ -21,6 +21,9 @@
 		DA191B932A2240B20099C07A /* QuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B922A2240B20099C07A /* QuestionControl.swift */; };
 		DA191B952A2247070099C07A /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B942A2247070099C07A /* Team.swift */; };
 		DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA191B9C2A22BA6D0099C07A /* Util.swift */; };
+		DA27112D2A4A0BC50026D89E /* Kaiser.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DA27112B2A4A0BC50026D89E /* Kaiser.jpg */; };
+		DA27112E2A4A0BC50026D89E /* HRR.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DA27112C2A4A0BC50026D89E /* HRR.jpg */; };
+		DA2711302A4A0E250026D89E /* NamedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27112F2A4A0E250026D89E /* NamedData.swift */; };
 		DA631C892A2DDAFB0061BE7D /* MasterQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C882A2DDAFB0061BE7D /* MasterQuestion.swift */; };
 		DA631C8B2A2DEAC80061BE7D /* MasterQuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */; };
 		DA9C26032A495AE2007D274B /* AddQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C26022A495AE2007D274B /* AddQuestionView.swift */; };
@@ -68,6 +71,9 @@
 		DA191B922A2240B20099C07A /* QuestionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionControl.swift; sourceTree = "<group>"; };
 		DA191B942A2247070099C07A /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		DA191B9C2A22BA6D0099C07A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		DA27112B2A4A0BC50026D89E /* Kaiser.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Kaiser.jpg; sourceTree = "<group>"; };
+		DA27112C2A4A0BC50026D89E /* HRR.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = HRR.jpg; sourceTree = "<group>"; };
+		DA27112F2A4A0E250026D89E /* NamedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedData.swift; sourceTree = "<group>"; };
 		DA631C882A2DDAFB0061BE7D /* MasterQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestion.swift; sourceTree = "<group>"; };
 		DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionControl.swift; sourceTree = "<group>"; };
 		DA9C26022A495AE2007D274B /* AddQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddQuestionView.swift; sourceTree = "<group>"; };
@@ -128,6 +134,8 @@
 		DA191B652A21EAAE0099C07A /* Quizzer */ = {
 			isa = PBXGroup;
 			children = (
+				DA27112C2A4A0BC50026D89E /* HRR.jpg */,
+				DA27112B2A4A0BC50026D89E /* Kaiser.jpg */,
 				DA191B662A21EAAE0099C07A /* QuizzerApp.swift */,
 				DA191B9C2A22BA6D0099C07A /* Util.swift */,
 				DA191B832A2212A30099C07A /* Control */,
@@ -157,6 +165,7 @@
 				DA191B792A21F5700099C07A /* Category.swift */,
 				DA191B942A2247070099C07A /* Team.swift */,
 				DACB33AD2A2358850073F39D /* QuestionAnswer.swift */,
+				DA27112F2A4A0E250026D89E /* NamedData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -289,7 +298,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA27112D2A4A0BC50026D89E /* Kaiser.jpg in Resources */,
 				DA191B6E2A21EAB00099C07A /* Preview Assets.xcassets in Resources */,
+				DA27112E2A4A0BC50026D89E /* HRR.jpg in Resources */,
 				DA191B6B2A21EAB00099C07A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,6 +334,7 @@
 				DAF93C4B2A488BDF00319364 /* GeneralControl.swift in Sources */,
 				DA191B7E2A21F8560099C07A /* CurrentState.swift in Sources */,
 				DA191B9D2A22BA6D0099C07A /* Util.swift in Sources */,
+				DA2711302A4A0E250026D89E /* NamedData.swift in Sources */,
 				DAF93C472A485F4B00319364 /* Listings.swift in Sources */,
 				DA191B8F2A22388F0099C07A /* FirstStage.swift in Sources */,
 				DAF93C532A48C71B00319364 /* TeamInfoPanel.swift in Sources */,
@@ -398,6 +410,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -453,6 +466,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -468,6 +482,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Quizzer/Quizzer.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -495,6 +510,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Quizzer/Quizzer.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

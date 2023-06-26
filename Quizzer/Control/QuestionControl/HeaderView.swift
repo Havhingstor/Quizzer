@@ -8,7 +8,7 @@ struct HeaderView: View {
     
     var categoryAndPoints: String {
         if let question {
-            return "\(question.category) - \(question.weight * currentState.baseScore)"
+            return "\(question.categoryObject?.name ?? "N/A") - \(question.weight * currentState.baseScore)"
         } else {
             return ""
         }

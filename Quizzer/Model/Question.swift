@@ -5,16 +5,14 @@ struct Question: Identifiable, Codable, Hashable {
         lhs.id == rhs.id
     }
     
-    let question: String
-    let answer: String
-    var id: String {
-        "\(category) \(weight)"
-    }
+    var question: String
+    var answer: String
+    private (set) var id = UUID()
     
-    let category: String
-    let weight: UInt
-    let image: String?
-    let solutionImage: String?
+    var category: UUID
+    var weight: UInt
+    var image: NamedData?
+    var solutionImage: NamedData?
     
     var answered: Bool {
         givenAnswer != nil
@@ -55,10 +53,16 @@ struct Question: Identifiable, Codable, Hashable {
         }
     }
     
-    init(question: String, answer: String, category: String, weight: UInt, image: String? = nil, solutionImage: String? = nil) {
+    var categoryObject: Category? {
+        CurrentState.shared.categories.first { category in
+            category.id == self.category
+        }
+    }
+    
+    init(question: String, answer: String, category: Category, weight: UInt, image: NamedData? = nil, solutionImage: NamedData? = nil) {
         self.question = question
         self.answer = answer
-        self.category = category
+        self.category = category.id
         self.weight = weight
         self.image = image
         self.solutionImage = solutionImage

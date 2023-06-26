@@ -4,6 +4,7 @@ struct CategoryListing: View {
     @EnvironmentObject private var currentState: CurrentState
     
     @State private var addQuestionShown = false
+    @State private var editCategory = false
     
     @Binding var category: Category
     
@@ -18,9 +19,15 @@ struct CategoryListing: View {
         return false
     }
     
+    private var sortedList: [Binding<Question>] {
+        $currentState.questions.sorted { lhs, rhs in
+            lhs.weight.wrappedValue < rhs.weight.wrappedValue
+        }
+    }
+    
     var body: some View {
         Section {
-            ForEach($currentState.questions) { $question in
+            ForEach(sortedList) { $question in
                 if question.category == category.id {
                     QuestionListing(question: $question)
                 }
@@ -34,6 +41,9 @@ struct CategoryListing: View {
                             category.isShown.toggle()
                         }
                     }
+                    Button("Edit Category") {
+                        editCategory = true
+                    }
                     Button("Delete Category", role: .destructive) {
                         withAnimation {
                             currentState.deleteCategory(category)
@@ -44,7 +54,20 @@ struct CategoryListing: View {
                     }
                 }
                 .sheet(isPresented: $addQuestionShown) {
-                    AddQuestionView(questionType: .question(category: category.name))
+                    AddQuestionView(questionType: .question(category: category))
+                }
+                .sheet(isPresented: $editCategory) {
+                    NameSelectionSheet(groundType: "New Category", typeOfInteraction: "Change") { newName in
+                        if category.name == newName {
+                            return
+                        } else if currentState.categories.contains(where: { item in
+                            item.name == newName
+                        }) {
+                            throw QuizError.categoryNameAlreadyExists
+                        } else {
+                            currentState.editCategory(category, newName: newName)
+                        }
+                    }
                 }
         }
     }
@@ -55,6 +78,7 @@ struct QuestionListing: View {
     @Environment(\.openWindow) private var openWindow
     
     @State var questionDeletionAlertShown = false
+    @State var questionEditSheet = false
     
     @Binding var question: Question
     
@@ -63,7 +87,7 @@ struct QuestionListing: View {
     }
     
     var buttonTitle: String {
-        let category = question.category
+        guard let category = question.categoryObject else { return "N/A" }
         let totalScore = question.weight * currentState.baseScore
         let answered: String
         if question.exempt {
@@ -74,7 +98,7 @@ struct QuestionListing: View {
             answered = "Unanswered"
         }
         
-        return "\(category) - \(totalScore) - \(answered)"
+        return "\(category.name) - \(totalScore) - \(answered)"
     }
     
     func deleteQuestion() {
@@ -122,7 +146,10 @@ struct QuestionListing: View {
                             }
                         }
                     }
-                    Button("Delete Question") {
+                    Button("Edit Question") {
+                        questionEditSheet = true
+                    }
+                    Button("Delete Question", role: .destructive) {
                         if question.answered {
                             questionDeletionAlertShown = true
                         } else {
@@ -135,6 +162,9 @@ struct QuestionListing: View {
                     Button("Delete anyway", role: .destructive) {
                         deleteQuestion()
                     }
+                }
+                .sheet(isPresented: $questionEditSheet) {
+                    AddQuestionView(question: $question)
                 }
                 Spacer()
             }

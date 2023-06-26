@@ -47,9 +47,9 @@ struct AnswerControl: View {
                             Button("Register \(correct ? "correct" : "wrong") answer") {
                                 registerAnswer(correct)
                             }
+                            Button("") {}
+                                .hidden()
                         }
-                        Button("") {}
-                            .hidden()
                     } else {
                         Button("Register correct answer") {
                             registerAnswer(true)

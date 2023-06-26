@@ -1,6 +1,6 @@
 import Foundation
 
-struct MasterQuestion {
+struct MasterQuestion: Codable, Identifiable {
     let question: String
     let answerInternal: Int
     var answer: String {
@@ -16,6 +16,7 @@ struct MasterQuestion {
             "\(MasterQuestion.getAlphabeticalNr(for: UInt(index))): \(option)"
         }
     }
+    private (set) var id = UUID()
     
     static func getAlphabeticalNr(for num: UInt) -> String {
         let higherOrderNumber = num / 26
@@ -27,6 +28,6 @@ struct MasterQuestion {
         return "\(higherOrderStr)\(Unicode.Scalar(newIndex)?.description ?? "")"
     }
     
-    let image: String?
-    let solutionImage: String?
+    let image: NamedData?
+    let solutionImage: NamedData?
 }

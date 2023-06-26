@@ -10,9 +10,9 @@ struct QuizBoard: View {
                 .scaledToFit()
                 .opacity(currentState.isInStartStage ? 1.0 : 0.5)
             
-            if let currentImageStr = currentState.currentImage,
-               let currentImage = currentState.images[currentImageStr] {
-                Image(currentImage, scale: 1.0, label: Text("Solution Image"))
+            if let currentImageData = currentState.currentImage?.data,
+               let currentImage = NSImage(data: currentImageData) {
+                Image(nsImage: currentImage)
                     .resizable()
                     .scaledToFit()
                     .padding()

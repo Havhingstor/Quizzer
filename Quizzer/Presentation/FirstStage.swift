@@ -43,7 +43,7 @@ struct FirstStage: View {
                             if let question = getQuestions(category: category)[weight] {
                                 FirstStageQuestion(question: question)
                             } else {
-                                FirstStageQuestion(question: .constant(Question(question: "", answer: "", category: "", weight: 0)))
+                                FirstStageQuestion(question: .constant(Question(question: "N/A", answer: "N/A", category: Category(name: "N/A"), weight: 0)))
                                     .hidden()
                             }
                             Spacer()

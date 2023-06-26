@@ -31,6 +31,9 @@ struct NameSelectionSheet: View {
             Button(typeOfInteraction) {
                 submit()
             }
+            Button("Cancel", role: .cancel) {
+                dismiss()
+            }
         }
         .padding()
         .alert("This Name already exists!", isPresented: $additionAlert) {
