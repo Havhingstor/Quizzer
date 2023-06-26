@@ -48,6 +48,8 @@ struct AnswerControl: View {
                                 registerAnswer(correct)
                             }
                         }
+                        Button("") {}
+                            .hidden()
                     } else {
                         Button("Register correct answer") {
                             registerAnswer(true)

@@ -29,11 +29,11 @@ struct CategoriesView: View {
             .onMove(perform: currentState.moveCategory)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .frame(width: width)
         .padding()
         .overlay(alignment: .topLeading) {
             addButton
         }
-        .frame(width: width)
     }
 }
 

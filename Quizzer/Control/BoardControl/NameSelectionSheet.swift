@@ -13,7 +13,9 @@ struct NameSelectionSheet: View {
     
     func submit() {
         do {
-            try additionFunc(newName)
+            try withAnimation {
+                try additionFunc(newName)
+            }
             dismiss()
         } catch {
             additionAlert = true
@@ -32,9 +34,7 @@ struct NameSelectionSheet: View {
         }
         .padding()
         .alert("This Name already exists!", isPresented: $additionAlert) {
-            Button("OK", role: .cancel) {
-                dismiss()
-            }
+            Button("OK", role: .cancel) {}
         }
     }
 }
