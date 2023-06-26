@@ -4,7 +4,7 @@ struct GeneralFlowControls: View {
     @EnvironmentObject private var currentState: CurrentState
     @Environment(\.openWindow) private var openWindow
     
-    @FocusState var showNextCategoryFocus
+    @FocusState var nextTeamFocus
     
     func canCategoryBeShown() -> Bool {
         for category in currentState.categories {
@@ -45,6 +45,10 @@ struct GeneralFlowControls: View {
                 }
             }
             .labelsHidden()
+            .focused($nextTeamFocus)
+            .onAppear(perform: {
+                nextTeamFocus = true
+            })
         }
         .padding()
     }
@@ -56,10 +60,6 @@ struct GeneralFlowControls: View {
         }
         .keyboardShortcut("#")
         .disabled(!canCategoryBeShown())
-        .focused($showNextCategoryFocus)
-        .onAppear(perform: {
-            showNextCategoryFocus = true
-        })
     }
     
     @ViewBuilder
