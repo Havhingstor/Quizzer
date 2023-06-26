@@ -47,22 +47,6 @@ struct AnswerControl: View {
                             Button("Register \(correct ? "correct" : "wrong") answer") {
                                 registerAnswer(correct)
                             }
-                            Group {
-                                if currentState.currentImage == question?.solutionImage {
-                                    Button("Hide solution image") {
-                                        withAnimation {
-                                            currentState.currentImage = nil
-                                        }
-                                    }
-                                } else {
-                                    Button("Show solution image") {
-                                        withAnimation {
-                                            currentState.currentImage = question?.solutionImage
-                                        }
-                                    }
-                                }
-                            }
-                            .hide(if: question?.solutionImage == nil)
                         }
                     } else {
                         Button("Register correct answer") {

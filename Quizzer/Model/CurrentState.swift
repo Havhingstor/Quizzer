@@ -77,12 +77,20 @@ class CurrentState: ObservableObject {
     }
     
     func deleteCategory(_ category: Category) {
-        categories.removeAll { item in
-            item.id == category.id
+        questionsAnswered.removeAll { answer in
+            answer.question.category == category.name
+        }
+        
+        questionsExempt.removeAll { exemption in
+            exemption.question.category == category.name
         }
         
         questions.removeAll { item in
             item.category == category.name
+        }
+        
+        categories.removeAll { item in
+            item.id == category.id
         }
     }
     
