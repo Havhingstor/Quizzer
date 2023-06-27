@@ -30,6 +30,7 @@ struct CategoryListing: View {
             ForEach(sortedList) { $question in
                 if question.category == category.id {
                     QuestionListing(question: $question)
+                        .listRowSeparator(.hidden)
                 }
             }
         } header: {
@@ -70,6 +71,7 @@ struct CategoryListing: View {
                     }
                 }
         }
+        .listSectionSeparator(.hidden)
     }
 }
 

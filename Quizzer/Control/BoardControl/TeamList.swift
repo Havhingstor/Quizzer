@@ -25,6 +25,7 @@ struct TeamList: View {
             List {
                 ForEach(teamListSorted) { team in
                     TeamListItem(team: team, teamInfoPanel: $teamInfoPanel, teamDeletionAlert: $teamDeletionAlert)
+                        .listRowSeparator(.hidden)
                 }
                 .onMove( perform: sorting == .sequence ? { from, to in
                     currentState.moveTeams(from: from, to: to)
