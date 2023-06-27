@@ -4,7 +4,9 @@ struct GeneralFlowControls: View {
     @EnvironmentObject private var currentState: CurrentState
     @Environment(\.openWindow) private var openWindow
     
-    @FocusState var nextTeamFocus
+    @FocusState private var nextTeamFocus
+    
+    @State private var editShown = false
     
     func canCategoryBeShown() -> Bool {
         for category in currentState.categories {
@@ -64,20 +66,33 @@ struct GeneralFlowControls: View {
     
     @ViewBuilder
     private var masterQuestionButtonAssembly: some View {
-        if !currentState.showMasterQuestion {
-            masterQuestionButton
-                .disabled(!currentState.masterQuestionActivated)
-                .contextMenu {
-                    if !currentState.masterQuestionActivated {
-                        masterQuestionButton
+        Group {
+            if !currentState.showMasterQuestion {
+                masterQuestionButton
+                    .disabled(!currentState.masterQuestionActivated)
+                    .contextMenu {
+                        if !currentState.masterQuestionActivated {
+                            masterQuestionButton
+                        }
+                        Button("Edit Master Question") {
+                            editShown = true
+                        }
+                    }
+            } else {
+                Button("Hide Master Question") {
+                    withAnimation {
+                        currentState.showMasterQuestion = false
                     }
                 }
-        } else {
-            Button("Hide Master Question") {
-                withAnimation {
-                    currentState.showMasterQuestion = false
+                .contextMenu {
+                    Button("Edit Master Question") {
+                        editShown = true
+                    }
                 }
             }
+        }
+        .sheet(isPresented: $editShown) {
+            MasterQuestionEditView()
         }
     }
     

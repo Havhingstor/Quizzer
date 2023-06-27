@@ -98,6 +98,7 @@ struct MasterQuestionView: View {
                             .scaledToFit()
                             .padding()
                             .padding(.trailing)
+                            .animation(.none, value: currentState.questionStage)
                     }
                 }
             }

@@ -349,4 +349,5 @@ enum QuizError: Error {
     case teamNameAlreadyExists
     case categoryNameAlreadyExists
     case questionWeightAlreadyExistsInCategory
+    case optionAlreadyExists
 }

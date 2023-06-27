@@ -24,26 +24,29 @@ struct NameSelectionSheet: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            TextField("\(groundType) Name", text: $newName)
+            TextField(groundType, text: $newName)
                 .onSubmit {
                     submit()
                 }
-            Button(typeOfInteraction) {
-                submit()
-            }
-            Button("Cancel", role: .cancel) {
-                dismiss()
+            VStack {
+                Button(typeOfInteraction) {
+                    submit()
+                }
+                Button("Cancel", role: .cancel) {
+                    dismiss()
+                }
             }
         }
         .padding()
         .alert("This Name already exists!", isPresented: $additionAlert) {
             Button("OK", role: .cancel) {}
         }
+        .frame(minWidth: 150)
     }
 }
 
 #Preview {
     let currentState = CurrentState.examples
-    return NameSelectionSheet(groundType: "Team", additionFunc: currentState.addTeam)
+    return NameSelectionSheet(groundType: "Team Name", additionFunc: currentState.addTeam)
         .environmentObject(currentState)
 }

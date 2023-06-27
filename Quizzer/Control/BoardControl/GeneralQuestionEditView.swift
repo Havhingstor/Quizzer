@@ -63,8 +63,6 @@ struct GeneralQuestionEditView: View {
         Group {
             Group {
                 TextField("Question:", text: $referencedQuestion.question)
-                TextField("True Answer:", text: $referencedQuestion.answer)
-                
                 Spacer(minLength: 20)
             }
             

@@ -17,7 +17,7 @@ struct CategoriesView: View {
         .buttonStyle(.borderless)
         .padding(2)
         .sheet(isPresented: $addCategorySheet) {
-            NameSelectionSheet(groundType: "Category", additionFunc: currentState.addCategory)
+            NameSelectionSheet(groundType: "Category Name", additionFunc: currentState.addCategory)
         }
     }
     

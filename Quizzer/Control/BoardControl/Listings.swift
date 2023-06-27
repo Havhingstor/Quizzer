@@ -57,7 +57,7 @@ struct CategoryListing: View {
                     QuestionEditView()
                 }
                 .sheet(isPresented: $editCategory) {
-                    NameSelectionSheet(groundType: "New Category", typeOfInteraction: "Change") { newName in
+                    NameSelectionSheet(groundType: "New Category Name", typeOfInteraction: "Change") { newName in
                         if category.name == newName {
                             return
                         } else if currentState.categories.contains(where: { item in

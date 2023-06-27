@@ -68,6 +68,12 @@ struct QuestionEditView: View {
             GeneralQuestionEditView(referencedQuestion: referencedQuestion)
             
             Group {
+                TextField("True Answer:", text: $referencedQuestion.answer)
+                
+                Spacer(minLength: 20)
+            }
+            
+            Group {
                 Button("Submit") {
                     submit()
                 }
@@ -89,7 +95,8 @@ struct QuestionEditView: View {
         .alert("The combination of Category and Weight already exists", isPresented: $alreadyExistsErrorShown) {
             Button("OK") {}
         }
-        .fixedSize()
+        .frame(minWidth: 400)
+        .fixedSize(horizontal: true, vertical: false)
     }
 }
 

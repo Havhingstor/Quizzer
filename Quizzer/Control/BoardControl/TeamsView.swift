@@ -38,7 +38,7 @@ struct TeamsView: View {
         .buttonStyle(.borderless)
         .padding(2)
         .sheet(isPresented: $addTeamSheet) {
-            NameSelectionSheet(groundType: "Team", additionFunc: currentState.addTeam)
+            NameSelectionSheet(groundType: "Team Name", additionFunc: currentState.addTeam)
         }
     }
     
