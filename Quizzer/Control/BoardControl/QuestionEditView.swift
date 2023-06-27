@@ -1,0 +1,101 @@
+import SwiftUI
+
+struct QuestionEditView: View {
+    @EnvironmentObject private var currentState: CurrentState
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openWindow) private var openWindow
+    
+    @State private var alreadyExistsErrorShown = false
+    @Bindable private var referencedQuestion: QuestionVars
+    
+    private var editedQuestion = nil as Binding<Question>?
+    
+    var paramsIllegal: Bool {
+        if let editedQuestion,
+           editedQuestion.wrappedValue.weight == referencedQuestion.weight,
+            editedQuestion.wrappedValue.category == referencedQuestion.category {
+            return false
+        } else {
+            return currentState.testExistenceOfQuestionParams(weight: referencedQuestion.weight, category: referencedQuestion.category)
+        }
+    }
+    
+    func submit() {
+        if let editedQuestion {
+            if paramsIllegal {
+                alreadyExistsErrorShown = true
+            } else {
+                withAnimation {
+                    editedQuestion.wrappedValue = referencedQuestion.questionObject
+                }
+                dismiss()
+            }
+        } else {
+            do {
+                try withAnimation {
+                    try currentState.addQuestion(question: referencedQuestion.questionObject)
+                }
+                dismiss()
+            } catch {
+                alreadyExistsErrorShown = true
+            }
+        }
+    }
+    
+    init() {
+        referencedQuestion = QuestionVars(questionObject: Question(question: "", answer: "", category: Category(name: "N/A"), weight: 0))
+    }
+    
+    init(question: Binding<Question>) {
+        referencedQuestion = QuestionVars(questionObject: question.wrappedValue)
+        editedQuestion = question
+    }
+    
+    var body: some View {
+        Form {
+            Group {
+                Picker("Category", selection: $referencedQuestion.category) {
+                    ForEach(currentState.categories) { category in
+                        Text("\(category.name)").tag(category.id)
+                    }
+                }
+                TextField("Weight:", value: $referencedQuestion.weight, format: .number)
+                Text("Points: \(referencedQuestion.weight * currentState.baseScore)")
+                
+                Spacer(minLength: 20)
+            }
+            
+            GeneralQuestionEditView(referencedQuestion: referencedQuestion)
+            
+            Group {
+                Button("Submit") {
+                    submit()
+                }
+                
+                Button("Cancel", role: .cancel) {
+                    dismiss()
+                }
+            }
+        }
+        .padding()
+        .onAppear(perform: {
+            guard let category = currentState.categories.first else { return }
+            
+            referencedQuestion.category = category.id
+        })
+        .onSubmit {
+            submit()
+        }
+        .alert("The combination of Category and Weight already exists", isPresented: $alreadyExistsErrorShown) {
+            Button("OK") {}
+        }
+        .fixedSize()
+    }
+}
+
+#Preview {
+    QuestionEditView()
+        .fixedSize()
+        .padding()
+        .environmentObject(CurrentState.examples)
+}
