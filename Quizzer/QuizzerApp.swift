@@ -1,8 +1,13 @@
 import SwiftUI
+import OSLog
 
 @main
 struct QuizzerApp: App {
-    @StateObject private var currentState = CurrentState.examples
+    @StateObject private var currentState = CurrentState.shared
+    @State private var saveDialogShown = false
+    @State private var loadDialogShown = false
+    @State private var loadErrorShown = false
+    @State private var loadError = nil as Error?
     
     func calculateSize(image: NSImage) -> NSSize {
         let maxWidth = 1300 as Double
@@ -26,14 +31,54 @@ struct QuizzerApp: App {
                 .environmentObject(currentState)
                 .foregroundColor(.black)
         }
-        .keyboardShortcut("q")
         
         Window("Control", id: "ctrl") {
             BoardControl()
                 .environmentObject(currentState)
+                .fileExporter(isPresented: $saveDialogShown, document: currentState.storageContainer, contentType: .quizDocument, defaultFilename: "Quiz.quiz") { _ in }
+                .fileImporter(isPresented: $loadDialogShown, allowedContentTypes: [.quizDocument]) { result in
+                    do {
+                        let url = try result.get()
+                        if url.startAccessingSecurityScopedResource() {
+                            defer {
+                                url.stopAccessingSecurityScopedResource()
+                            }
+                            let data = try Data(contentsOf: url)
+                            currentState.storageContainer = try StorageContainer(data: data)
+                        } else {
+                            throw CocoaError(.fileReadCorruptFile)
+                        }
+                    } catch {
+                        loadError = error
+                        loadErrorShown = true
+                    }
+                }
+                .alert("Could not be loaded", isPresented: $loadErrorShown) {
+                    Button("OK"){}
+                } message: {
+                    if let loadError {
+                        Text("\(loadError.localizedDescription)")
+                    }
+                }
+
         }
         .windowResizability(.contentSize)
         .keyboardShortcut("c")
+        .commands {
+            CommandGroup(after: .newItem) {
+                Button("Save Quiz") {
+                    saveDialogShown = true
+                }
+                .keyboardShortcut("S")
+                Button("Open Quiz") {
+                    loadDialogShown = true
+                }
+                .keyboardShortcut("O")
+                Button("Load default Quiz") {
+                    _ = CurrentState.examples
+                }
+            }
+        }
         
         Window("Question Presentation", id: "qst") {
             if currentState.showMasterQuestion {
@@ -54,7 +99,6 @@ struct QuizzerApp: App {
             }
         }
         .windowResizability(.contentSize)
-        .keyboardShortcut("q", modifiers: [.shift, .command])
         
         WindowGroup("Question - QuickLook", for: Question.self) { q in
             QuestionControl(question: q, isQL: true)
@@ -67,7 +111,6 @@ struct QuizzerApp: App {
                 .environmentObject(currentState)
         }
         .windowResizability(.contentSize)
-        .keyboardShortcut("r")
         
         WindowGroup(for: Data.self) { dataBind in
             if let data = dataBind.wrappedValue,

@@ -70,9 +70,18 @@ class CurrentState: ObservableObject {
     
     static let shared = CurrentState()
     
-    @Published var categories = [Category]() {
+    @Published var storageContainer = StorageContainer() {
         didSet {
             isInStartStage = categories.filter { $0.isShown }.count == 0
+        }
+    }
+    
+    var categories: [Category] {
+        get {
+            storageContainer.categories
+        }
+        set {
+            storageContainer.categories = newValue
         }
     }
     
@@ -112,8 +121,23 @@ class CurrentState: ObservableObject {
         }
     }
     
-    @Published var questions = [Question]()
-    @Published var masterQuestion: MasterQuestion?
+    var questions: [Question] {
+        get {
+            storageContainer.questions
+        }
+        set {
+            storageContainer.questions = newValue
+        }
+    }
+    
+    var masterQuestion: MasterQuestion? {
+        get {
+            storageContainer.masterQuestion
+        }
+        set {
+            storageContainer.masterQuestion = newValue
+        }
+    }
     
     func testExistenceOfQuestionParams(weight: UInt, category: Category.ID) -> Bool {
         for questionItem in questions {
@@ -125,42 +149,6 @@ class CurrentState: ObservableObject {
         
         return false
     }
-    
-//    private func areNewParamsIllegal(referencedQuestion: Question, newWeight: UInt, newCategory: String) -> Bool {
-//        if newWeight == referencedQuestion.weight,
-//           newCategory == referencedQuestion.category {
-//            return false
-//        } else {
-//            return testExistenceOfQuestionParams(weight: newWeight, category: newCategory)
-//        }
-//    }
-//    
-//    public func editQuestionParams(referencedQuestion: Question, newWeight: UInt, newCategory: String) throws {
-//        if areNewParamsIllegal(referencedQuestion: referencedQuestion, newWeight: newWeight, newCategory: newCategory) {
-//            throw QuizError.questionWeightAlreadyExistsInCategory
-//        }
-//        
-//        for i in 0..<questionsAnswered.count {
-//            if questionsAnswered[i].question.id == referencedQuestion.id {
-//                questionsAnswered[i].question.weight = newWeight
-//                questionsAnswered[i].question.category = newCategory
-//            }
-//        }
-//        
-//        for i in 0..<questionsExempt.count {
-//            if questionsExempt[i].question.id == referencedQuestion.id {
-//                questionsExempt[i].question.weight = newWeight
-//                questionsExempt[i].question.category = newCategory
-//            }
-//        }
-//        
-//        for i in 0..<questions.count {
-//            if questions[i].id == referencedQuestion.id {
-//                questions[i].weight = newWeight
-//                questions[i].category = newCategory
-//            }
-//        }
-//    }
     
     public func addQuestion(question: Question) throws {
         if testExistenceOfQuestionParams(weight: question.weight, category: question.category) {

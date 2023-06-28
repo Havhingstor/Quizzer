@@ -1,6 +1,6 @@
 import Foundation
 
-struct Category: Identifiable, Hashable {
+struct Category: Identifiable, Hashable, Codable {
     var name: String
     private (set) var id = UUID()
     

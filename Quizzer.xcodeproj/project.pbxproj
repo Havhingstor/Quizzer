@@ -24,6 +24,7 @@
 		DA27112D2A4A0BC50026D89E /* Kaiser.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DA27112B2A4A0BC50026D89E /* Kaiser.jpg */; };
 		DA27112E2A4A0BC50026D89E /* HRR.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DA27112C2A4A0BC50026D89E /* HRR.jpg */; };
 		DA2711302A4A0E250026D89E /* NamedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA27112F2A4A0E250026D89E /* NamedData.swift */; };
+		DA33D01D2A4C8333008E7CB9 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = DA33D01C2A4C8333008E7CB9 /* ZIPFoundation */; };
 		DA631C892A2DDAFB0061BE7D /* MasterQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C882A2DDAFB0061BE7D /* MasterQuestion.swift */; };
 		DA631C8B2A2DEAC80061BE7D /* MasterQuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */; };
 		DA9C26032A495AE2007D274B /* QuestionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C26022A495AE2007D274B /* QuestionEditView.swift */; };
@@ -36,6 +37,7 @@
 		DACD193F2A3C4F8A0025A6B6 /* AnswerControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */; };
 		DACD19412A3C4FAD0025A6B6 /* ExemptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */; };
 		DACD19432A3CC2C70025A6B6 /* MasterQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19422A3CC2C70025A6B6 /* MasterQuestionView.swift */; };
+		DAD047352A4C03F500DD1D2B /* StorageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD047342A4C03F500DD1D2B /* StorageContainer.swift */; };
 		DADB10312A48DDEA004B6024 /* TeamListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADB10302A48DDEA004B6024 /* TeamListItem.swift */; };
 		DADE99902A4B053600E2BCCA /* GeneralQuestionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADE998F2A4B053600E2BCCA /* GeneralQuestionEditView.swift */; };
 		DADE99922A4B13AA00E2BCCA /* QuestionVars.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADE99912A4B13AA00E2BCCA /* QuestionVars.swift */; };
@@ -79,6 +81,7 @@
 		DA27112F2A4A0E250026D89E /* NamedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedData.swift; sourceTree = "<group>"; };
 		DA631C882A2DDAFB0061BE7D /* MasterQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestion.swift; sourceTree = "<group>"; };
 		DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionControl.swift; sourceTree = "<group>"; };
+		DA74FE092A4C277300323C07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DA9C26022A495AE2007D274B /* QuestionEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionEditView.swift; sourceTree = "<group>"; };
 		DA9D5FA52A2736620010928A /* TeamListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListing.swift; sourceTree = "<group>"; };
 		DACB33AD2A2358850073F39D /* QuestionAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAnswer.swift; sourceTree = "<group>"; };
@@ -89,6 +92,7 @@
 		DACD193E2A3C4F8A0025A6B6 /* AnswerControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerControl.swift; sourceTree = "<group>"; };
 		DACD19402A3C4FAD0025A6B6 /* ExemptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExemptView.swift; sourceTree = "<group>"; };
 		DACD19422A3CC2C70025A6B6 /* MasterQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterQuestionView.swift; sourceTree = "<group>"; };
+		DAD047342A4C03F500DD1D2B /* StorageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageContainer.swift; sourceTree = "<group>"; };
 		DADB10302A48DDEA004B6024 /* TeamListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListItem.swift; sourceTree = "<group>"; };
 		DADE998F2A4B053600E2BCCA /* GeneralQuestionEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralQuestionEditView.swift; sourceTree = "<group>"; };
 		DADE99912A4B13AA00E2BCCA /* QuestionVars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionVars.swift; sourceTree = "<group>"; };
@@ -115,6 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA33D01D2A4C8333008E7CB9 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +145,7 @@
 		DA191B652A21EAAE0099C07A /* Quizzer */ = {
 			isa = PBXGroup;
 			children = (
+				DA74FE092A4C277300323C07 /* Info.plist */,
 				DA27112C2A4A0BC50026D89E /* HRR.jpg */,
 				DA27112B2A4A0BC50026D89E /* Kaiser.jpg */,
 				DA191B662A21EAAE0099C07A /* QuizzerApp.swift */,
@@ -172,6 +178,7 @@
 				DA191B942A2247070099C07A /* Team.swift */,
 				DACB33AD2A2358850073F39D /* QuestionAnswer.swift */,
 				DA27112F2A4A0E250026D89E /* NamedData.swift */,
+				DAD047342A4C03F500DD1D2B /* StorageContainer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -263,8 +270,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				DA33D01F2A4C8342008E7CB9 /* PBXTargetDependency */,
 			);
 			name = Quizzer;
+			packageProductDependencies = (
+				DA33D01C2A4C8333008E7CB9 /* ZIPFoundation */,
+			);
 			productName = Quizzer;
 			productReference = DA191B632A21EAAE0099C07A /* Quizzer.app */;
 			productType = "com.apple.product-type.application";
@@ -293,6 +304,9 @@
 				Base,
 			);
 			mainGroup = DA191B5A2A21EAAE0099C07A;
+			packageReferences = (
+				DA33D01B2A4C8333008E7CB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+			);
 			productRefGroup = DA191B642A21EAAE0099C07A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -365,10 +379,18 @@
 				DAF93C3E2A48561F00319364 /* MasterQuestionAndAnswer.swift in Sources */,
 				DA191B8B2A2235DC0099C07A /* QuestionView.swift in Sources */,
 				DA191B7A2A21F5700099C07A /* Category.swift in Sources */,
+				DAD047352A4C03F500DD1D2B /* StorageContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DA33D01F2A4C8342008E7CB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = DA33D01E2A4C8342008E7CB9 /* ZIPFoundation */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DA191B702A21EAB00099C07A /* Debug */ = {
@@ -503,6 +525,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Quizzer/Info.plist;
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -531,6 +555,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Quizzer/Info.plist;
+				INFOPLIST_KEY_NSFileProviderPresenceUsageDescription = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -566,6 +592,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DA33D01B2A4C8333008E7CB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.16;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DA33D01C2A4C8333008E7CB9 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA33D01B2A4C8333008E7CB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		DA33D01E2A4C8342008E7CB9 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA33D01B2A4C8333008E7CB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DA191B5B2A21EAAE0099C07A /* Project object */;
 }
