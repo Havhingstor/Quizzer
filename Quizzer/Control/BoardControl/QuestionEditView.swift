@@ -6,7 +6,7 @@ struct QuestionEditView: View {
     @Environment(\.openWindow) private var openWindow
     
     @State private var alreadyExistsErrorShown = false
-    @Bindable private var referencedQuestion: QuestionVars
+    @StateObject private var referencedQuestion: QuestionVars
     
     private var editedQuestion = nil as Binding<Question>?
     
@@ -26,28 +26,29 @@ struct QuestionEditView: View {
                 alreadyExistsErrorShown = true
             } else {
                 withAnimation {
-                    editedQuestion.wrappedValue = referencedQuestion.questionObject
+                    editedQuestion.wrappedValue = referencedQuestion.toQuestion()
                 }
                 dismiss()
             }
         } else {
             do {
                 try withAnimation {
-                    try currentState.addQuestion(question: referencedQuestion.questionObject)
+                    try currentState.addQuestion(question: referencedQuestion.toQuestion())
                 }
                 dismiss()
             } catch {
                 alreadyExistsErrorShown = true
             }
         }
+        currentState.storageContainer.cleanImages()
     }
     
     init() {
-        referencedQuestion = QuestionVars(questionObject: Question(question: "", answer: "", category: Category(name: "N/A"), weight: 0))
+        _referencedQuestion = StateObject(wrappedValue: QuestionVars(questionObject: Question(question: "", answer: "", category: Category(name: "N/A"), weight: 0)))
     }
     
     init(question: Binding<Question>) {
-        referencedQuestion = QuestionVars(questionObject: question.wrappedValue)
+        _referencedQuestion = StateObject(wrappedValue: QuestionVars(questionObject: question.wrappedValue))
         editedQuestion = question
     }
     

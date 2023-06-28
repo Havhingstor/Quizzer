@@ -4,30 +4,19 @@ struct MasterQuestionEditView: View {
     @EnvironmentObject private var currentState: CurrentState
     @Environment(\.dismiss) private var dismiss
     
-    @State var options = [String]()
-    @State var selectedOptions = Set<String>()
-    @State var trueOption = nil as String?
-    @State var addOptionSheetPresented = false
+    @State private var selectedOptions = Set<String>()
+    @State private var trueOption = nil as String?
+    @State private var addOptionSheetPresented = false
     
-    private var referencedQuestion: QuestionVars
+    @StateObject private var referencedQuestion: QuestionVars
     
     init() {
-        let question = Question(question: "", answer: "", category: Category(name: ""), weight: 0)
-        referencedQuestion = QuestionVars(questionObject: question)
-    }
-    
-    func loadFromMasterQuestion() {
-        guard let masterQuestion = currentState.masterQuestion else { return }
-        referencedQuestion.question = masterQuestion.question
-        referencedQuestion.image = masterQuestion.image
-        referencedQuestion.solutionImage = masterQuestion.solutionImage
-        options = masterQuestion.optionsInternal
-        trueOption = options[masterQuestion.answerInternal]
+        _referencedQuestion = StateObject(wrappedValue: QuestionVars.initFromMasterQuestion())
     }
     
     func deleteSelected() {
         for option in selectedOptions {
-            options.removeAll { optionItem in
+            referencedQuestion.options.removeAll { optionItem in
                 optionItem == option
             }
         }
@@ -36,19 +25,11 @@ struct MasterQuestionEditView: View {
     }
     
     func submit() {
-        defer {
-            dismiss()
-        }
-        
-        let id = currentState.masterQuestion?.id ?? UUID()
-        let answerIndex = options.firstIndex(of: trueOption ?? "") ?? 0
-        let options = !options.isEmpty ? options : ["N/A"]
-        
-        let newMasterQuestion = MasterQuestion(question: referencedQuestion.question, answerInternal: answerIndex, optionsInternal: options, id: id, image: referencedQuestion.image, solutionImage: referencedQuestion.solutionImage)
-        
         withAnimation {
-            currentState.masterQuestion = newMasterQuestion
+            referencedQuestion.saveToMasterQuestion()
         }
+        dismiss()
+        currentState.storageContainer.cleanImages()
     }
     
     var body: some View {
@@ -57,7 +38,7 @@ struct MasterQuestionEditView: View {
             
             Group {
                 List(selection: $selectedOptions) {
-                    ForEach(options, id: \.self) { option in
+                    ForEach(referencedQuestion.options, id: \.self) { option in
                         Text("\(option)")
                             .foregroundColor(option == trueOption ? .accentColor : .primary)
                             .onTapGesture(count: 2) {
@@ -80,7 +61,7 @@ struct MasterQuestionEditView: View {
                             }
                     }
                     .onMove { fromOffsets, toOffset in
-                        options.move(fromOffsets: fromOffsets, toOffset: toOffset)
+                        referencedQuestion.options.move(fromOffsets: fromOffsets, toOffset: toOffset)
                     }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -120,16 +101,13 @@ struct MasterQuestionEditView: View {
             }
         }
         .padding()
-        .onAppear {
-            loadFromMasterQuestion()
-        }
         .sheet(isPresented: $addOptionSheetPresented) {
             NameSelectionSheet(groundType: "Option") { option in
-                guard !options.contains(where: { optionItem in
+                guard !referencedQuestion.options.contains(where: { optionItem in
                     option == optionItem
                 }) else { throw QuizError.optionAlreadyExists }
                 
-                options.append(option)
+                referencedQuestion.options.append(option)
             }
         }
         .frame(minWidth: 400)

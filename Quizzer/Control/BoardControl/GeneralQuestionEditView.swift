@@ -12,7 +12,7 @@ struct GeneralQuestionEditView: View {
     @State private var showFileImportDialog = false
     @State private var imageType = ImageType.question
     
-    @Bindable var referencedQuestion: QuestionVars
+    @StateObject var referencedQuestion: QuestionVars
     
     @ViewBuilder
     var questionImageSelector: some View {

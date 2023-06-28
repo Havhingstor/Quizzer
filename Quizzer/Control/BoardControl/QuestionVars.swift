@@ -1,65 +1,52 @@
 import Foundation
 import Observation
 
-@Observable
-class QuestionVars {
-    var questionObject = Question(question: "", answer: "", category: Category(name: ""), weight: 0)
+class QuestionVars: ObservableObject {
     
     init(questionObject: Question) {
-        self.questionObject = questionObject
+        question = questionObject.question
+        answer = questionObject.question
+        category = questionObject.category
+        weight = questionObject.weight
+        image = questionObject.image
+        solutionImage = questionObject.solutionImage
     }
     
-    var question: String {
-        get {
-            questionObject.question
+    static func initFromMasterQuestion() -> QuestionVars {
+        let result = QuestionVars()
+        
+        if let masterQuestion = CurrentState.shared.masterQuestion {
+            result.question = masterQuestion.question
+            result.image = masterQuestion.image
+            result.solutionImage = masterQuestion.solutionImage
+            result.options = masterQuestion.optionsInternal
+            result.answerIndex = masterQuestion.answerInternal
+            result.id = masterQuestion.id
         }
-        set {
-            questionObject.question = newValue
-        }
+        
+        return result
     }
     
-    var answer: String {
-        get {
-            questionObject.answer
-        }
-        set {
-            questionObject.answer = newValue
-        }
+    private init() {}
+    
+    @Published var question = ""
+    @Published var answer = ""
+    @Published var options = [String]()
+    @Published var answerIndex = 0
+    @Published var category = UUID()
+    @Published var weight = 0 as UInt
+    var image = nil as NamedData? 
+    var solutionImage = nil as NamedData?
+    @Published var id = UUID()
+    
+    func toQuestion() -> Question {
+        let currentState = CurrentState.shared
+        let categoryObj = currentState.categories.first(where: {$0.id == category}) ?? Category(name: "")
+        return Question(question: question, answer: answer, category: categoryObj, weight: weight, image: image, solutionImage: solutionImage)
     }
     
-    var category: UUID {
-        get {
-            questionObject.category
-        }
-        set {
-            questionObject.category = newValue
-        }
-    }
-    
-    var weight: UInt {
-        get {
-            questionObject.weight
-        }
-        set {
-            questionObject.weight = newValue
-        }
-    }
-    
-    var image: NamedData? {
-        get {
-            questionObject.image
-        }
-        set {
-            questionObject.image = newValue
-        }
-    }
-    
-    var solutionImage: NamedData? {
-        get {
-            questionObject.solutionImage
-        }
-        set {
-            questionObject.solutionImage = newValue
-        }
+    func saveToMasterQuestion() {
+        let currentState = CurrentState.shared
+        currentState.masterQuestion = MasterQuestion(question: question, answerInternal: answerIndex, optionsInternal: options, id: id, image: image, solutionImage: solutionImage)
     }
 }
