@@ -8,10 +8,10 @@ struct MasterQuestionEditView: View {
     @State private var trueOption = nil as String?
     @State private var addOptionSheetPresented = false
     
-    @StateObject private var referencedQuestion: QuestionVars
+    @Bindable private var referencedQuestion: QuestionVars
     
     init() {
-        _referencedQuestion = StateObject(wrappedValue: QuestionVars.initFromMasterQuestion())
+        referencedQuestion = QuestionVars.initFromMasterQuestion()
     }
     
     func deleteSelected() {

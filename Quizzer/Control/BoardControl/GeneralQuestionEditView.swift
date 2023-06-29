@@ -12,7 +12,7 @@ struct GeneralQuestionEditView: View {
     @State private var showFileImportDialog = false
     @State private var imageType = ImageType.question
     
-    @StateObject var referencedQuestion: QuestionVars
+    @Bindable var referencedQuestion: QuestionVars
     
     @ViewBuilder
     var questionImageSelector: some View {
@@ -82,7 +82,7 @@ struct GeneralQuestionEditView: View {
                         }
                         
                         if let data = try? Data(contentsOf: url) {
-                            let namedData = NamedData(name: url.lastPathComponent, data: data)
+                            let namedData = StoredNamedData(name: url.lastPathComponent, data: data)
                             switch imageType {
                                 case .question:
                                     referencedQuestion.image = namedData

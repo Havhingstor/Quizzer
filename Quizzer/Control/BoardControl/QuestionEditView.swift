@@ -6,7 +6,7 @@ struct QuestionEditView: View {
     @Environment(\.openWindow) private var openWindow
     
     @State private var alreadyExistsErrorShown = false
-    @StateObject private var referencedQuestion: QuestionVars
+    @Bindable private var referencedQuestion: QuestionVars
     
     private var editedQuestion = nil as Binding<Question>?
     
@@ -44,11 +44,11 @@ struct QuestionEditView: View {
     }
     
     init() {
-        _referencedQuestion = StateObject(wrappedValue: QuestionVars(questionObject: Question(question: "", answer: "", category: Category(name: "N/A"), weight: 0)))
+        referencedQuestion = QuestionVars(questionObject: Question(question: "", answer: "", category: Category(name: "N/A"), weight: 0))
     }
     
     init(question: Binding<Question>) {
-        _referencedQuestion = StateObject(wrappedValue: QuestionVars(questionObject: question.wrappedValue))
+        referencedQuestion = QuestionVars(questionObject: question.wrappedValue)
         editedQuestion = question
     }
     
