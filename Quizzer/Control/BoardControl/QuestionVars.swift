@@ -29,7 +29,7 @@ class QuestionVars {
     
     init(questionObject: Question) {
         question = questionObject.question
-        answer = questionObject.question
+        answer = questionObject.answer
         category = questionObject.category
         weight = questionObject.weight
         image = StoredNamedData(questionObject.image)
