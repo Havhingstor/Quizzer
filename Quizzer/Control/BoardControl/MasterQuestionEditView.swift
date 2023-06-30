@@ -5,7 +5,6 @@ struct MasterQuestionEditView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var selectedOptions = Set<String>()
-    @State private var trueOption = nil as String?
     @State private var addOptionSheetPresented = false
     
     @Bindable private var referencedQuestion: QuestionVars
@@ -32,30 +31,36 @@ struct MasterQuestionEditView: View {
         currentState.storageContainer.cleanImages()
     }
     
+    var options: [(index: Int, option: String)] {
+        referencedQuestion.options.enumerated().map { element in
+            (index: element.offset, option: element.element)
+        }
+    }
+    
     var body: some View {
         Form {
             GeneralQuestionEditView(referencedQuestion: referencedQuestion)
             
             Group {
                 List(selection: $selectedOptions) {
-                    ForEach(referencedQuestion.options, id: \.self) { option in
+                    ForEach(options, id: \.index) { (index, option) in
                         Text("\(option)")
-                            .foregroundColor(option == trueOption ? .accentColor : .primary)
+                            .foregroundColor(index == referencedQuestion.answerIndex ? .accentColor : .primary)
                             .onTapGesture(count: 2) {
-                                if trueOption == option {
-                                    trueOption = nil
+                                if referencedQuestion.answerIndex == index {
+                                    referencedQuestion.answerIndex = 0
                                 } else {
-                                    trueOption = option
+                                    referencedQuestion.answerIndex = index
                                 }
                             }
                             .contextMenu {
-                                if trueOption == option {
+                                if referencedQuestion.answerIndex == index {
                                     Button("Remove as True Answer") {
-                                        trueOption = nil
+                                        referencedQuestion.answerIndex = 0
                                     }
                                 } else {
                                     Button("Set as True Answer") {
-                                        trueOption = option
+                                        referencedQuestion.answerIndex = index
                                     }
                                 }
                             }
