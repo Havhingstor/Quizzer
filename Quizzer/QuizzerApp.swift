@@ -77,6 +77,9 @@ struct QuizzerApp: App {
                 Button("Load default Quiz") {
                     _ = CurrentState.examples
                 }
+                Button("Reset Quiz") {
+                    currentState.resetQuiz() 
+                }
             }
         }
         

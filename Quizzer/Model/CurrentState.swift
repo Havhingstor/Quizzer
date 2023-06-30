@@ -73,7 +73,22 @@ class CurrentState: ObservableObject {
     @Published var storageContainer = StorageContainer() {
         didSet {
             isInStartStage = categories.filter { $0.isShown }.count == 0
+            questionsAnswered = questionsAnswered.filter { answer in
+                questions.contains { question in
+                    question.id == answer._question
+                }
+            }
+            
+            questionsExempt = questionsExempt.filter { exemption in
+                questions.contains { question in
+                    question.id == exemption._question
+                }
+            }
         }
+    }
+    
+    func resetQuiz() {
+        storageContainer = StorageContainer()
     }
     
     var categories: [Category] {
@@ -241,9 +256,8 @@ class CurrentState: ObservableObject {
     @Published var questionsAnswered = [QuestionAnswer]()
     @Published var questionsExempt = [QuestionExemption]()
     
-    @Published var isInStartStage = false
+    @Published var isInStartStage = true
     
-    @Published var baseScore = UInt(25)
     @Published var introTitle = "Konfifreizeit Quiz\n2023"
     
     @Published var pointsName = "Punkte"

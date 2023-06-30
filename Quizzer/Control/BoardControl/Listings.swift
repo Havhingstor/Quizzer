@@ -90,7 +90,7 @@ struct QuestionListing: View {
     
     var buttonTitle: String {
         guard let category = question.categoryObject else { return "N/A" }
-        let totalScore = question.weight * currentState.baseScore
+        let totalScore = question.weight * currentState.storageContainer.baseScore
         let answered: String
         if question.exempt {
             answered = "Exempt"

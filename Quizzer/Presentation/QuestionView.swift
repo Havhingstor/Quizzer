@@ -10,7 +10,7 @@ struct QuestionView: View {
     }
 
     var pointsText: String {
-        let number = question.weight * currentState.baseScore
+        let number = question.weight * currentState.storageContainer.baseScore
         
         let suffix: String
         if number == 1 {

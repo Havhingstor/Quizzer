@@ -9,11 +9,13 @@ fileprivate struct JSONEncoded: Codable {
     var categories: [Category]
     var masterQuestion: MasterQuestion?
     var checksums = [Int: CRC32]()
+    var baseScore = UInt(25)
     
     init(container: StorageContainer) {
         self.questions = container.questions
         self.categories = container.categories
         self.masterQuestion = container.masterQuestion
+        self.baseScore = container.baseScore
     }
 }
 
@@ -42,6 +44,7 @@ struct StorageContainer: FileDocument {
         questions = jsonEncoded.questions
         masterQuestion = jsonEncoded.masterQuestion
         categories = jsonEncoded.categories
+        baseScore = jsonEncoded.baseScore
         
         for entry in archive {
             guard entry.path != "main.json" else {continue}
@@ -103,6 +106,7 @@ struct StorageContainer: FileDocument {
     var questions = [Question]()
     var categories = [Category]()
     var masterQuestion = nil as MasterQuestion?
+    var baseScore = UInt(25)
     
     init() {}
     

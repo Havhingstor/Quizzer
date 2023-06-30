@@ -61,7 +61,7 @@ struct QuestionEditView: View {
                     }
                 }
                 TextField("Weight:", value: $referencedQuestion.weight, format: .number)
-                Text("Points: \(referencedQuestion.weight * currentState.baseScore)")
+                Text("Points: \(referencedQuestion.weight * currentState.storageContainer.baseScore)")
                 
                 Spacer(minLength: 20)
             }

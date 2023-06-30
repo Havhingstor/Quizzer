@@ -21,7 +21,7 @@ class Team: Identifiable, Hashable, ObservableObject {
         var result = addedPoints
         for question in solvedQuestions {
             if question.correct {
-                result += Int(question.question.weight * currentState.baseScore)
+                result += Int(question.question.weight * currentState.storageContainer.baseScore)
             }
         }
         if result < 0 {

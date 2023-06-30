@@ -6,7 +6,7 @@ struct FirstStageQuestion: View {
     @EnvironmentObject private var currentState: CurrentState
     
     var baseScore: UInt {
-        currentState.baseScore
+        currentState.storageContainer.baseScore
     }
     
     var body: some View {

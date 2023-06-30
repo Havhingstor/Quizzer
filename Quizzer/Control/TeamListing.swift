@@ -8,7 +8,7 @@ struct TeamListing: Identifiable {
     init(team: Team, answers: [QuestionAnswer]) {
         self.team = team
         let currentState = CurrentState.shared
-        let baseScore = currentState.baseScore
+        let baseScore = currentState.storageContainer.baseScore
         self.answers = answers.map { answer in
             AnswerListing(question: answer.question, correct: answer.correct, score: answer.question.weight * baseScore, category: answer.question.category)
         }
