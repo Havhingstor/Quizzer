@@ -43,8 +43,8 @@ struct QuestionEditView: View {
         currentState.storageContainer.cleanImages()
     }
     
-    init() {
-        referencedQuestion = QuestionVars(questionObject: Question(question: "", answer: "", category: Category(name: "N/A"), weight: 0))
+    init(category: Category) {
+        referencedQuestion = QuestionVars(questionObject: Question(question: "", answer: "", category: category, weight: 0))
     }
     
     init(question: Binding<Question>) {
@@ -102,7 +102,7 @@ struct QuestionEditView: View {
 }
 
 #Preview {
-    QuestionEditView()
+    QuestionEditView(category: Category(name: "Test"))
         .fixedSize()
         .padding()
         .environmentObject(CurrentState.examples)

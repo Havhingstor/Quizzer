@@ -111,16 +111,22 @@ struct StorageContainer: FileDocument {
     init() {}
     
     mutating func cleanImages() {
-        var hashes = Set(questions.map {$0.image?.data.hashValue}.filter({$0 != nil}).map({$0!}))
+        var hashes = [Int]()
         
-        hashes.formUnion(questions.map {$0.solutionImage?.data.hashValue}.filter({$0 != nil}).map({$0!}))
-        
-        if let masterQuestionImage = masterQuestion?.image {
-            hashes.insert(masterQuestionImage.data.hashValue)
+        for question in questions {
+            if let hash = question.image?.hash {
+                hashes.append(hash)
+            }
+            if let hash = question.solutionImage?.hash {
+                hashes.append(hash)
+            }
         }
         
-        if let masterQuestionImage = masterQuestion?.solutionImage {
-            hashes.insert(masterQuestionImage.data.hashValue)
+        if let hash = masterQuestion?.image?.hash {
+            hashes.append(hash)
+        }
+        if let hash = masterQuestion?.solutionImage?.hash {
+            hashes.append(hash)
         }
         
         let keys = images.keys

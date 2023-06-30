@@ -55,7 +55,7 @@ struct CategoryListing: View {
                     }
                 }
                 .sheet(isPresented: $addQuestionShown) {
-                    QuestionEditView()
+                    QuestionEditView(category: category)
                 }
                 .sheet(isPresented: $editCategory) {
                     NameSelectionSheet(groundType: "New Category Name", typeOfInteraction: "Change") { newName in
