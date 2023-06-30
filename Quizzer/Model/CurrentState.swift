@@ -67,6 +67,7 @@ class CurrentState: ObservableObject {
     
     private init() {}
     
+    static let defaultTeam = Team(name: "Default Team")
     
     static let shared = CurrentState()
     
@@ -297,7 +298,7 @@ class CurrentState: ObservableObject {
         if teams.count > 0 {
             return teams
         } else {
-            return [Team(name: "Default Team")]
+            return [Self.defaultTeam]
         }
     }
     

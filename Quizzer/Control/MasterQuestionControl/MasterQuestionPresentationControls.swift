@@ -12,8 +12,10 @@ struct MasterQuestionPresentationControls: View {
                 return "Hide Point List"
             case 2:
                 return "Go to Prompt Page"
-            case 3...:
+            case 3..<((question?.options.count ?? 0) + 3):
                 return "Hide Option \(MasterQuestion.getAlphabeticalNr(for: UInt(stage - 3)))"
+            case (question?.options.count ?? 0) + 3:
+                return "Hide solution Image"
             default:
                 return "Previous"
         }
@@ -28,6 +30,8 @@ struct MasterQuestionPresentationControls: View {
                 return "Go to Question Page"
             case 2..<((question?.options.count ?? 0) + 2):
                 return "Show Option \(MasterQuestion.getAlphabeticalNr(for: UInt(stage - 2)))"
+            case (question?.options.count ?? 0) + 2:
+                return "Show solution image"
             default:
                 return "Next"
         }
@@ -39,20 +43,34 @@ struct MasterQuestionPresentationControls: View {
         }.count == 0
     }
     
+    var maxIndex: Int {
+        if question?.solutionImage != nil {
+            (2 + (question!.options.count))
+        } else {
+            (1 + (question?.options.count ?? 0))
+        }
+    }
+    
     var body: some View {
         HStack {
             Button(backButtonText) {
                 withAnimation {
+                    if currentState.questionStage == (3 + (question?.options.count ?? 0)) {
+                        currentState.currentImage = nil
+                    }
                     currentState.questionStage -= 1
                 }
             }
             .disabled(currentState.questionStage < 1)
             Button(nextButtonText) {
                 withAnimation {
+                    if currentState.questionStage == (2 + (question?.options.count ?? 0)) {
+                        currentState.currentImage = question?.solutionImage
+                    }
                     currentState.questionStage += 1
                 }
             }
-            .disabled(currentState.questionStage > (1 + (question?.options.count ?? 0)) || (currentState.questionStage == 1 && !currentState.allTeamsHaveBet))
+            .disabled(currentState.questionStage > maxIndex || (currentState.questionStage == 1 && !currentState.allTeamsHaveBet))
         }
         .animation(.none, value: currentState.questionStage)
     }

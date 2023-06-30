@@ -55,15 +55,17 @@ struct TeamListItem: View {
             Button("Show Team") {
                 showTeamInfo(team: team)
             }
-            Button("Edit") {
-                showTeamEdit = true
-            }
-            Button("Delete", role: .destructive) {
-                if team.solvedQuestions.count > 0 {
-                    teamDeletionAlert.team = team
-                    teamDeletionAlert.isShown = true
-                } else {
-                    currentState.deleteTeam(team: team)
+            if team != CurrentState.defaultTeam {
+                Button("Edit") {
+                    showTeamEdit = true
+                }
+                Button("Delete", role: .destructive) {
+                    if team.solvedQuestions.count > 0 {
+                        teamDeletionAlert.team = team
+                        teamDeletionAlert.isShown = true
+                    } else {
+                        currentState.deleteTeam(team: team)
+                    }
                 }
             }
         }
