@@ -117,10 +117,24 @@ struct QuizzerApp: App {
                         Text("\(loadError.localizedDescription)")
                     }
                 }
-                .onChange(of: currentState.gameContainer) { oldValue, newValue in
+                .onChange(of: currentState.gameContainer.teams.count) { oldValue, newValue in
                     saveGame()
                 }
-
+                .onChange(of: currentState.gameContainer.questionsAnswered) { oldValue, newValue in
+                    saveGame()
+                }
+                .onChange(of: currentState.gameContainer.questionsExempt) { oldValue, newValue in
+                    saveGame()
+                }
+                .onChange(of: currentState.gameContainer.currentQuestion) { oldValue, newValue in
+                    saveGame()
+                }
+                .onChange(of: currentState.gameContainer.currentImage) { oldValue, newValue in
+                    saveGame()
+                }
+                .onChange(of: currentState.gameContainer.showMasterQuestion) { oldValue, newValue in
+                    saveGame()
+                }
         }
         .windowResizability(.contentSize)
         .keyboardShortcut("c")

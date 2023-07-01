@@ -81,7 +81,6 @@ struct GameStorage {
     var quiz: StorageContainer
     
     init(data: Data) throws {
-        let logger = Logger(subsystem: "de.paulschuetz.Quizzer", category: "FileIO")
         guard let archive = Archive(data: data, accessMode: .read),
               let mainEntry = archive["game.json"],
               let quizEntry = archive["quiz.quiz"] else { throw StorageError.CouldNotReadArchive }
@@ -112,7 +111,7 @@ struct GameStorage {
             return mainData.subdata(in: startPos..<endPos)
         }
         
-        let quizData = try quiz.encode()
+        let quizData = CurrentState.shared.storageContainerData
         
         try archive.addEntry(with: "quiz.quiz", type: .file, uncompressedSize: Int64(quizData.count), compressionMethod: .deflate) { position, size in
             let startPos = Int(position)

@@ -1,8 +1,10 @@
 import Foundation
 import SwiftUI
+import OSLog
 
 class CurrentState: ObservableObject {
     static var examples: CurrentState {
+        shared.pauseReloading = true
         let hrrURL = Bundle.main.url(forResource: "HRR", withExtension: "jpg")!
         let kaiserURL = Bundle.main.url(forResource: "Kaiser", withExtension: "jpg")!
         
@@ -51,13 +53,16 @@ class CurrentState: ObservableObject {
             Question(question: "Q19", answer: "A19", category: shared.categories[4], weight: 3),
             Question(question: "Q17", answer: "A20", category: shared.categories[4], weight: 4),
         ]
+        shared.masterQuestion = MasterQuestion(question: "Welche?", answerInternal: 2, optionsInternal: ["1","2","3","4"], image: NamedData(name: "Kaiser", data: kaiserData), solutionImage: NamedData(name: "HRR", data: hrrData))
+        
+        shared.pauseReloading = false
+        
         shared.teams = [
             Team(name: "Team A"),
             Team(name: "Team B"),
             Team(name: "Team C"),
             Team(name: "Team D")
         ]
-        shared.masterQuestion = MasterQuestion(question: "Welche?", answerInternal: 2, optionsInternal: ["1","2","3","4"], image: NamedData(name: "Kaiser", data: kaiserData), solutionImage: NamedData(name: "HRR", data: hrrData))
         
         for (index, team) in shared.teams.enumerated() {
             team.addedPoints = index
@@ -95,6 +100,43 @@ class CurrentState: ObservableObject {
                     question.id == exemption._question
                 }
             }
+            
+            reloadStorageContainerData()
+        }
+    }
+    
+    private func reloadStorageContainerData() {
+        if !pauseReloading {
+            guard let data = getStorageContainerData() else { return }
+            storageContainerDataInternal = data
+        }
+    }
+    
+    private func getStorageContainerData() -> Data? {
+        do {
+            return try storageContainer.encode()
+        } catch {
+            let logger = Logger(subsystem: "de.paulschuetz.Quizzer", category: "FileIO")
+            logger.warning("Couldn't create data from storage container: \(error, privacy: .public)")
+        }
+        
+        return nil
+    }
+    
+    private var pauseReloading = false {
+        didSet {
+            reloadStorageContainerData()
+        }
+    }
+    
+    @Published private var storageContainerDataInternal = (try? StorageContainer().encode()) ?? Data()
+    
+    var storageContainerData: Data {
+        if pauseReloading,
+           let data = getStorageContainerData() {
+            return data
+        } else {
+            return storageContainerDataInternal
         }
     }
     

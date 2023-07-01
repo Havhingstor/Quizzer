@@ -102,9 +102,7 @@ struct StorageContainer: FileDocument {
     }
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = try encode()
-        
-        return FileWrapper(regularFileWithContents: data)
+        FileWrapper(regularFileWithContents: CurrentState.shared.storageContainerData)
     }
     
     var images = [Int: Data]()
