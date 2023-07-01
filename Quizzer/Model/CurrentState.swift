@@ -140,7 +140,13 @@ class CurrentState: ObservableObject {
         }
     }
     
-    @Published var gameContainer = GameContainer()
+    @Published var gameContainer = GameContainer() {
+        didSet {
+            if !getTeams().contains(nextTeam) {
+                nextTeam = getTeams().first!
+            }
+        }
+    }
     
     func resetQuiz() {
         storageContainer = StorageContainer()

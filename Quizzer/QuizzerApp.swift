@@ -63,7 +63,7 @@ struct QuizzerApp: App {
             url.appendPathComponent("\(timestamp).qgame", conformingTo: .gameDocument)
             try data.write(to: url)
             
-            logger.info("Successfully wrote file: \(url, privacy: .public)")
+            logger.info("Successfully wrote file: \(url.path(), privacy: .public)")
         } catch {
             logger.warning("Couldn't save: Error \(error, privacy: .public)")
         }
