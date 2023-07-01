@@ -61,7 +61,9 @@ class QuestionVars {
     var category = UUID()
     var weight = 0 as UInt
     
+    @ObservationIgnored
     var image = nil as StoredNamedData?
+    @ObservationIgnored
     var solutionImage = nil as StoredNamedData?
     
     func toQuestion() -> Question {
