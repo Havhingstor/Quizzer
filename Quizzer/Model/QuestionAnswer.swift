@@ -1,6 +1,6 @@
 import Foundation
 
-struct QuestionAnswer {
+struct QuestionAnswer: Codable, Equatable {
     let _question: UUID
     let _team: String
     let answer: String
@@ -34,7 +34,7 @@ struct QuestionAnswer {
     }
 }
 
-struct QuestionExemption {
+struct QuestionExemption: Codable, Equatable {
     let _question: UUID
     
     var question: Question {

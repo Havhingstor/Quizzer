@@ -29,6 +29,7 @@
 		DA631C8B2A2DEAC80061BE7D /* MasterQuestionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA631C8A2A2DEAC80061BE7D /* MasterQuestionControl.swift */; };
 		DA9C26032A495AE2007D274B /* QuestionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C26022A495AE2007D274B /* QuestionEditView.swift */; };
 		DA9D5FA62A2736620010928A /* TeamListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9D5FA52A2736620010928A /* TeamListing.swift */; };
+		DAB7D9542A500FFA006095AF /* GameStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB7D9532A500FF9006095AF /* GameStorage.swift */; };
 		DACB33AE2A2358850073F39D /* QuestionAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACB33AD2A2358850073F39D /* QuestionAnswer.swift */; };
 		DACD19362A3C4EC70025A6B6 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19352A3C4EC70025A6B6 /* HeaderView.swift */; };
 		DACD19382A3C4EEA0025A6B6 /* QuestionAndAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DACD19372A3C4EEA0025A6B6 /* QuestionAndAnswer.swift */; };
@@ -84,6 +85,7 @@
 		DA74FE092A4C277300323C07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DA9C26022A495AE2007D274B /* QuestionEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionEditView.swift; sourceTree = "<group>"; };
 		DA9D5FA52A2736620010928A /* TeamListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListing.swift; sourceTree = "<group>"; };
+		DAB7D9532A500FF9006095AF /* GameStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStorage.swift; sourceTree = "<group>"; };
 		DACB33AD2A2358850073F39D /* QuestionAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAnswer.swift; sourceTree = "<group>"; };
 		DACD19352A3C4EC70025A6B6 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		DACD19372A3C4EEA0025A6B6 /* QuestionAndAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionAndAnswer.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				DACB33AD2A2358850073F39D /* QuestionAnswer.swift */,
 				DA27112F2A4A0E250026D89E /* NamedData.swift */,
 				DAD047342A4C03F500DD1D2B /* StorageContainer.swift */,
+				DAB7D9532A500FF9006095AF /* GameStorage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				DA191B852A2213020099C07A /* BoardControl.swift in Sources */,
 				DAF93C3E2A48561F00319364 /* MasterQuestionAndAnswer.swift in Sources */,
 				DA191B8B2A2235DC0099C07A /* QuestionView.swift in Sources */,
+				DAB7D9542A500FFA006095AF /* GameStorage.swift in Sources */,
 				DA191B7A2A21F5700099C07A /* Category.swift in Sources */,
 				DAD047352A4C03F500DD1D2B /* StorageContainer.swift in Sources */,
 			);

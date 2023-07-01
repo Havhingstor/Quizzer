@@ -69,7 +69,7 @@ struct StorageContainer: FileDocument {
         }
     }
     
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+    func encode() throws -> Data {
         var jsonEncoded = JSONEncoded(container: self)
         
         guard let archive = Archive(accessMode: .create) else {throw StorageError.CouldNotCreateArchive}
@@ -97,6 +97,12 @@ struct StorageContainer: FileDocument {
         }
         
         guard let data = archive.data else {throw StorageError.CouldNotCreateArchive}
+        
+        return data
+    }
+    
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        let data = try encode()
         
         return FileWrapper(regularFileWithContents: data)
     }

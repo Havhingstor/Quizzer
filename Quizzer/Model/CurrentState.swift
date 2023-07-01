@@ -62,6 +62,7 @@ class CurrentState: ObservableObject {
         for (index, team) in shared.teams.enumerated() {
             team.addedPoints = index
         }
+        
         return shared
     }
     
@@ -71,7 +72,14 @@ class CurrentState: ObservableObject {
     
     static let shared = CurrentState()
     
-    var lastFileName = nil as String?
+    var lastFileName: String? {
+        get {
+            gameContainer.lastFileName
+        }
+        set {
+            gameContainer.lastFileName = newValue
+        }
+    }
     
     @Published var storageContainer = StorageContainer() {
         didSet {
@@ -90,8 +98,16 @@ class CurrentState: ObservableObject {
         }
     }
     
+    @Published var gameContainer = GameContainer()
+    
     func resetQuiz() {
         storageContainer = StorageContainer()
+    }
+    
+    func resetGame() {
+        let lastFileName = gameContainer.lastFileName
+        gameContainer = GameContainer()
+        gameContainer.lastFileName = lastFileName
     }
     
     var categories: [Category] {
@@ -200,36 +216,6 @@ class CurrentState: ObservableObject {
         return masterQuestion != nil
     }
     
-    @Published var showMasterQuestion = false {
-        didSet {
-            if let masterQuestion,
-               showMasterQuestion,
-               let stage = questionStages[masterQuestion.id] {
-                questionStage = stage
-            } else {
-                questionStage = 0
-            }
-        }
-    }
-    
-    @Published var showResults = false
-    
-    @Published var resultsStage = 0
-    
-    @Published var currentQuestion: Int? = nil {
-        didSet {
-            if let question = currentQuestionResolved {
-                if let stage = questionStages[question.id] {
-                    questionStage = stage
-                } else {
-                    questionStage = 0
-                }
-            }
-        }
-    }
-    
-    @Published var currentImage: NamedData? = nil
-    
     func getIndexOfQuestion(_ question: Question) -> Int? {
         questions.firstIndex(of: question)
     }
@@ -243,23 +229,104 @@ class CurrentState: ObservableObject {
         }
     }
     
-    @Published var questionStage = 0 {
-        didSet {
-            if showMasterQuestion,
-               let masterQuestion {
-                questionStages[masterQuestion.id] = questionStage
-            } else if let currentQuestionResolved {
-                questionStages[currentQuestionResolved.id] = questionStage
-            }
+    var showMasterQuestion: Bool {
+        get {
+            gameContainer.showMasterQuestion
+        }
+        set {
+            gameContainer.showMasterQuestion = newValue
         }
     }
     
-    @Published var questionStages = [UUID: Int]()
+    var showResults: Bool {
+        get {
+            gameContainer.showResults
+        }
+        set {
+            gameContainer.showResults = newValue
+        }
+    }
     
-    @Published var questionsAnswered = [QuestionAnswer]()
-    @Published var questionsExempt = [QuestionExemption]()
+    var resultsStage: Int {
+        get {
+            gameContainer.resultsStage
+        }
+        set {
+            gameContainer.resultsStage = newValue
+        }
+    }
     
-    @Published var isInStartStage = true
+    var currentQuestion: Int? {
+        get {
+            gameContainer.currentQuestion
+        }
+        set {
+            gameContainer.currentQuestion = newValue
+        }
+    }
+    
+    var currentImage: NamedData? {
+        get {
+            gameContainer.currentImage
+        }
+        set {
+            gameContainer.currentImage = newValue
+        }
+    }
+    
+    var questionStage: Int {
+        get {
+            gameContainer.questionStage
+        }
+        set {
+            gameContainer.questionStage = newValue
+        }
+    }
+    
+    var questionStages: [UUID: Int] {
+        get {
+            gameContainer.questionStages
+        }
+        set {
+            gameContainer.questionStages = newValue
+        }
+    }
+    
+    var questionsAnswered: [QuestionAnswer] {
+        get {
+            gameContainer.questionsAnswered
+        }
+        set {
+            gameContainer.questionsAnswered = newValue
+        }
+    }
+    
+    var questionsExempt: [QuestionExemption] {
+        get {
+            gameContainer.questionsExempt
+        }
+        set {
+            gameContainer.questionsExempt = newValue
+        }
+    }
+    
+    var isInStartStage: Bool {
+        get {
+            gameContainer.isInStartStage
+        }
+        set {
+            gameContainer.isInStartStage = newValue
+        }
+    }
+    
+    private var teams: [Team] {
+        get {
+            gameContainer.teams
+        }
+        set {
+            gameContainer.teams = newValue
+        }
+    }
     
     @Published var introTitle = "Konfifreizeit Quiz\n2023"
     
@@ -274,11 +341,7 @@ class CurrentState: ObservableObject {
     @Published var masterQuestionPrompt = "Setzt einen Teil eurer Punkte"
     @Published var answerName = "Antwort"
     
-    @Published private var teams = [Team]() {
-        didSet {
-            fixNextTeam()
-        }
-    }
+    
     
     func moveTeams(from: IndexSet, to: Int) {
         if teams.count > 0 {
@@ -334,7 +397,7 @@ class CurrentState: ObservableObject {
         }
     }
     
-    private func fixNextTeam() {
+    func fixNextTeam() {
         if !getTeams().contains(nextTeam),
            let first = teams.first {
             nextTeam = first
@@ -355,4 +418,5 @@ enum QuizError: Error {
     case categoryNameAlreadyExists
     case questionWeightAlreadyExistsInCategory
     case optionAlreadyExists
+    case appDirectoryDoesntExist
 }

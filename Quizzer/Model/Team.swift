@@ -1,6 +1,6 @@
 import Foundation
 
-class Team: Identifiable, Hashable, ObservableObject {
+class Team: Identifiable, Hashable, ObservableObject, Codable {
     static func == (lhs: Team, rhs: Team) -> Bool {
         lhs.id == rhs.id
     }
@@ -11,7 +11,9 @@ class Team: Identifiable, Hashable, ObservableObject {
     
     @Published var name: String
     var id: String {name}
-    var currentState = CurrentState.shared
+    var currentState: CurrentState {
+        CurrentState.shared
+    }
     
     var solvedQuestions: [QuestionAnswer] {
         currentState.questionsAnswered.filter({$0.team === self})
@@ -76,5 +78,30 @@ class Team: Identifiable, Hashable, ObservableObject {
         } else {
             return overallBefore
         }
+    }
+    
+    enum CodingKeys: CodingKey {
+        case name
+        case addedPoints
+        case betPts
+        case masterQstAnswer
+    }
+    
+    required init(from decoder: Decoder) throws {
+        var container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        name = try container.decode(String.self, forKey: .name)
+        addedPoints = try container.decode(Int.self, forKey: .addedPoints)
+        betPts = try container.decode(UInt?.self, forKey: .betPts)
+        masterQstAnswer = try container.decode(Int.self, forKey: .masterQstAnswer)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(name, forKey: .name)
+        try container.encode(addedPoints, forKey: .addedPoints)
+        try container.encode(betPts, forKey: .betPts)
+        try container.encode(masterQstAnswer, forKey: .masterQstAnswer)
     }
 }
