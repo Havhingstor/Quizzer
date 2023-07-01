@@ -44,26 +44,22 @@ struct MasterQuestionEditView: View {
             Group {
                 List(selection: $selectedOptions) {
                     ForEach(options, id: \.index) { (index, option) in
-                        Text("\(option)")
-                            .foregroundColor(index == referencedQuestion.answerIndex ? .accentColor : .primary)
-                            .onTapGesture(count: 2) {
-                                if referencedQuestion.answerIndex == index {
-                                    referencedQuestion.answerIndex = 0
-                                } else {
-                                    referencedQuestion.answerIndex = index
-                                }
-                            }
-                            .contextMenu {
-                                if referencedQuestion.answerIndex == index {
-                                    Button("Remove as True Answer") {
-                                        referencedQuestion.answerIndex = 0
-                                    }
-                                } else {
+                        HStack {
+                            Text("\(option)")
+                                .foregroundColor(index == referencedQuestion.answerIndex ? .accentColor : .primary)
+                                .contextMenu {
                                     Button("Set as True Answer") {
                                         referencedQuestion.answerIndex = index
                                     }
                                 }
+                            Spacer()
+                            Button {
+                                referencedQuestion.answerIndex = index
+                            } label: {
+                                Image(systemName: "checkmark.circle")
                             }
+                            .buttonStyle(.borderless)
+                        }
                     }
                     .onMove { fromOffsets, toOffset in
                         referencedQuestion.options.move(fromOffsets: fromOffsets, toOffset: toOffset)
@@ -107,7 +103,7 @@ struct MasterQuestionEditView: View {
         }
         .padding()
         .sheet(isPresented: $addOptionSheetPresented) {
-            NameSelectionSheet(groundType: "Option") { option in
+            NameSelectionSheet(groundType: "Option", multiline: true) { option in
                 guard !referencedQuestion.options.contains(where: { optionItem in
                     option == optionItem
                 }) else { throw QuizError.optionAlreadyExists }

@@ -25,6 +25,10 @@ struct QuizzerApp: App {
         
     }
     
+    var fileName: String {
+        currentState.lastFileName ?? "Quiz.quiz"
+    }
+    
     var body: some Scene {
         Window("Quiz", id: "quiz") {
             QuizBoard()
@@ -35,7 +39,11 @@ struct QuizzerApp: App {
         Window("Control", id: "ctrl") {
             BoardControl()
                 .environmentObject(currentState)
-                .fileExporter(isPresented: $saveDialogShown, document: currentState.storageContainer, contentType: .quizDocument, defaultFilename: "Quiz.quiz") { _ in }
+                .fileExporter(isPresented: $saveDialogShown, document: currentState.storageContainer, contentType: .quizDocument, defaultFilename: fileName) { result in
+                    if case .success(let url) = result {
+                        currentState.lastFileName = url.lastPathComponent
+                    }
+                }
                 .fileImporter(isPresented: $loadDialogShown, allowedContentTypes: [.quizDocument]) { result in
                     do {
                         let url = try result.get()
@@ -45,6 +53,7 @@ struct QuizzerApp: App {
                             }
                             let data = try Data(contentsOf: url)
                             currentState.storageContainer = try StorageContainer(data: data)
+                            currentState.lastFileName = url.lastPathComponent
                         } else {
                             throw CocoaError(.fileReadCorruptFile)
                         }
@@ -115,7 +124,7 @@ struct QuizzerApp: App {
         }
         .windowResizability(.contentSize)
         
-        WindowGroup(for: Data.self) { dataBind in
+        WindowGroup("Image", for: Data.self) { dataBind in
             if let data = dataBind.wrappedValue,
                let image = NSImage(data: data) {
                 let size = calculateSize(image: image)
@@ -127,5 +136,23 @@ struct QuizzerApp: App {
             }
         }
         .windowResizability(.contentSize)
+        
+        Settings {
+            Form {
+                Section("Strings") {
+                    TextField("Intro Title", text: $currentState.introTitle)
+                    TextField("Points", text: $currentState.pointsName)
+                    TextField("Points", text: $currentState.pointName)
+                    TextField("Place / Rank", text: $currentState.placeName)
+                    TextField("Answers", text: $currentState.answersName)
+                    TextField("Answer", text: $currentState.answerName)
+                    TextField("Question", text: $currentState.questionName)
+                    TextField("Master Question", text: $currentState.masterQuestionName)
+                    TextField("Master Question Prompt", text: $currentState.masterQuestionPrompt)
+                }
+            }
+            .padding()
+            .frame(minWidth: 275, idealWidth: 400)
+        }
     }
 }

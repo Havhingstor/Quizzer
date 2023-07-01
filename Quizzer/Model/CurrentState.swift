@@ -71,6 +71,8 @@ class CurrentState: ObservableObject {
     
     static let shared = CurrentState()
     
+    var lastFileName = nil as String?
+    
     @Published var storageContainer = StorageContainer() {
         didSet {
             isInStartStage = categories.filter { $0.isShown }.count == 0

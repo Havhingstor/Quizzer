@@ -69,7 +69,9 @@ struct QuestionEditView: View {
             GeneralQuestionEditView(referencedQuestion: referencedQuestion)
             
             Group {
-                TextField("True Answer:", text: $referencedQuestion.answer)
+                Text("True Answer:")
+                TextEditor(text: $referencedQuestion.answer)
+                    .frame(minHeight: 50)
                 
                 Spacer(minLength: 20)
             }

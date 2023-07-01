@@ -62,7 +62,9 @@ struct GeneralQuestionEditView: View {
     var body: some View {
         Group {
             Group {
-                TextField("Question:", text: $referencedQuestion.question)
+                Text("Question")
+                TextEditor(text: $referencedQuestion.question)
+                    .frame(minHeight: 50)
                 Spacer(minLength: 20)
             }
             

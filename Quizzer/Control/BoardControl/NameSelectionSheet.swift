@@ -9,6 +9,7 @@ struct NameSelectionSheet: View {
     
     var groundType: String
     var typeOfInteraction = "Add"
+    var multiline = false
     var additionFunc: (String) throws -> Void
     
     func submit() {
@@ -24,10 +25,16 @@ struct NameSelectionSheet: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            TextField(groundType, text: $newName)
-                .onSubmit {
-                    submit()
-                }
+            if multiline {
+                Text(groundType)
+                TextEditor(text: $newName)
+                    .frame(minHeight: 50)
+            } else {
+                TextField(groundType, text: $newName)
+                    .onSubmit {
+                        submit()
+                    }
+            }
             VStack {
                 Button(typeOfInteraction) {
                     submit()
