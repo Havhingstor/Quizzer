@@ -10,6 +10,7 @@ struct NameSelectionSheet: View {
     var groundType: String
     var typeOfInteraction = "Add"
     var multiline = false
+    var startText = nil as Binding<String>?
     var additionFunc: (String) throws -> Void
     
     func submit() {
@@ -28,7 +29,7 @@ struct NameSelectionSheet: View {
             if multiline {
                 Text(groundType)
                 TextEditor(text: $newName)
-                    .frame(minHeight: 50)
+                    .frame(minWidth: 50, minHeight: 50)
             } else {
                 TextField(groundType, text: $newName)
                     .onSubmit {
@@ -48,7 +49,22 @@ struct NameSelectionSheet: View {
         .alert("This Name already exists!", isPresented: $additionAlert) {
             Button("OK", role: .cancel) {}
         }
-        .frame(minWidth: 150)
+        .frameWithMultiline(multiline)
+        .onAppear {
+            if let startText {
+                newName = startText.wrappedValue
+            }
+        }
+    }
+}
+
+fileprivate extension View {
+    func frameWithMultiline(_ multiline: Bool) -> some View {
+        if multiline {
+            return frame(minWidth: 300, minHeight: 250)
+        } else {
+            return frame(minWidth: 150)
+        }
     }
 }
 

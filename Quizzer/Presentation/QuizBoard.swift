@@ -32,7 +32,7 @@ struct QuizBoard: View {
                     .multilineTextAlignment(.center)
                     .padding()
                     .padding()
-                    .background(.gray.opacity(0.75))
+                    .opaqueBackground()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
             } else if let question = currentState.currentQuestionResolved {
                 let questionBinding = Binding<Question>(get: {

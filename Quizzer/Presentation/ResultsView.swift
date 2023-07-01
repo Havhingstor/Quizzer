@@ -48,7 +48,7 @@ struct ResultsView: View {
                 Text("\(rank): \(team.name) - \(getPointsStr(team: team))")
                     .font(.custom("SF Pro", size: 44.0))
                     .padding()
-                    .background(.gray.opacity(0.75))
+                    .opaqueBackground()
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding()
                     .padding([.top, .trailing], 20)

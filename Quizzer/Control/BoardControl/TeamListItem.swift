@@ -70,7 +70,7 @@ struct TeamListItem: View {
             }
         }
         .sheet(isPresented: $showTeamEdit, content: {
-            NameSelectionSheet(groundType: "New Team Name", typeOfInteraction: "Change") { newName in
+            NameSelectionSheet(groundType: "New Team Name", typeOfInteraction: "Change", startText: $team.name) { newName in
                 if team.name == newName {
                     return
                 } else if currentState.getTeams().contains(where: { item in

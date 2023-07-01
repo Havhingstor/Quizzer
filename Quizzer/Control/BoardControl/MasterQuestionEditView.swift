@@ -6,6 +6,9 @@ struct MasterQuestionEditView: View {
     
     @State private var selectedOptions = Set<String>()
     @State private var addOptionSheetPresented = false
+    @State private var editOptionSheetPresented = false
+    @State private var editOption = 0
+    @State private var editOptionText = ""
     
     @Bindable private var referencedQuestion: QuestionVars
     
@@ -50,6 +53,14 @@ struct MasterQuestionEditView: View {
                                 .contextMenu {
                                     Button("Set as True Answer") {
                                         referencedQuestion.answerIndex = index
+                                    }
+                                    Button("Edit") {
+                                        editOption = index
+                                        editOptionText = option
+                                        editOptionSheetPresented = true
+                                    }
+                                    Button("Remove Option") {
+                                        referencedQuestion.options.remove(at: index)
                                     }
                                 }
                             Spacer()
@@ -109,6 +120,11 @@ struct MasterQuestionEditView: View {
                 }) else { throw QuizError.optionAlreadyExists }
                 
                 referencedQuestion.options.append(option)
+            }
+        }
+        .sheet(isPresented: $editOptionSheetPresented) {
+            NameSelectionSheet(groundType: "Option", typeOfInteraction: "Change", multiline: true, startText: $editOptionText) { option in
+                referencedQuestion.options[editOption] = option
             }
         }
         .frame(minWidth: 400)

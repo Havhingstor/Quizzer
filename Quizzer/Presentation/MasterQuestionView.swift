@@ -7,15 +7,25 @@ struct MasterQuestionView: View {
     
     var optionsPaddingSize: CGFloat {
         if question.options.count > 0 {
-            return CGFloat(48 / question.options.count)
+            return CGFloat(48 / optionsLineNr)
         } else {
             return 0
         }
     }
     
+    var optionsLineNr: Double {
+        var count = 0.0
+        for option in question.options {
+            count += 1
+            count += (Double(option.components(separatedBy: "\n").count) - 1)// * 1.5
+        }
+        
+        return count
+    }
+    
     var optionsTextSize: CGFloat {
         if question.options.count > 0 {
-            return CGFloat(140 / question.options.count)
+            return min(CGFloat(210 / optionsLineNr), 44)
         } else {
             return 0
         }
@@ -26,7 +36,7 @@ struct MasterQuestionView: View {
             Text(currentState.masterQuestionName)
                 .font(.custom("SF Pro", size: 60.0))
                 .padding()
-                .background(.gray.opacity(0.75))
+                .opaqueBackground()
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding()
             
@@ -36,7 +46,7 @@ struct MasterQuestionView: View {
                 Text(currentState.masterQuestionPrompt)
                     .font(.custom("SF Pro", size: 35))
                     .padding()
-                    .background(.gray.opacity(0.75))
+                    .opaqueBackground()
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding()
                 
@@ -47,7 +57,7 @@ struct MasterQuestionView: View {
                 }
                 .font(.custom("SF Pro", size: 44))
                 .padding()
-                .background(.gray.opacity(0.75))
+                .opaqueBackground()
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding()
                 .hide(if: currentState.questionStage < 1)
@@ -62,7 +72,7 @@ struct MasterQuestionView: View {
                                 .padding()
                         }
                         .font(.custom("SF Pro", size: 44.0))
-                        .background(.gray.opacity(0.75))
+                        .opaqueBackground()
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .padding()
                         
@@ -71,7 +81,7 @@ struct MasterQuestionView: View {
                             Text("\(currentState.answersName):")
                                 .padding()
                                 .font(.custom("SF Pro", size: 44.0))
-                                .background(.gray.opacity(0.75))
+                                .opaqueBackground()
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .padding()
                             
@@ -79,9 +89,9 @@ struct MasterQuestionView: View {
                             ForEach(Array(question.options.enumerated()), id: \.offset) { offset, element in
                                 Text("\(element)")
                                     .padding(optionsPaddingSize)
-                                    .background(.gray.opacity(0.75))
+                                    .opaqueBackground()
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .padding(optionsPaddingSize)
+                                    .padding(.bottom, optionsPaddingSize)
                                     .hide(if: currentState.questionStage - 3 < offset)
                             }
                             .font(.custom("SF Pro", size: optionsTextSize))

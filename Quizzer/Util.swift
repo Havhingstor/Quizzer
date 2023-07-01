@@ -10,4 +10,10 @@ extension View {
             self
         }
     }
+    
+    func opaqueBackground() -> some View {
+        let opacity = 0.85
+        
+        return background(.gray.opacity(opacity))
+    }
 }

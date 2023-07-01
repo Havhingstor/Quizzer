@@ -27,7 +27,7 @@ struct QuestionView: View {
             Text(titleText)
                 .font(.custom("SF Pro", size: 60.0))
                 .padding()
-                .background(.gray.opacity(0.75))
+                .opaqueBackground()
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding()
 
@@ -42,7 +42,7 @@ struct QuestionView: View {
                             .padding()
                     }
                     .font(.custom("SF Pro", size: 44.0))
-                    .background(.gray.opacity(0.75))
+                    .opaqueBackground()
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding([.top, .trailing, .bottom])
                     .padding(.leading, 60)
@@ -67,7 +67,7 @@ struct QuestionView: View {
                             .padding()
                     }
                     .font(.custom("SF Pro", size: 44.0))
-                    .background(.gray.opacity(0.75))
+                    .opaqueBackground()
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding([.top, .trailing, .bottom])
                     .padding(.leading, 60)
