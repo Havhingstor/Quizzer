@@ -16,7 +16,7 @@ struct GeneralQuestionEditView: View {
     
     @ViewBuilder
     var questionImageSelector: some View {
-        LabeledContent(referencedQuestion.image?.name ?? "") {
+        LabeledContent {
             HStack {
                 Button("Select Question Image") {
                     imageType = .question
@@ -33,12 +33,15 @@ struct GeneralQuestionEditView: View {
                 .buttonStyle(.borderless)
                 .hide(if: referencedQuestion.image == nil)
             }
+        } label: {
+            Text(referencedQuestion.image?.name ?? "")
+                .frame(maxWidth: 20)
         }
     }
     
     @ViewBuilder
     var solutionImageSelector: some View {
-        LabeledContent(referencedQuestion.solutionImage?.name ?? "") {
+        LabeledContent {
             HStack {
                 Button("Select Solution Image") {
                     imageType = .solution
@@ -55,6 +58,9 @@ struct GeneralQuestionEditView: View {
                 .buttonStyle(.borderless)
                 .hide(if: referencedQuestion.solutionImage == nil)
             }
+        } label: {
+            Text(referencedQuestion.solutionImage?.name ?? "")
+                .frame(maxWidth: 20)
         }
         
     }
