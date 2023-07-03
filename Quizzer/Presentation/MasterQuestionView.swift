@@ -31,6 +31,10 @@ struct MasterQuestionView: View {
         }
     }
     
+    func shouldShowAsCorrectAnswer(index: Int) -> Bool {
+        question.answerInternal == index && currentState.questionStage > question.options.count + 2
+    }
+    
     var body: some View {
         VStack {
             Text(currentState.masterQuestionName)
@@ -64,7 +68,7 @@ struct MasterQuestionView: View {
                 
             } else {
                 HStack {
-                    VStack {
+                    VStack (alignment: .leading) {
                         VStack {
                             Text("\(currentState.questionName):")
                                 .padding()
@@ -77,7 +81,7 @@ struct MasterQuestionView: View {
                         .padding()
                         
                         
-                        VStack {
+                        VStack (alignment: .leading) {
                             Text("\(currentState.answersName):")
                                 .padding()
                                 .font(.custom("SF Pro", size: 44.0))
@@ -87,14 +91,31 @@ struct MasterQuestionView: View {
                             
                             
                             ForEach(Array(question.options.enumerated()), id: \.offset) { offset, element in
+                                let correct = shouldShowAsCorrectAnswer(index: offset)
                                 Text("\(element)")
                                     .padding(optionsPaddingSize)
-                                    .opaqueBackground()
+                                    .padding(.trailing, correct ? optionsTextSize * 2 : 0)
+                                    .overlay(alignment: .trailing) {
+                                        Image(systemName: "checkmark.seal.fill")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: optionsTextSize * 1.5)
+                                            .foregroundColor(.green)
+                                            .hide(if: !correct)
+                                    }
+                                    .conditionalModifier { view in
+                                        if correct {
+                                            return view.background {Color.accentColor}
+                                        } else {
+                                            return view.opaqueBackground()
+                                        }
+                                    }
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .padding(.bottom, optionsPaddingSize)
                                     .hide(if: currentState.questionStage - 3 < offset)
                             }
                             .font(.custom("SF Pro", size: optionsTextSize))
+                            .padding(.leading)
                         }
                     }
                     .padding([.top, .trailing, .bottom])

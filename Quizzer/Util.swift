@@ -11,9 +11,14 @@ extension View {
         }
     }
     
+    @ViewBuilder
     func opaqueBackground() -> some View {
         let opacity = 0.85
-        
-        return background(.gray.opacity(opacity))
+        background(.gray.opacity(opacity))
+    }
+    
+    @ViewBuilder
+    func conditionalModifier(_ modifiers: (any View) -> any View) -> some View {
+        AnyView(modifiers(self))
     }
 }
