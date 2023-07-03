@@ -505,7 +505,8 @@ class CurrentState: ObservableObject {
     }
     
     func progressTeam() {
-        if let index = getTeams().firstIndex(of: nextTeam) {
+        let teams = getTeams()
+        if let index = teams.firstIndex(of: nextTeam) {
             self.nextTeam = teams[(index + 1) % teams.count]
         } else {
             fixNextTeam()
