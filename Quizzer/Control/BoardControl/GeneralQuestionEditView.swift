@@ -35,7 +35,7 @@ struct GeneralQuestionEditView: View {
             }
         } label: {
             Text(referencedQuestion.image?.name ?? "")
-                .frame(maxWidth: 20)
+                .frame(maxWidth: 80)
         }
     }
     
@@ -60,7 +60,7 @@ struct GeneralQuestionEditView: View {
             }
         } label: {
             Text(referencedQuestion.solutionImage?.name ?? "")
-                .frame(maxWidth: 20)
+                .frame(maxWidth: 80)
         }
         
     }
