@@ -47,20 +47,25 @@ struct PresentationControls: View {
                         }
                         .hide(if: stage < 1 || stage == 2 )
                     }
-                    if question?.solutionImage?.name != currentState.currentImage?.name {
-                        Button("Show Solution Image") {
-                            withAnimation {
-                                currentState.currentImage = question?.solutionImage
+                    if question?.solutionImage != nil {
+                        if question?.solutionImage?.name != currentState.currentImage?.name {
+                            Button("Show Solution Image") {
+                                withAnimation {
+                                    currentState.currentImage = question?.solutionImage
+                                }
                             }
+                            .hide(if: stage < 2 || question?.solutionImage == nil)
+                        } else {
+                            Button("Hide Solution Image") {
+                                withAnimation {
+                                    currentState.currentImage = nil
+                                }
+                            }
+                            .hide(if: stage < 2)
                         }
-                        .hide(if: stage < 2 || question?.solutionImage == nil)
                     } else {
-                        Button("Hide Solution Image") {
-                            withAnimation {
-                                currentState.currentImage = nil
-                            }
-                        }
-                        .hide(if: stage < 2)
+                        Button(""){}
+                            .hidden()
                     }
                     
                 }
