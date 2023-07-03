@@ -8,7 +8,22 @@ struct QuestionEditView: View {
     @State private var alreadyExistsErrorShown = false
     @Bindable private var referencedQuestion: QuestionVars
     
-    private var editedQuestion = nil as Binding<Question>?
+    private var editedQuestion: Binding<Question>?
+    
+    struct Config: Identifiable {
+        let id = UUID()
+        var referencedQuestion: QuestionVars
+        var editedQuestion = nil as Binding<Question>?
+        
+        init(category: Category) {
+            referencedQuestion = QuestionVars(questionObject: Question(question: "", answer: "", category: category, weight: 0))
+        }
+        
+        init(question: Binding<Question>) {
+            referencedQuestion = QuestionVars(questionObject: question.wrappedValue)
+            editedQuestion = question
+        }
+    }
     
     var paramsIllegal: Bool {
         if let editedQuestion,
@@ -45,13 +60,9 @@ struct QuestionEditView: View {
         currentState.pauseReloading = false
     }
     
-    init(category: Category) {
-        referencedQuestion = QuestionVars(questionObject: Question(question: "", answer: "", category: category, weight: 0))
-    }
-    
-    init(question: Binding<Question>) {
-        referencedQuestion = QuestionVars(questionObject: question.wrappedValue)
-        editedQuestion = question
+    init(config: Self.Config) {
+        referencedQuestion = config.referencedQuestion
+        editedQuestion = config.editedQuestion
     }
     
     var body: some View {
@@ -89,11 +100,6 @@ struct QuestionEditView: View {
             }
         }
         .padding()
-        .onAppear(perform: {
-            guard let category = currentState.categories.first else { return }
-            
-            referencedQuestion.category = category.id
-        })
         .onSubmit {
             submit()
         }
@@ -106,7 +112,8 @@ struct QuestionEditView: View {
 }
 
 #Preview {
-    QuestionEditView(category: Category(name: "Test"))
+    let config = QuestionEditView.Config(category: Category(name: "Test"))
+    return QuestionEditView(config: config)
         .fixedSize()
         .padding()
         .environmentObject(CurrentState.examples)

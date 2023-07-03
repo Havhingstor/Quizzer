@@ -3,7 +3,7 @@ import SwiftUI
 struct CategoryListing: View {
     @EnvironmentObject private var currentState: CurrentState
     
-    @State private var addQuestionShown = false
+    @State private var addQuestionConfig = nil as QuestionEditView.Config?
     @State private var editCategory = false
     
     @Binding var category: Category
@@ -51,11 +51,11 @@ struct CategoryListing: View {
                         }
                     }
                     Button("Add Question") {
-                        addQuestionShown = true
+                        addQuestionConfig = .init(category: category)
                     }
                 }
-                .sheet(isPresented: $addQuestionShown) {
-                    QuestionEditView(category: category)
+                .sheet(item: $addQuestionConfig) { config in
+                    QuestionEditView(config: config)
                 }
                 .sheet(isPresented: $editCategory) {
                     NameSelectionSheet(groundType: "New Category Name", typeOfInteraction: "Change") { newName in
@@ -80,7 +80,7 @@ struct QuestionListing: View {
     @Environment(\.openWindow) private var openWindow
     
     @State var questionDeletionAlertShown = false
-    @State var questionEditSheet = false
+    @State var questionEditConfig = nil as QuestionEditView.Config?
     
     @Binding var question: Question
     
@@ -149,7 +149,7 @@ struct QuestionListing: View {
                         }
                     }
                     Button("Edit Question") {
-                        questionEditSheet = true
+                        questionEditConfig = .init(question: $question)
                     }
                     Button("Delete Question", role: .destructive) {
                         if question.answered {
@@ -165,8 +165,8 @@ struct QuestionListing: View {
                         deleteQuestion()
                     }
                 }
-                .sheet(isPresented: $questionEditSheet) {
-                    QuestionEditView(question: $question)
+                .sheet(item: $questionEditConfig) { config in
+                    QuestionEditView(config: config)
                 }
                 Spacer()
             }
