@@ -38,9 +38,11 @@ struct CategoryListing: View {
                 .foregroundStyle(isNextCategory() ? AnyShapeStyle(Color.red) : AnyShapeStyle(ForegroundStyle.foreground))
                 .contextMenu {
                     Button("\(category.isShown ? "Hide" : "Show") category") {
+                        let key = currentState.lockReloading()
                         withAnimation {
                             category.isShown.toggle()
                         }
+                        currentState.unlockReloading(id: key)
                     }
                     Button("Edit Category") {
                         editCategory = true

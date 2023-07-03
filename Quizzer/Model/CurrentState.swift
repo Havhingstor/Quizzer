@@ -4,7 +4,7 @@ import OSLog
 
 class CurrentState: ObservableObject {
     static var examples: CurrentState {
-        shared.pauseReloading = true
+        let reloadID = shared.lockReloading()
         let hrrURL = Bundle.main.url(forResource: "HRR", withExtension: "jpg")!
         let kaiserURL = Bundle.main.url(forResource: "Kaiser", withExtension: "jpg")!
         
@@ -55,7 +55,7 @@ class CurrentState: ObservableObject {
         ]
         shared.masterQuestion = MasterQuestion(question: "Welche?", answerInternal: 2, optionsInternal: ["1","2","3","4"], image: NamedData(name: "Kaiser", data: kaiserData), solutionImage: NamedData(name: "HRR", data: hrrData))
         
-        shared.pauseReloading = false
+        shared.unlockReloading(id: reloadID)
         
         shared.teams = [
             Team(name: "Team A"),
@@ -166,12 +166,28 @@ class CurrentState: ObservableObject {
         }
     }
     
-    var pauseReloading = false {
-        didSet {
+    func lockReloading() -> UUID {
+        let uuid = UUID()
+        pauseKeys.insert(uuid)
+        return uuid
+    }
+    
+    func unlockReloading(id: UUID) {
+        pauseKeys.remove(id)
+    }
+    
+    func unlockReloadingAndCatchUp(id: UUID) {
+        if pauseKeys.remove(id) != nil {
             reloadStorageContainerData()
             saveGame()
         }
     }
+    
+    private var pauseReloading: Bool {
+        !pauseKeys.isEmpty
+    }
+    
+    private var pauseKeys = Set<UUID>()
     
     @Published private var storageContainerDataInternal = (try? StorageContainer().encode()) ?? Data()
     
@@ -228,17 +244,17 @@ class CurrentState: ObservableObject {
     }
     
     func editCategory(_ category: Category, newName: String) {
-        pauseReloading = true
+        let key = lockReloading()
         for i in 0..<categories.count {
             if categories[i].id == category.id {
                 categories[i].name = newName
             }
         }
-        pauseReloading = false
+        unlockReloadingAndCatchUp(id: key)
     }
     
     func deleteCategory(_ category: Category) {
-        pauseReloading = true
+        let key = lockReloading()
         questions.filter { question in
             question.category == category.id
         }.forEach { question in
@@ -248,7 +264,7 @@ class CurrentState: ObservableObject {
         categories.removeAll { item in
             item.id == category.id
         }
-        pauseReloading = false
+        unlockReloadingAndCatchUp(id: key)
     }
     
     var questions: [Question] {
@@ -289,7 +305,7 @@ class CurrentState: ObservableObject {
     }
     
     public func deleteQuestion(_ question: Question) {
-        pauseReloading = true
+        let key = lockReloading()
         questionsAnswered.removeAll { answer in
             answer.question.id == question.id
         }
@@ -301,7 +317,7 @@ class CurrentState: ObservableObject {
         questions.removeAll { item in
             item.id == question.id
         }
-        pauseReloading = false
+        unlockReloadingAndCatchUp(id: key)
     }
     
     var masterQuestionActivated: Bool {
@@ -448,7 +464,7 @@ class CurrentState: ObservableObject {
     }
     
     func deleteTeam(team: Team) {
-        pauseReloading = true
+        let key = lockReloading()
         if teams.count > 0,
            let index = teams.firstIndex(of: team) {
             questionsAnswered.removeAll {
@@ -456,7 +472,7 @@ class CurrentState: ObservableObject {
             }
             teams.remove(at: index)
         }
-        pauseReloading = false
+        unlockReloadingAndCatchUp(id: key)
     }
     
     func getTeams() -> [Team] {

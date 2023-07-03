@@ -27,13 +27,13 @@ struct MasterQuestionEditView: View {
     }
     
     func submit() {
-        currentState.pauseReloading = true
+        let key = currentState.lockReloading()
         withAnimation {
             referencedQuestion.saveToMasterQuestion()
         }
         dismiss()
         currentState.storageContainer.cleanImages()
-        currentState.pauseReloading = false
+        currentState.unlockReloadingAndCatchUp(id: key)
     }
     
     var options: [(index: Int, option: String)] {

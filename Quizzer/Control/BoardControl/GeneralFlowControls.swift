@@ -21,9 +21,11 @@ struct GeneralFlowControls: View {
     func showNextCategory() {
         for (index, category) in currentState.categories.enumerated() {
             if !category.isShown {
+                let key = currentState.lockReloading()
                 withAnimation {
                     currentState.categories[index].isShown.toggle()
                 }
+                currentState.unlockReloading(id: key)
                 return
             }
         }

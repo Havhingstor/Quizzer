@@ -53,7 +53,7 @@ struct QuizzerApp: App {
                             }
                             let data = try Data(contentsOf: url)
                             
-                            currentState.pauseReloading = true
+                            let key = currentState.lockReloading()
                             
                             if try url.resourceValues(forKeys: [.contentTypeKey]).contentType == .quizDocument {
                                 currentState.storageContainer = try StorageContainer(data: data)
@@ -64,7 +64,7 @@ struct QuizzerApp: App {
                                 currentState.gameContainer = gameStorage.container
                             }
                             
-                            currentState.pauseReloading = false
+                            currentState.unlockReloadingAndCatchUp(id: key)
                             
                         } else {
                             throw CocoaError(.fileReadCorruptFile)
