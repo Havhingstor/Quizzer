@@ -22,7 +22,8 @@ struct TeamInfoPanel: View {
         Text("Solved Questions - \(team.name)")
         ForEach(answers) { answer in
             let question = answer.question
-            Text("\(answer.category) - \(answer.score)\n\(answer.correct ? "Correct" : "Wrong")")
+            let category = currentState.categories.first(where: {$0.id == answer.category}) ?? Category(name: "N/A")
+            Text("\(category.name) - \(answer.score)\n\(answer.correct ? "Correct" : "Wrong")")
                 .fixedSize()
                 .onTapGesture {
                     openWindow(value: question)
