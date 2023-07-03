@@ -102,6 +102,7 @@ class CurrentState: ObservableObject {
             }
             
             reloadStorageContainerData()
+            saveGame()
         }
     }
     
@@ -123,9 +124,52 @@ class CurrentState: ObservableObject {
         return nil
     }
     
-    private var pauseReloading = false {
+    func getGameLocation() throws -> URL {
+        let fileManager = FileManager()
+        let url = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+        
+        guard var url = url.first else { throw QuizError.appDirectoryDoesntExist }
+        
+        url.appendPathComponent("Game Log", conformingTo: .directory)
+        
+        if let lastFileName,
+           let name = URL(string: lastFileName)?.deletingPathExtension() {
+            url.appendPathComponent(name.absoluteString, conformingTo: .directory)
+        } else {
+            url.appendPathComponent("Default", conformingTo: .directory)
+        }
+        
+        try? fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+        
+        return url
+    }
+    
+    func saveGame() {
+        if !pauseReloading {
+            let logger = Logger(subsystem: "de.paulschuetz.Quizzer", category: "FileIO")
+            
+            do {
+                var url = try getGameLocation()
+                
+                let data = try GameStorage().encode()
+                
+                let date = Date.now
+                let timestamp = date.timeIntervalSinceReferenceDate
+                
+                url.appendPathComponent("\(timestamp).qgame", conformingTo: .gameDocument)
+                try data.write(to: url)
+                
+                logger.info("Successfully wrote file: \(url.path(), privacy: .public)")
+            } catch {
+                logger.warning("Couldn't save: Error \(error, privacy: .public)")
+            }
+        }
+    }
+    
+    var pauseReloading = false {
         didSet {
             reloadStorageContainerData()
+            saveGame()
         }
     }
     
@@ -184,14 +228,17 @@ class CurrentState: ObservableObject {
     }
     
     func editCategory(_ category: Category, newName: String) {
+        pauseReloading = true
         for i in 0..<categories.count {
             if categories[i].id == category.id {
                 categories[i].name = newName
             }
         }
+        pauseReloading = false
     }
     
     func deleteCategory(_ category: Category) {
+        pauseReloading = true
         questions.filter { question in
             question.category == category.id
         }.forEach { question in
@@ -201,6 +248,7 @@ class CurrentState: ObservableObject {
         categories.removeAll { item in
             item.id == category.id
         }
+        pauseReloading = false
     }
     
     var questions: [Question] {
@@ -241,6 +289,7 @@ class CurrentState: ObservableObject {
     }
     
     public func deleteQuestion(_ question: Question) {
+        pauseReloading = true
         questionsAnswered.removeAll { answer in
             answer.question.id == question.id
         }
@@ -252,6 +301,7 @@ class CurrentState: ObservableObject {
         questions.removeAll { item in
             item.id == question.id
         }
+        pauseReloading = false
     }
     
     var masterQuestionActivated: Bool {
@@ -398,6 +448,7 @@ class CurrentState: ObservableObject {
     }
     
     func deleteTeam(team: Team) {
+        pauseReloading = true
         if teams.count > 0,
            let index = teams.firstIndex(of: team) {
             questionsAnswered.removeAll {
@@ -405,6 +456,7 @@ class CurrentState: ObservableObject {
             }
             teams.remove(at: index)
         }
+        pauseReloading = false
     }
     
     func getTeams() -> [Team] {

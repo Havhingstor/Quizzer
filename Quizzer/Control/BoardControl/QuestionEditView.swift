@@ -21,6 +21,7 @@ struct QuestionEditView: View {
     }
     
     func submit() {
+        currentState.pauseReloading = true
         if let editedQuestion {
             if paramsIllegal {
                 alreadyExistsErrorShown = true
@@ -41,6 +42,7 @@ struct QuestionEditView: View {
             }
         }
         currentState.storageContainer.cleanImages()
+        currentState.pauseReloading = false
     }
     
     init(category: Category) {
