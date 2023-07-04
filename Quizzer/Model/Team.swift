@@ -88,7 +88,7 @@ class Team: Identifiable, Hashable, ObservableObject, Codable {
     }
     
     required init(from decoder: Decoder) throws {
-        var container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
         
         name = try container.decode(String.self, forKey: .name)
         addedPoints = try container.decode(Int.self, forKey: .addedPoints)
