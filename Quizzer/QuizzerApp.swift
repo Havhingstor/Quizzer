@@ -180,7 +180,9 @@ struct QuizzerApp: App {
         Settings {
             Form {
                 Section("Strings") {
-                    TextField("Intro Title", text: $currentState.introTitle)
+                    LabeledContent("Intro") {
+                        TextEditor(text: $currentState.introTitle)
+                    }
                     TextField("Points", text: $currentState.pointsName)
                     TextField("Points", text: $currentState.pointName)
                     TextField("Place / Rank", text: $currentState.placeName)
@@ -192,7 +194,7 @@ struct QuizzerApp: App {
                 }
             }
             .padding()
-            .frame(minWidth: 275, idealWidth: 400)
+            .frame(minWidth: 300, idealWidth: 400, minHeight: 325)
         }
     }
 }

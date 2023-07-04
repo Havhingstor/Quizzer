@@ -442,18 +442,18 @@ class CurrentState: ObservableObject {
         }
     }
     
-    @Published var introTitle = "Konfifreizeit Quiz\n2023"
+    @AppStorage("introTitle") var introTitle = "Konfifreizeit Quiz\n2023"
     
-    @Published var pointsName = "Punkte"
-    @Published var pointName = "Punkt"
+    @AppStorage("pointsName") var pointsName = "Punkte"
+    @AppStorage("pointName") var pointName = "Punkt"
     
-    @Published var placeName = "Platz"
-    @Published var answersName = "Antworten"
+    @AppStorage("placeName") var placeName = "Platz"
+    @AppStorage("answersName") var answersName = "Antworten"
     
-    @Published var questionName = "Frage"
-    @Published var masterQuestionName = "Masterfrage"
-    @Published var masterQuestionPrompt = "Setzt einen Teil eurer Punkte"
-    @Published var answerName = "Antwort"
+    @AppStorage("questionName") var questionName = "Frage"
+    @AppStorage("masterQuestionName") var masterQuestionName = "Masterfrage"
+    @AppStorage("masterQuestionPrompt") var masterQuestionPrompt = "Setzt einen Teil eurer Punkte"
+    @AppStorage("answerName") var answerName = "Antwort"
     
     
     
