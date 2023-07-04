@@ -35,17 +35,54 @@ struct QuestionView: View {
 
             if question.question.lowercased() != "joker" {
                 HStack {
-                    VStack {
-                        Text("\(currentState.questionName):")
-                            .padding()
-                        Text("\(question.question)")
-                            .padding()
+                    VStack(alignment: .leading) {
+                        VStack {
+                            Text("\(currentState.questionName):")
+                                .padding()
+                            Text("\(question.question)")
+                                .padding()
+                        }
+                        .font(.custom("SF Pro", size: 44.0))
+                        .opaqueBackground()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding([.top, .trailing, .bottom])
+                        .padding(.leading, 60)
+                        .hide(if: currentState.questionStage < 1)
+                        
+                        Spacer()
+                        
+                        VStack {
+                            Text("\(currentState.answerName):")
+                                .padding()
+                            Text("\(question.answer)")
+                                .padding()
+                        }
+                        .font(.custom("SF Pro", size: 44.0))
+                        .opaqueBackground()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding([.top, .trailing, .bottom])
+                        .padding(.leading, 60)
+                        .padding([.top, .trailing], 20)
+                        .overlay(alignment: .topTrailing) {
+                            Group {
+                                if currentState.questionStage == 3 {
+                                    Image(systemName: "checkmark.seal.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 75)
+                                        .foregroundColor(.green)
+                                } else if currentState.questionStage > 3 {
+                                    Image(systemName: "xmark.seal.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 75)
+                                        .foregroundColor(.red)
+                                }
+                            }
+                        }
+                        .hide(if: currentState.questionStage < 2)
+                        Spacer()
                     }
-                    .font(.custom("SF Pro", size: 44.0))
-                    .opaqueBackground()
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding([.top, .trailing, .bottom])
-                    .padding(.leading, 60)
                     Spacer()
                     
                     if let imageData = question.image?.data,
@@ -55,45 +92,11 @@ struct QuestionView: View {
                             .scaledToFit()
                             .padding()
                             .padding(.trailing)
+                            .hide(if: currentState.questionStage < 1)
+                            .animation(.none, value: currentState.questionStage)
                     }
                 }
-                .hide(if: currentState.questionStage < 1)
-                Spacer()
-                HStack {
-                    VStack {
-                        Text("\(currentState.answerName):")
-                            .padding()
-                        Text("\(question.answer)")
-                            .padding()
-                    }
-                    .font(.custom("SF Pro", size: 44.0))
-                    .opaqueBackground()
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding([.top, .trailing, .bottom])
-                    .padding(.leading, 60)
-                    .padding([.top, .trailing], 20)
-                    .overlay(alignment: .topTrailing) {
-                        Group {
-                            if currentState.questionStage == 3 {
-                                Image(systemName: "checkmark.seal.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 75)
-                                    .foregroundColor(.green)
-                            } else if currentState.questionStage > 3 {
-                                Image(systemName: "xmark.seal.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 75)
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
-                    Spacer()
-                }
-                .hide(if: currentState.questionStage < 2)
-                Spacer()
-                Spacer()
+            
             } else {
                 Group {
                     Text("Joker")
