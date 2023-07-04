@@ -209,13 +209,24 @@ class CurrentState: ObservableObject {
     }
     
     func resetQuiz() {
+        let key = lockReloading()
+        resetGame()
         storageContainer = StorageContainer()
+        unlockReloading(id: key)
     }
     
     func resetGame() {
+        let key = lockReloading()
         let lastFileName = gameContainer.lastFileName
         gameContainer = GameContainer()
         gameContainer.lastFileName = lastFileName
+        
+        categories = categories.map { categoryOld in
+            var category = categoryOld
+            category.isShown = false
+            return category
+        }
+        unlockReloading(id: key)
     }
     
     var categories: [Category] {
