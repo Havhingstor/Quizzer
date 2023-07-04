@@ -70,7 +70,7 @@ struct MasterQuestionPresentationControls: View {
     }
     
     func getChar(stage: Int) -> String {
-        let firstCharIndex = maxIndexPreOption + 1
+        let firstCharIndex = maxIndexPreOption
         let index = UInt(abs(stage - firstCharIndex))
         return MasterQuestion.getAlphabeticalNr(for: index)
     }
