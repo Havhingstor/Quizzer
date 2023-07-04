@@ -1,37 +1,21 @@
 import SwiftUI
 
 struct ResultsView: View {
-    @EnvironmentObject private var currentState: CurrentState
-    
-    func getSortedTeamList() -> [(rank: Int, team: Team)] {
-        var startRank = 1
-        var lastPts = UInt(0)
-        return currentState.getTeams().sorted { left, right in
-            left.overallPoints > right.overallPoints
-        }.map { team in
-            if team.overallPoints < lastPts {
-                startRank += 1
+    var body: some View {
+        VStack {
+            ForEach(getSortedTeamList(), id: \.team) { (rank, orderNo, team) in
+                TeamLine(team: team, rank: rank, orderNo: orderNo)
             }
-            lastPts = team.overallPoints
-            return (startRank, team)
         }
     }
+}
+
+struct TeamLine: View {
+    @EnvironmentObject var currentState: CurrentState
     
-    private var maxRank: Int {
-        getSortedTeamList().max { lhs, rhs in
-            lhs.rank < rhs.rank
-        }?.rank ?? 0
-    }
-    
-    func hideTeam(rank: Int) -> Bool {
-        let orderRank = maxRank + 1 - rank
-        
-        if rank > 1 {
-            return currentState.resultsStage < orderRank
-        } else {
-            return currentState.resultsStage < orderRank - 1
-        }
-    }
+    @ObservedObject var team: Team
+    @State var rank: Int
+    @State var orderNo: Int
     
     func getPointsStr(team: Team) -> String {
         let points = team.overallPoints
@@ -43,28 +27,31 @@ struct ResultsView: View {
     }
     
     var body: some View {
-        VStack {
-            ForEach(getSortedTeamList(), id: \.team) { (rank, team) in
-                Text("\(rank): \(team.name) - \(getPointsStr(team: team))")
-                    .font(.custom("SF Pro", size: 44.0))
-                    .padding()
-                    .opaqueBackground()
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding()
-                    .padding([.top, .trailing], 20)
-                    .overlay(alignment: .topTrailing, content: {
-                        if rank == 1 {
-                            Image(systemName: "star.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 75)
-                                .foregroundStyle(.yellow)
-                                .rotationEffect(.radians(.pi / 6.0))
-                        }
-                    })
-                    .hide(if: hideTeam(rank: rank))
-            }
-        }
+        Text("\(rank): \(team.name) - \(getPointsStr(team: team))")
+            .font(.custom("SF Pro", size: 44.0))
+            .padding()
+            .opaqueBackground()
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding()
+            .padding([.top, .trailing], 20)
+            .overlay(alignment: .topTrailing, content: {
+                if rank == 1 {
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 75)
+                        .foregroundStyle(.yellow)
+                        .rotationEffect(.radians(.pi / 6.0))
+                }
+            })
+            .hide(if: isTeamHidden(orderNo: orderNo, stage: currentState.resultsStage))
+            .conditionalModifier({ view in
+                if rank == 1 {
+                    return view.transition(.asymmetric(insertion: .scale.animation(.spring(response: 0.65, dampingFraction: 0.45)), removal: .opacity.animation(.default)))
+                } else {
+                    return view.transition(.opacity.animation(.default))
+                }
+            })
     }
 }
 

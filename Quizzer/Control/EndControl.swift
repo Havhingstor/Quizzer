@@ -4,50 +4,20 @@ struct EndControl: View {
     @EnvironmentObject private var currentState: CurrentState
     @Environment(\.dismiss) private var dismiss
     
-    func getSortedTeamList() -> [(rank: Int, team: Team)] {
-        var startRank = 1
-        var lastPts = UInt(0)
-        return currentState.getTeams().sorted { left, right in
-            left.overallPoints > right.overallPoints
-        }.map { team in
-            if team.overallPoints < lastPts {
-                startRank += 1
-            }
-            lastPts = team.overallPoints
-            return (startRank, team)
-        }
+    func greyOutTeam(orderNo: Int) -> Bool {
+        isTeamHidden(orderNo: orderNo, stage: currentState.resultsStage) &&
+            isTeamHidden(orderNo: orderNo, stage: currentState.resultsStage + 1)
     }
     
-    private var maxRank: Int {
-        getSortedTeamList().max { lhs, rhs in
-            lhs.rank < rhs.rank
-        }?.rank ?? 0
+    func isNextTeam(orderNo: Int) -> Bool {
+        isTeamHidden(orderNo: orderNo, stage: currentState.resultsStage) &&
+            !isTeamHidden(orderNo: orderNo, stage: currentState.resultsStage + 1)
     }
     
-    func isTeamHidden(rank: Int, stage: Int) -> Bool {
-        let orderRank = maxRank + 1 - rank
-        
-        if rank > 1 {
-            return stage < orderRank
-        } else {
-            return stage < orderRank - 1
-        }
-    }
-    
-    func greyOutTeam(rank: Int) -> Bool {
-        isTeamHidden(rank: rank, stage: currentState.resultsStage) &&
-            isTeamHidden(rank: rank, stage: currentState.resultsStage + 1)
-    }
-    
-    func isNextTeam(rank: Int) -> Bool {
-        isTeamHidden(rank: rank, stage: currentState.resultsStage) &&
-            !isTeamHidden(rank: rank, stage: currentState.resultsStage + 1)
-    }
-    
-    func getForegroundStyle(rank: Int) -> some ShapeStyle {
-        if greyOutTeam(rank: rank) {
+    func getForegroundStyle(orderNo: Int) -> some ShapeStyle {
+        if greyOutTeam(orderNo: orderNo) {
             return AnyShapeStyle(.secondary)
-        } else if isNextTeam(rank: rank) {
+        } else if isNextTeam(orderNo: orderNo) {
             return AnyShapeStyle(.red)
         } else {
             return AnyShapeStyle(.primary)
@@ -58,13 +28,13 @@ struct EndControl: View {
         var rankDict = [Team: Int]()
         var teams = [Team]()
         
-        for (rank, team) in getSortedTeamList() {
-            rankDict[team] = rank
+        for (_, orderNo, team) in getSortedTeamList() {
+            rankDict[team] = orderNo
         }
         
         for team in currentState.getTeams() {
-            if let rank = rankDict[team],
-                isNextTeam(rank: rank) {
+            if let orderNo = rankDict[team],
+                isNextTeam(orderNo: orderNo) {
                 teams.append(team)
             }
         }
@@ -84,6 +54,13 @@ struct EndControl: View {
         return result
         
     }
+    
+    var maxOrderNo: Int {
+        getSortedTeamList().max { lhs, rhs in
+            lhs.orderNo < rhs.orderNo
+        }?.orderNo ?? 0
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -94,6 +71,7 @@ struct EndControl: View {
                 Button("Show") {
                     currentState.resultsStage += 1
                 }
+                .disabled(currentState.resultsStage >= maxOrderNo)
             }
             
             Text("Next:\n\(nextTeamStr)")
@@ -102,10 +80,10 @@ struct EndControl: View {
                 .frame(minHeight: 50)
                 .padding()
             
-            ForEach(Array(getSortedTeamList().reversed()), id: \.team) { (rank, team) in
+            ForEach(Array(getSortedTeamList().reversed()), id: \.team) { (rank, orderNo, team) in
                 Text("\(rank): \(team.name) - \(team.overallPoints)")
                     .padding()
-                    .foregroundStyle(getForegroundStyle(rank: rank))
+                    .foregroundStyle(getForegroundStyle(orderNo: orderNo))
             }
         }
         .padding()

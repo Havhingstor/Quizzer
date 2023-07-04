@@ -47,7 +47,11 @@ struct GameContainer: Codable, Equatable {
             }
         }
     }
-    var showResults = false
+    var showResults = false {
+        didSet {
+            resultsStage = 0
+        }
+    }
     var resultsStage = 0
     var currentQuestion: Int? = nil {
         didSet {
