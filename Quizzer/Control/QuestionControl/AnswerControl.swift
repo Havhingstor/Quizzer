@@ -16,10 +16,6 @@ struct AnswerControl: View {
         question?.question.lowercased() == "joker"
     }
     
-    func executeTransitionForRegister(givenAnswer _: QuestionAnswer) {
-        if !isQL {}
-    }
-    
     var body: some View {
         if question != nil {
             if !isJoker {

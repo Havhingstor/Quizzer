@@ -516,7 +516,7 @@ class CurrentState: ObservableObject {
             if let nextTeamOp  {
                 return nextTeamOp
             } else {
-                return Team(name: "Default Team")
+                return getTeams().first!
             }
         }
         set {

@@ -6,14 +6,7 @@ struct QuestionControl: View {
     @Environment(\.openWindow) private var openWindow
 
     @State private var answer = ""
-    @State private var teamInternal = CurrentState.shared.getTeams().first!
-    var team: Binding<Team> {
-        if isQL {
-            return $teamInternal
-        } else {
-            return $currentState.nextTeam
-        }
-    }
+    @State private var team = CurrentState.shared.nextTeam
     
     @Binding var question: Question?
     
@@ -41,7 +34,7 @@ struct QuestionControl: View {
     
     func registerAnswer(_ correct: Bool) {
         if let question {
-            let givenAnswer = QuestionAnswer(question: question, team: team.wrappedValue, answer: answer, correct: correct)
+            let givenAnswer = QuestionAnswer(question: question, team: team, answer: answer, correct: correct)
             if !question.answered {
                 withAnimation {
                     setAnswer(givenAnswer)
@@ -61,16 +54,16 @@ struct QuestionControl: View {
     var body: some View {
         if let question {
             VStack(alignment: .center) {
-                HeaderView(question: $question, team: team)
+                HeaderView(question: $question, team: $team)
 
                 QuestionAndAnswer(question: $question)
 
                 PresentationControls(question: $question, isQL: isQL)
 
                 Group {
-                    AnswerControl(question: $question, isQL: isQL, answer: $answer, team: team, goToControl: goToControl, registerAnswer: registerAnswer)
+                    AnswerControl(question: $question, isQL: isQL, answer: $answer, team: $team, goToControl: goToControl, registerAnswer: registerAnswer)
 
-                    PreviousAnswerView(question: $question, isQL: isQL, answer: $answer, teamInternal: $teamInternal, goToControl: goToControl)
+                    PreviousAnswerView(question: $question, isQL: isQL, answer: $answer, team: $team, goToControl: goToControl)
                 }
                 .hide(if: question.exempt)
 
@@ -125,7 +118,9 @@ struct QuestionControl: View {
             .onAppear {
                 if isQL,
                    let answer = question.givenAnswer {
-                    teamInternal = answer.team
+                    team = answer.team
+                } else {
+                    team = currentState.nextTeam
                 }
             }
         } else {

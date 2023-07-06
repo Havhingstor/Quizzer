@@ -7,7 +7,7 @@ struct PreviousAnswerView: View {
     var isQL: Bool
     
     @Binding var answer: String
-    @Binding var teamInternal: Team
+    @Binding var team: Team
     
     var goToControl: () -> Void
     
@@ -32,7 +32,7 @@ struct PreviousAnswerView: View {
                 .padding([.leading, .trailing])
                 .onAppear {
                     if let oldTeam = question?.givenAnswer?.team {
-                        teamInternal = oldTeam
+                        team = oldTeam
                     }
                 }
                 
