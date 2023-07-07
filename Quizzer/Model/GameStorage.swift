@@ -65,7 +65,16 @@ struct GameContainer: Codable, Equatable {
         }
     }
     var currentImage: NamedData? = nil
-    var questionStage = 0
+    var questionStage = 0 {
+        didSet {
+            let questions = currentState.questions
+            if let currentQuestion,
+               currentQuestion < questions.count {
+                let question = currentState.questions[currentQuestion]
+                questionStages[question.id] = questionStage
+            }
+        }
+    }
     var questionStages = [UUID: Int]()
     var questionsAnswered = [QuestionAnswer]()
     var questionsExempt = [QuestionExemption]()
