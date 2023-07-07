@@ -269,6 +269,7 @@
 				DA191B5F2A21EAAE0099C07A /* Sources */,
 				DA191B602A21EAAE0099C07A /* Frameworks */,
 				DA191B612A21EAAE0099C07A /* Resources */,
+				DA391AF62A57F62D00D53E4D /* Increase Build version */,
 			);
 			buildRules = (
 			);
@@ -332,6 +333,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DA391AF62A57F62D00D53E4D /* Increase Build version */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Increase Build version";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "agvtool next-version -all\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DA191B5F2A21EAAE0099C07A /* Sources */ = {
@@ -523,7 +546,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 303;
 				DEVELOPMENT_ASSET_PATHS = "\"Quizzer/Preview Content\"";
 				DEVELOPMENT_TEAM = M3Q8CQN3R7;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -542,7 +565,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
+				VERSIONING_SYSTEM = "apple-generic-hidden";
 			};
 			name = Debug;
 		};
@@ -555,7 +578,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 303;
 				DEVELOPMENT_ASSET_PATHS = "\"Quizzer/Preview Content\"";
 				DEVELOPMENT_TEAM = M3Q8CQN3R7;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -574,7 +597,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
+				VERSIONING_SYSTEM = "apple-generic-hidden";
 			};
 			name = Release;
 		};
