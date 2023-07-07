@@ -25,6 +25,41 @@ struct CategoryListing: View {
         }
     }
     
+    func onMove(fromOffsets: IndexSet, toOffset: Int) {
+        var list = sortedList
+        
+        let key = currentState.lockReloading()
+        defer {
+            currentState.unlockReloadingAndCatchUp(id: key)
+        }
+        
+        guard toOffset < list.count else {return}
+        
+        for index in fromOffsets {
+            guard index < list.count,
+                  list[index].category.wrappedValue == category.id else {continue}
+            
+            let source = min(index, toOffset)
+            let target = max(index, toOffset)
+            
+            var prevWeight = list[source].wrappedValue.weight
+            
+            withAnimation {
+                list[source].wrappedValue.weight = UInt(list.count)
+                
+                for secondIndex in (source+1) ... target {
+                    guard list[secondIndex].category.wrappedValue == category.id else {continue}
+                    
+                    let tmp = list[secondIndex].wrappedValue.weight
+                    
+                    list[secondIndex].wrappedValue.weight = prevWeight
+                    prevWeight = tmp
+                }
+                list[source].wrappedValue.weight = prevWeight
+            }
+        }
+    }
+    
     var body: some View {
         Section {
             ForEach(sortedList) { $question in
@@ -33,6 +68,7 @@ struct CategoryListing: View {
                         .listRowSeparator(.hidden)
                 }
             }
+            .onMove(perform: onMove)
         } header: {
             Text("\(category.name) - \(category.isShown ? "Shown" : "Hidden")")
                 .foregroundStyle(isNextCategory() ? AnyShapeStyle(Color.red) : AnyShapeStyle(ForegroundStyle.foreground))
