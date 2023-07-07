@@ -5,6 +5,11 @@ struct MasterQuestionAndAnswer: View {
     
     @Binding var question: MasterQuestion?
     
+    func getHeight(text: String) -> Double {
+        let noOfLines = text.split(separator: "\n").count
+        return Double(noOfLines) * 20
+    }
+    
     var body: some View {
         if let question {
             GroupBox {
@@ -13,6 +18,7 @@ struct MasterQuestionAndAnswer: View {
                     Text(question.question)
                         .font(.headline)
                         .italic()
+                        .frame(minHeight: getHeight(text: question.question))
                 }
                 .padding([.bottom, .leading, .trailing])
                 
@@ -22,6 +28,7 @@ struct MasterQuestionAndAnswer: View {
                     Text("Answer")
                     ForEach(optionsList, id: \.offset) { offset, element in
                         Text("\(element)")
+                            .frame(minHeight: getHeight(text: element))
                             .padding(3)
                             .padding(.horizontal)
                             .background {
