@@ -26,11 +26,11 @@ struct CategoryListing: View {
     }
     
     func onMove(fromOffsets: IndexSet, toOffset: Int) {
-        var list = sortedList
+        let list = sortedList
         
         let key = currentState.lockReloading()
         defer {
-            currentState.unlockReloadingAndCatchUp(id: key)
+            currentState.unlockReloading(id: key)
         }
         
         guard toOffset < list.count else {return}
