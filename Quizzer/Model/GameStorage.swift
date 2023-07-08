@@ -39,11 +39,19 @@ struct GameContainer: Codable, Equatable {
     
     var showMasterQuestion = false {
         didSet {
-            if showMasterQuestion,
+            if !showMasterQuestion,
                let masterQuestion = currentState.masterQuestion {
                 questionStages[masterQuestion.id] = questionStage
             } else if let resolved = currentState.currentQuestionResolved {
                 questionStages[resolved.id] = questionStage
+            } else if !showMasterQuestion,
+                      let resolved = currentState.currentQuestionResolved {
+                questionStage = questionStages[resolved.id] ?? 0
+            } else if showMasterQuestion,
+                      let masterQuestion = currentState.masterQuestion {
+                questionStage = questionStages[masterQuestion.id] ?? 0
+            } else {
+                questionStage = 0
             }
         }
     }
