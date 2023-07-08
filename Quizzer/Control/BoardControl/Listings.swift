@@ -42,6 +42,8 @@ struct CategoryListing: View {
             let source = min(index, toOffset)
             let target = max(index, toOffset)
             
+            guard source < target else {continue}
+            
             var prevWeight = list[source].wrappedValue.weight
             
             withAnimation {
