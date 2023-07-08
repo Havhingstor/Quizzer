@@ -55,15 +55,25 @@ struct GameContainer: Codable, Equatable {
     var resultsStage = 0
     var currentQuestion: Int? = nil {
         didSet {
-            if let question = currentState.currentQuestionResolved {
+            guard let currentQuestion else { return }
+            if let question = getCurrentQuestion(index: currentQuestion) {
                 if let stage = questionStages[question.id] {
                     questionStage = stage
                 } else {
                     questionStage = 0
                 }
             }
+            currentImage = nil
         }
     }
+    
+    private func getCurrentQuestion(index: Int) -> Question? {
+        let list = currentState.questions
+        
+        guard index < list.count else {return nil}
+        return currentState.questions[index]
+    }
+    
     var currentImage: NamedData? = nil
     var questionStage = 0 {
         didSet {
