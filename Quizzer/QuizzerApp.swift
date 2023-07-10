@@ -5,6 +5,7 @@ import OSLog
 struct QuizzerApp: App {
     @StateObject private var currentState = CurrentState.shared
     @State private var saveDialogShown = false
+    @State private var saveCSVDialogShown = false
     @State private var loadDialogShown = false
     @State private var loadErrorShown = false
     @State private var loadError = nil as Error?
@@ -74,6 +75,7 @@ struct QuizzerApp: App {
                         loadErrorShown = true
                     }
                 }
+                .fileExporter(isPresented: $saveCSVDialogShown, document: CSVHandler(), contentType: .commaSeparatedText, defaultFilename: "Questions") {_ in}
                 .alert("Could not be loaded", isPresented: $loadErrorShown) {
                     Button("OK"){}
                 } message: {
@@ -112,6 +114,9 @@ struct QuizzerApp: App {
                     loadDialogShown = true
                 }
                 .keyboardShortcut("O")
+                Button("Save Quiz as CSV") {
+                    saveCSVDialogShown = true
+                }
                 Divider()
                 if let url = try? currentState.getGameLocation() {
                     Button("Open Game Directory") {
