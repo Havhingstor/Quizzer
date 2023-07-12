@@ -54,7 +54,3 @@ struct TeamLine: View {
             })
     }
 }
-
-#Preview {
-    ResultsView()
-}
