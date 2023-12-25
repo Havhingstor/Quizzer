@@ -37,6 +37,13 @@ struct GeneralQuestionEditView: View {
             Text(referencedQuestion.image?.name ?? "")
                 .frame(maxWidth: 80)
         }
+        .contextMenu{
+            if let _ = referencedQuestion.image {
+                Button("Remove Image") {
+                    referencedQuestion.image = nil
+                }
+            }
+        }
     }
     
     @ViewBuilder
@@ -62,7 +69,13 @@ struct GeneralQuestionEditView: View {
             Text(referencedQuestion.solutionImage?.name ?? "")
                 .frame(maxWidth: 80)
         }
-        
+        .contextMenu{
+            if let _ = referencedQuestion.solutionImage {
+                Button("Remove Image") {
+                    referencedQuestion.solutionImage = nil
+                }
+            }
+        }
     }
     
     var body: some View {

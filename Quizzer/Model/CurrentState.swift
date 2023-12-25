@@ -329,6 +329,7 @@ class CurrentState: ObservableObject {
             item.id == question.id
         }
         unlockReloadingAndCatchUp(id: key)
+        storageContainer.cleanImages()
     }
     
     var masterQuestionActivated: Bool {
