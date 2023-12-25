@@ -20,11 +20,17 @@ fileprivate struct JSONEncoded: Codable {
 }
 
 struct StorageContainer: FileDocument {
-    static var readableContentTypes = [UTType.quizDocument]
+    static var readableContentTypes = [UTType.quizDocument, .commaSeparatedText]
+    var saveAsCSV = false
     
     init(configuration: ReadConfiguration) throws {
+        let logger = Logger(subsystem: "de.paulschuetz.Quizzer", category: "FileIO")
         guard let data = configuration.file.regularFileContents else {
             throw CocoaError(.fileReadCorruptFile)
+        }
+        
+        if configuration.contentType == .commaSeparatedText {
+            logger.error("Can't read CSV-Files")
         }
         
         try self.init(data: data)
@@ -102,7 +108,11 @@ struct StorageContainer: FileDocument {
     }
     
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        FileWrapper(regularFileWithContents: CurrentState.shared.storageContainerData)
+        if saveAsCSV {
+            try CSVHandler().fileWrapper(configuration: configuration)
+        } else {
+            FileWrapper(regularFileWithContents: CurrentState.shared.storageContainerData)
+        }
     }
     
     var images = [Int: Data]()

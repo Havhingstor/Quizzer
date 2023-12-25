@@ -1,11 +1,12 @@
 import SwiftUI
 import OSLog
+import UniformTypeIdentifiers
 
 @main
 struct QuizzerApp: App {
     @StateObject private var currentState = CurrentState.shared
     @State private var saveDialogShown = false
-    @State private var saveCSVDialogShown = false
+    @State private var saveDialogIsCSV = false
     @State private var loadDialogShown = false
     @State private var loadErrorShown = false
     @State private var loadError = nil as Error?
@@ -30,6 +31,22 @@ struct QuizzerApp: App {
         currentState.lastFileName ?? "Quiz.quiz"
     }
     
+    private var fittingFileType: UTType {
+        if saveDialogIsCSV {
+            return .commaSeparatedText
+        } else {
+            return .quizDocument
+        }
+    }
+    
+    private var fittingFileName: String {
+        if saveDialogIsCSV {
+            return "Questions"
+        } else {
+            return fileName
+        }
+    }
+    
     var body: some Scene {
         Window("Quiz", id: "quiz") {
             QuizBoard()
@@ -40,8 +57,9 @@ struct QuizzerApp: App {
         Window("Control", id: "ctrl") {
             BoardControl()
                 .environmentObject(currentState)
-                .fileExporter(isPresented: $saveDialogShown, document: currentState.storageContainer, contentType: .quizDocument, defaultFilename: fileName) { result in
-                    if case .success(let url) = result {
+                .fileExporter(isPresented: $saveDialogShown, document: currentState.storageContainer, contentType: fittingFileType, defaultFilename: fittingFileName) { result in
+                    if !saveDialogIsCSV,
+                       case .success(let url) = result {
                         currentState.lastFileName = url.lastPathComponent
                     }
                 }
@@ -75,7 +93,7 @@ struct QuizzerApp: App {
                         loadErrorShown = true
                     }
                 }
-                .fileExporter(isPresented: $saveCSVDialogShown, document: CSVHandler(), contentType: .commaSeparatedText, defaultFilename: "Questions") {_ in}
+//                .fileExporter(isPresented: $saveCSVDialogShown, document: CSVHandler(), contentType: .commaSeparatedText, defaultFilename: "Questions") {_ in}
                 .alert("Could not be loaded", isPresented: $loadErrorShown) {
                     Button("OK"){}
                 } message: {
@@ -107,6 +125,8 @@ struct QuizzerApp: App {
         .commands {
             CommandGroup(after: .newItem) {
                 Button("Save Quiz") {
+                    saveDialogIsCSV = false
+                    currentState.storageContainer.saveAsCSV = false
                     saveDialogShown = true
                 }
                 .keyboardShortcut("S")
@@ -115,7 +135,9 @@ struct QuizzerApp: App {
                 }
                 .keyboardShortcut("O")
                 Button("Save Quiz as CSV") {
-                    saveCSVDialogShown = true
+                    saveDialogIsCSV = true
+                    currentState.storageContainer.saveAsCSV = true
+                    saveDialogShown = true
                 }
                 Divider()
                 if let url = try? currentState.getGameLocation() {
