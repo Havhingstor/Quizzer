@@ -211,7 +211,7 @@ struct QuizzerApp: App {
                         TextEditor(text: $currentState.introTitle)
                     }
                     TextField("Points", text: $currentState.pointsName)
-                    TextField("Points", text: $currentState.pointName)
+                    TextField("Point", text: $currentState.pointName)
                     TextField("Place / Rank", text: $currentState.placeName)
                     TextField("Answers", text: $currentState.answersName)
                     TextField("Answer", text: $currentState.answerName)
