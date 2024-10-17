@@ -112,7 +112,7 @@ struct GameStorage {
     var quiz: StorageContainer
     
     init(data: Data) throws {
-        guard let archive = Archive(data: data, accessMode: .read),
+        guard let archive = try? Archive(data: data, accessMode: .read, pathEncoding: nil),
               let mainEntry = archive["game.json"],
               let quizEntry = archive["quiz.quiz"] else { throw StorageError.CouldNotReadArchive }
         
@@ -131,7 +131,7 @@ struct GameStorage {
     }
     
     func encode() throws -> Data {
-        guard let archive = Archive(accessMode: .create) else {throw StorageError.CouldNotCreateArchive}
+        guard let archive = try? Archive(accessMode: .create, pathEncoding: nil) else {throw StorageError.CouldNotCreateArchive}
         
         let mainData = try JSONEncoder().encode(container)
         

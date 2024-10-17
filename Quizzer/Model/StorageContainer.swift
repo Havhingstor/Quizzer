@@ -38,7 +38,7 @@ struct StorageContainer: FileDocument {
     
     init(data: Data) throws {
         let logger = Logger(subsystem: "de.paulschuetz.Quizzer", category: "FileIO")
-        guard let archive = Archive(data: data, accessMode: .read),
+        guard let archive = try? Archive(data: data, accessMode: .read, pathEncoding: nil),
             let mainEntry = archive["main.json"] else { throw StorageError.CouldNotReadArchive }
         
         var jsonData = Data()
@@ -78,7 +78,7 @@ struct StorageContainer: FileDocument {
     func encode() throws -> Data {
         var jsonEncoded = JSONEncoded(container: self)
         
-        guard let archive = Archive(accessMode: .create) else {throw StorageError.CouldNotCreateArchive}
+        guard let archive = try? Archive(accessMode: .create, pathEncoding: nil) else {throw StorageError.CouldNotCreateArchive}
         
         for (hash, image) in images {
             try archive.addEntry(with: "\(hash)", type: .file, uncompressedSize: Int64(image.count), compressionMethod: .deflate) { position, size in

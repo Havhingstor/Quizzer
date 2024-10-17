@@ -49,30 +49,7 @@ struct MasterQuestionEditView: View {
             Group {
                 List(selection: $selectedOptions) {
                     ForEach(options, id: \.index) { (index, option) in
-                        HStack {
-                            Text("\(option)")
-                                .foregroundColor(index == referencedQuestion.answerIndex ? .accentColor : .primary)
-                                .contextMenu {
-                                    Button("Set as True Answer") {
-                                        referencedQuestion.answerIndex = index
-                                    }
-                                    Button("Edit") {
-                                        editOption = index
-                                        editOptionText = option
-                                        editOptionSheetPresented = true
-                                    }
-                                    Button("Remove Option") {
-                                        referencedQuestion.options.remove(at: index)
-                                    }
-                                }
-                            Spacer()
-                            Button {
-                                referencedQuestion.answerIndex = index
-                            } label: {
-                                Image(systemName: "checkmark.circle")
-                            }
-                            .buttonStyle(.borderless)
-                        }
+                        answerOption(index, option)
                     }
                     .onMove { fromOffsets, toOffset in
                         referencedQuestion.options.move(fromOffsets: fromOffsets, toOffset: toOffset)
@@ -132,8 +109,44 @@ struct MasterQuestionEditView: View {
         .frame(minWidth: 400)
         .fixedSize()
     }
+    
+    func answerOption(_ index: Int, _ option: String) -> some View {
+        HStack {
+            Text("\(option)")
+                .contextMenu {
+                    Button("Set as True Answer") {
+                        referencedQuestion.answerIndex = index
+                    }
+                    Button("Edit") {
+                        editOption = index
+                        editOptionText = option
+                        editOptionSheetPresented = true
+                    }
+                    Button("Remove Option") {
+                        referencedQuestion.options.remove(at: index)
+                    }
+                }
+            Spacer()
+            Button {
+                referencedQuestion.answerIndex = index
+            } label: {
+                Image(systemName: "checkmark.circle")
+            }
+            .buttonStyle(.borderless)
+        }
+        .conditionalModifier { view in
+            if (index == referencedQuestion.answerIndex) {
+                return view.listRowBackground(
+                    RoundedRectangle(cornerRadius: 5)
+                        .foregroundStyle(Color.accentColor)
+                )
+            } else {
+                return view
+            }
+        }
+    }
 }
-
+    
 #Preview {
     MasterQuestionEditView()
         .environmentObject(CurrentState.examples)

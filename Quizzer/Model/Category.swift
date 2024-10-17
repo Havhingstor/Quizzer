@@ -2,7 +2,7 @@ import Foundation
 
 struct Category: Identifiable, Hashable, Codable {
     var name: String
-    private (set) var id = UUID()
+    private(set) var id = UUID()
     
     var isShown: Bool
     

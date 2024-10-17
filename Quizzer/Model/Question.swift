@@ -7,7 +7,7 @@ struct Question: Identifiable, Codable, Hashable {
     
     var question: String
     var answer: String
-    private (set) var id = UUID()
+    private(set) var id = UUID()
     
     var category: UUID
     var weight: UInt

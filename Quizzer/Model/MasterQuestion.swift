@@ -16,7 +16,7 @@ struct MasterQuestion: Codable, Identifiable {
             "\(MasterQuestion.getAlphabeticalNr(for: UInt(index))): \(option)"
         }
     }
-    private (set) var id = UUID()
+    private(set) var id = UUID()
     
     static func getAlphabeticalNr(for num: UInt) -> String {
         let higherOrderNumber = num / 26
